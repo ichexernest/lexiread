@@ -1,10 +1,13 @@
+"use client"
 import { FaBookmark } from "react-icons/fa";
 import { Article } from "@/types";
+import { useRouter } from 'next/navigation';
 
 export default function ArticleCard({item}: {item: Article}) {
-  
+  const router = useRouter();
+
   return (
-          <div  className="flex flex-col items-center justify-center pb-8 py-5 w-full px-4 border-b">
+          <div  className="flex flex-col items-center justify-center pb-8 py-5 w-full px-4 border-b hover:bg-[#dcccba]" onClick={() => router.push(`/Article/${item.id}`)}>
             <img className="w-full rounded-xl" src={item.image} alt={item.title} />
             <div className="w-full text-start my-2">
               <p className="text-2xl font-bold">{item.title}</p>
