@@ -1,5 +1,6 @@
 'use client'
-import BackButton from "@/components/BackButton";
+
+import MainFunctionBar from "@/components/MainFunctionBar";
 import { Article } from "@/types";
 import React,{ useState, useEffect } from "react";
 import { FaBookmark } from "react-icons/fa";
@@ -17,7 +18,7 @@ const newsList: Article = {
 const ClickableWord = ({ word, onClick }: { word: string; onClick: (word: string) => void }) => {
   return (
     <span 
-      className="inline-block cursor-pointer hover:bg-[#dcccba] px-0.5 rounded-xl transition-colors"
+      className="inline-block cursor-pointer hover:bg-blue-100 px-0.5 rounded transition-colors"
       onClick={() => onClick(word)}
     >
       {word}
@@ -25,7 +26,7 @@ const ClickableWord = ({ word, onClick }: { word: string; onClick: (word: string
   );
 };
 
-export default function ArticleContentPage() {
+export default function HomeArticle() {
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [content, setContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
@@ -122,7 +123,7 @@ const renderClickableContent = () => {
 
   return (
     <div className="relative flex justify-center items-start w-screen h-screen overflow-y-auto">
-      <BackButton />
+      <MainFunctionBar />
       <div className="flex flex-col items-center h-screen max-w-[720px]">
         <div className="flex justify-start items-center w-full pt-10 px-5 md:px-0">
           <h1 className="text-3xl font-bold text-black">{newsList.title}</h1>

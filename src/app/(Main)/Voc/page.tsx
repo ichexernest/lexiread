@@ -1,8 +1,7 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import VocItem from "@/components/VocItem";
 import VocCard from "@/components/VocCard";
-import MainFunctionBar from "@/components/MainFunctionBar";
 import { useVocs } from "@/hooks/useVocs";
 import { FaSpinner } from "react-icons/fa";
 import LearningDashBoard from "@/components/LearningDashBoard";
@@ -35,8 +34,6 @@ export default function VocPage() {
   }, [observerRef.current, hasMore, loadMore]);
 
   return (
-    <div className="relative flex justify-center items-start w-screen h-screen overflow-y-auto">
-      <MainFunctionBar />
       <div className="flex flex-col items-center h-screen w-[720px]">
         <p className="text-3xl text-black p-10">Saved Vocabularies</p>
         <LearningDashBoard /> 
@@ -59,6 +56,5 @@ export default function VocPage() {
           </div>
         )}
       </div>
-    </div>
   );
 }

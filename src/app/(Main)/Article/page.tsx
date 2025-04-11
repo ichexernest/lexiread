@@ -1,7 +1,6 @@
 import { use } from "react";
 import ArticleCard from "@/components/ArticleCard";
 import { Article } from "@/types";
-import MainFunctionBar from "@/components/MainFunctionBar";
 
 const newsList: Article[] = [
   { 
@@ -49,8 +48,6 @@ export default function ArticlePage() {
   const result = use(fetchNews());
   
   return (
-    <div className="relative flex justify-center items-start w-screen h-screen overflow-y-auto">
-      <MainFunctionBar />
       <div className="flex flex-col items-center h-screen max-w-[720px]">
         <p className="text-3xl text-black p-10">Saved articles</p>
         {result.map((news) => (
@@ -61,6 +58,5 @@ export default function ArticlePage() {
           <p className="text-lg">That&apos;s all</p>
         </div>
       </div>
-    </div>
   );
 }
