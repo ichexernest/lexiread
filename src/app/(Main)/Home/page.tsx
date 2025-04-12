@@ -1,4 +1,3 @@
-import { use } from "react";
 import ArticleCard from "@/components/ArticleCard";
 import { Article } from "@/types";
 const newsList: Article[] = [
@@ -41,10 +40,10 @@ const newsList: Article[] = [
 
 export default async function HomePage() {
   
-  const fetchNews = async () => {
-    return newsList;
-  }
-  throw new Error("Error fetching news data"); // Simulate an error
+  // const fetchNews = async () => {
+  //   return newsList;
+  // }
+  //throw new Error("Error fetching news data"); // Simulate an error
   await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a delay
   
   const result = newsList;
