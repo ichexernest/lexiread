@@ -8,4 +8,9 @@ export const Article = z.object({
   image: z.string(),
 });
 
+export const FullArticle = Article.extend({
+  content: z.string(),
+})
+
 export type Article = z.infer<typeof Article>;
+export type FullArticle = z.infer<typeof FullArticle>;

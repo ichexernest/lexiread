@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 export default function Start() {
+  console.log('`Start` component rendered');
   const router = useRouter();
   const handleLogin = () => {
     router.push('/Login');
