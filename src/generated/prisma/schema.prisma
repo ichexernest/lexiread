@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:app.db"
+}
+
+// 公用單字記錄格式
+model PublicVocabulary {
+  id        Int      @id @default(autoincrement())
+  word      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 詞彙詳細資訊
+  partOfSpeech       String // 詞性
+  definition         String // 英文解釋
+  localDefinition    String? // 本地語言解釋
+  example            String? // 英文例句
+  exampleTranslation String? // 例句翻譯
+  pronunciation      String? // 發音
+
+  // 相關詞彙
+  synonyms String? // 同義詞 (以逗號分隔)
+  antonyms String? // 反義詞 (以逗號分隔)
+
+  userVocabularies UserVocabulary[]
+}
+
+// 公用文章記錄格式
+model PublicArticle {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  content     String
+  publishedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 文章資訊
+  author     String?
+  coverImage String? // 圖片URL
+
+  userArticles UserArticle[]
+}
+
+// 用戶資訊格式
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 用戶資訊
+  nativeLanguage String?
+
+  // 關聯
+  userVocabularies UserVocabulary[] // 單字記錄
+  userArticles     UserArticle[] // 收藏文章
+
+  // 認證相關欄位
+  emailVerified        Boolean   @default(false)
+  verificationToken    String?
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
+}
+
+// 私人單字記錄格式
+model UserVocabulary {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  publicVocabularyId Int
+  addedAt            DateTime @default(now())
+
+  // 個人學習狀態
+  familiarity Int @default(0) // 熟悉度 (0-5)
+
+  // 個人客製化內容
+  personalNote     String?
+  customDefinition String? // 定義
+  customExample    String? // 例句
+
+  // 關聯
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicVocabulary PublicVocabulary @relation(fields: [publicVocabularyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, publicVocabularyId])
+}
+
+// 用戶收藏的文章
+model UserArticle {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  publicArticleId Int
+  savedAt         DateTime @default(now())
+
+  // 關聯
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicArticle PublicArticle @relation(fields: [publicArticleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, publicArticleId])
+}
