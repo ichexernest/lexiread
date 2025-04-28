@@ -1,6 +1,8 @@
 import { use } from "react";
 import ArticleCard from "@/components/ArticleCard";
 import { Article } from "@/types";
+import Title from "@/components/Title"; 
+import FinishLine from "@/components/FinishLine";
 
 const newsList: Article[] = [
   { 
@@ -49,14 +51,11 @@ export default function ArticlePage() {
   
   return (
       <div className="flex flex-col items-center h-screen max-w-[720px]">
-        <p className="text-3xl text-black p-10">Saved articles</p>
+        <Title className="p-10">Saved articles</Title>
         {result.map((news) => (
           <ArticleCard key={news.id} item={news} />
         ))}
-        
-        <div className="flex justify-center items-center w-full pt-10 pb-32">
-          <p className="text-lg">That&apos;s all</p>
-        </div>
+        <FinishLine className="w-full pt-10 pb-32" />
       </div>
   );
 }

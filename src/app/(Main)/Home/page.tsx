@@ -1,11 +1,11 @@
 import ArticleCard from "@/components/ArticleCard";
 import { fetchBbcArticles } from "@/utils/fetchBbcArticles";
-import Link from "next/link";
 import { Article } from "@/types/article";
+import Title from "@/components/Title"; 
+import FinishLine from "@/components/FinishLine";
 
 
 export default async function HomePage() {
-  console.log("HomePage");
   const result: Article[] = await fetchBbcArticles()
 
   //throw new Error("Error fetching news data"); // Simulate an error
@@ -13,15 +13,12 @@ export default async function HomePage() {
 
   
   return (
-      <div className="flex flex-col items-center h-screen max-w-[720px]">
-        <p className="text-3xl text-black p-10">Today&apos;s news</p>
+      <div className="flex flex-col items-center h-screen min-h-screen w-full max-w-[720px] mx-auto">
+        <Title className="p-10">Today&apos;s news</Title>
         {result.map((news) => (
-          <Link key={news.id} href={`/Home/${news.id}`}><ArticleCard  item={news} /></Link>
+          <ArticleCard key={news.id} item={news} />
         ))}
-        
-        <div className="flex justify-center items-center w-full pt-10 pb-32">
-          <p className="text-lg">That&apos;s all</p>
-        </div>
+        <FinishLine className="w-full pt-10 pb-32" />
       </div>
   );
 }

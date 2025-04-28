@@ -6,6 +6,7 @@ import VocList from '../VocList';
 import VocCardWrapper from '../VocCardWrapper';
 import { FaSpinner } from 'react-icons/fa';
 import { UserVocabulary as VocItemType } from '@/types/'; // 假設的類型定義
+import FinishLine from '../FinishLine';
 
 interface VocListContainerProps {
   initialVocs: VocItemType[];
@@ -76,9 +77,7 @@ export default function VocListContainer({ initialVocs }: VocListContainerProps)
       <div ref={observerRef} className="h-12" />
       
       {!hasMore && (
-        <div className="flex justify-center items-center w-full pt-10 pb-32">
-          <p className="text-lg">That&apos;s all</p>
-        </div>
+       <FinishLine className="w-full pt-10 pb-32" />
       )}
     </>
   );

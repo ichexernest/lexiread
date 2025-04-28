@@ -173,7 +173,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/iche/lexiread/src/generated/prisma",
+      "value": "C:\\Users\\ch828\\lexiread\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -182,17 +182,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/iche/lexiread/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\ch828\\lexiread\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.6.0",
