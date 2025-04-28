@@ -1,7 +1,7 @@
 'use client';
 
 import VocItem from '@/components/VocItem';
-import { Vocabulary as VocItemType } from '@/types'; // 假設的類型定義
+import { UserVocabulary as VocItemType } from '@/types'; // 假設的類型定義
 
 interface VocListProps {
   vocs: VocItemType[];
@@ -15,7 +15,7 @@ export default function VocList({ vocs, onItemClick }: VocListProps) {
         <VocItem 
           key={voc.id}
           item={voc}
-          handleClick={() => onItemClick(voc.vocabulary)}
+          handleClick={() => onItemClick(voc.word)}
         />
       ))}
     </div>

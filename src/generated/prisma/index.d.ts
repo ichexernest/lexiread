@@ -1340,22 +1340,12 @@ export namespace Prisma {
 
   export type AggregatePublicVocabulary = {
     _count: PublicVocabularyCountAggregateOutputType | null
-    _avg: PublicVocabularyAvgAggregateOutputType | null
-    _sum: PublicVocabularySumAggregateOutputType | null
     _min: PublicVocabularyMinAggregateOutputType | null
     _max: PublicVocabularyMaxAggregateOutputType | null
   }
 
-  export type PublicVocabularyAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type PublicVocabularySumAggregateOutputType = {
-    id: number | null
-  }
-
   export type PublicVocabularyMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     word: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1370,7 +1360,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     word: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1400,14 +1390,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type PublicVocabularyAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type PublicVocabularySumAggregateInputType = {
-    id?: true
-  }
 
   export type PublicVocabularyMinAggregateInputType = {
     id?: true
@@ -1493,18 +1475,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: PublicVocabularyAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PublicVocabularySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: PublicVocabularyMinAggregateInputType
@@ -1535,14 +1505,12 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PublicVocabularyCountAggregateInputType | true
-    _avg?: PublicVocabularyAvgAggregateInputType
-    _sum?: PublicVocabularySumAggregateInputType
     _min?: PublicVocabularyMinAggregateInputType
     _max?: PublicVocabularyMaxAggregateInputType
   }
 
   export type PublicVocabularyGroupByOutputType = {
-    id: number
+    id: string
     word: string
     createdAt: Date
     updatedAt: Date
@@ -1555,8 +1523,6 @@ export namespace Prisma {
     synonyms: string | null
     antonyms: string | null
     _count: PublicVocabularyCountAggregateOutputType | null
-    _avg: PublicVocabularyAvgAggregateOutputType | null
-    _sum: PublicVocabularySumAggregateOutputType | null
     _min: PublicVocabularyMinAggregateOutputType | null
     _max: PublicVocabularyMaxAggregateOutputType | null
   }
@@ -1651,7 +1617,7 @@ export namespace Prisma {
       userVocabularies: Prisma.$UserVocabularyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       word: string
       createdAt: Date
       updatedAt: Date
@@ -2087,7 +2053,7 @@ export namespace Prisma {
    * Fields of the PublicVocabulary model
    */
   interface PublicVocabularyFieldRefs {
-    readonly id: FieldRef<"PublicVocabulary", 'Int'>
+    readonly id: FieldRef<"PublicVocabulary", 'String'>
     readonly word: FieldRef<"PublicVocabulary", 'String'>
     readonly createdAt: FieldRef<"PublicVocabulary", 'DateTime'>
     readonly updatedAt: FieldRef<"PublicVocabulary", 'DateTime'>
@@ -2533,22 +2499,12 @@ export namespace Prisma {
 
   export type AggregatePublicArticle = {
     _count: PublicArticleCountAggregateOutputType | null
-    _avg: PublicArticleAvgAggregateOutputType | null
-    _sum: PublicArticleSumAggregateOutputType | null
     _min: PublicArticleMinAggregateOutputType | null
     _max: PublicArticleMaxAggregateOutputType | null
   }
 
-  export type PublicArticleAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type PublicArticleSumAggregateOutputType = {
-    id: number | null
-  }
-
   export type PublicArticleMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     slug: string | null
     title: string | null
     content: string | null
@@ -2559,7 +2515,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     slug: string | null
     title: string | null
     content: string | null
@@ -2581,14 +2537,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type PublicArticleAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type PublicArticleSumAggregateInputType = {
-    id?: true
-  }
 
   export type PublicArticleMinAggregateInputType = {
     id?: true
@@ -2662,18 +2610,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: PublicArticleAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: PublicArticleSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: PublicArticleMinAggregateInputType
@@ -2704,14 +2640,12 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PublicArticleCountAggregateInputType | true
-    _avg?: PublicArticleAvgAggregateInputType
-    _sum?: PublicArticleSumAggregateInputType
     _min?: PublicArticleMinAggregateInputType
     _max?: PublicArticleMaxAggregateInputType
   }
 
   export type PublicArticleGroupByOutputType = {
-    id: number
+    id: string
     slug: string
     title: string
     content: string
@@ -2720,8 +2654,6 @@ export namespace Prisma {
     author: string | null
     coverImage: string | null
     _count: PublicArticleCountAggregateOutputType | null
-    _avg: PublicArticleAvgAggregateOutputType | null
-    _sum: PublicArticleSumAggregateOutputType | null
     _min: PublicArticleMinAggregateOutputType | null
     _max: PublicArticleMaxAggregateOutputType | null
   }
@@ -2800,7 +2732,7 @@ export namespace Prisma {
       userArticles: Prisma.$UserArticlePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       slug: string
       title: string
       content: string
@@ -3232,7 +3164,7 @@ export namespace Prisma {
    * Fields of the PublicArticle model
    */
   interface PublicArticleFieldRefs {
-    readonly id: FieldRef<"PublicArticle", 'Int'>
+    readonly id: FieldRef<"PublicArticle", 'String'>
     readonly slug: FieldRef<"PublicArticle", 'String'>
     readonly title: FieldRef<"PublicArticle", 'String'>
     readonly content: FieldRef<"PublicArticle", 'String'>
@@ -3674,22 +3606,12 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
 
-  export type UserAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type UserSumAggregateOutputType = {
-    id: number | null
-  }
-
   export type UserMinAggregateOutputType = {
-    id: number | null
+    id: string | null
     email: string | null
     password: string | null
     name: string | null
@@ -3703,7 +3625,7 @@ export namespace Prisma {
   }
 
   export type UserMaxAggregateOutputType = {
-    id: number | null
+    id: string | null
     email: string | null
     password: string | null
     name: string | null
@@ -3731,14 +3653,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type UserAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type UserSumAggregateInputType = {
-    id?: true
-  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -3821,18 +3735,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: UserAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -3863,14 +3765,12 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
-    _avg?: UserAvgAggregateInputType
-    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
 
   export type UserGroupByOutputType = {
-    id: number
+    id: string
     email: string
     password: string
     name: string | null
@@ -3882,8 +3782,6 @@ export namespace Prisma {
     resetPasswordToken: string | null
     resetPasswordExpires: Date | null
     _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -3977,7 +3875,7 @@ export namespace Prisma {
       userArticles: Prisma.$UserArticlePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
+      id: string
       email: string
       password: string
       name: string | null
@@ -4413,7 +4311,7 @@ export namespace Prisma {
    * Fields of the User model
    */
   interface UserFieldRefs {
-    readonly id: FieldRef<"User", 'Int'>
+    readonly id: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
@@ -4889,23 +4787,17 @@ export namespace Prisma {
   }
 
   export type UserVocabularyAvgAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicVocabularyId: number | null
     familiarity: number | null
   }
 
   export type UserVocabularySumAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicVocabularyId: number | null
     familiarity: number | null
   }
 
   export type UserVocabularyMinAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicVocabularyId: number | null
+    id: string | null
+    userId: string | null
+    publicVocabularyId: string | null
     addedAt: Date | null
     familiarity: number | null
     personalNote: string | null
@@ -4914,9 +4806,9 @@ export namespace Prisma {
   }
 
   export type UserVocabularyMaxAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicVocabularyId: number | null
+    id: string | null
+    userId: string | null
+    publicVocabularyId: string | null
     addedAt: Date | null
     familiarity: number | null
     personalNote: string | null
@@ -4938,16 +4830,10 @@ export namespace Prisma {
 
 
   export type UserVocabularyAvgAggregateInputType = {
-    id?: true
-    userId?: true
-    publicVocabularyId?: true
     familiarity?: true
   }
 
   export type UserVocabularySumAggregateInputType = {
-    id?: true
-    userId?: true
-    publicVocabularyId?: true
     familiarity?: true
   }
 
@@ -5072,9 +4958,9 @@ export namespace Prisma {
   }
 
   export type UserVocabularyGroupByOutputType = {
-    id: number
-    userId: number
-    publicVocabularyId: number
+    id: string
+    userId: string
+    publicVocabularyId: string
     addedAt: Date
     familiarity: number
     personalNote: string | null
@@ -5172,9 +5058,9 @@ export namespace Prisma {
       publicVocabulary: Prisma.$PublicVocabularyPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      userId: number
-      publicVocabularyId: number
+      id: string
+      userId: string
+      publicVocabularyId: string
       addedAt: Date
       familiarity: number
       personalNote: string | null
@@ -5605,9 +5491,9 @@ export namespace Prisma {
    * Fields of the UserVocabulary model
    */
   interface UserVocabularyFieldRefs {
-    readonly id: FieldRef<"UserVocabulary", 'Int'>
-    readonly userId: FieldRef<"UserVocabulary", 'Int'>
-    readonly publicVocabularyId: FieldRef<"UserVocabulary", 'Int'>
+    readonly id: FieldRef<"UserVocabulary", 'String'>
+    readonly userId: FieldRef<"UserVocabulary", 'String'>
+    readonly publicVocabularyId: FieldRef<"UserVocabulary", 'String'>
     readonly addedAt: FieldRef<"UserVocabulary", 'DateTime'>
     readonly familiarity: FieldRef<"UserVocabulary", 'Int'>
     readonly personalNote: FieldRef<"UserVocabulary", 'String'>
@@ -6031,35 +5917,21 @@ export namespace Prisma {
 
   export type AggregateUserArticle = {
     _count: UserArticleCountAggregateOutputType | null
-    _avg: UserArticleAvgAggregateOutputType | null
-    _sum: UserArticleSumAggregateOutputType | null
     _min: UserArticleMinAggregateOutputType | null
     _max: UserArticleMaxAggregateOutputType | null
   }
 
-  export type UserArticleAvgAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicArticleId: number | null
-  }
-
-  export type UserArticleSumAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicArticleId: number | null
-  }
-
   export type UserArticleMinAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicArticleId: number | null
+    id: string | null
+    userId: string | null
+    publicArticleId: string | null
     savedAt: Date | null
   }
 
   export type UserArticleMaxAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    publicArticleId: number | null
+    id: string | null
+    userId: string | null
+    publicArticleId: string | null
     savedAt: Date | null
   }
 
@@ -6071,18 +5943,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type UserArticleAvgAggregateInputType = {
-    id?: true
-    userId?: true
-    publicArticleId?: true
-  }
-
-  export type UserArticleSumAggregateInputType = {
-    id?: true
-    userId?: true
-    publicArticleId?: true
-  }
 
   export type UserArticleMinAggregateInputType = {
     id?: true
@@ -6144,18 +6004,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: UserArticleAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserArticleSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserArticleMinAggregateInputType
@@ -6186,20 +6034,16 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserArticleCountAggregateInputType | true
-    _avg?: UserArticleAvgAggregateInputType
-    _sum?: UserArticleSumAggregateInputType
     _min?: UserArticleMinAggregateInputType
     _max?: UserArticleMaxAggregateInputType
   }
 
   export type UserArticleGroupByOutputType = {
-    id: number
-    userId: number
-    publicArticleId: number
+    id: string
+    userId: string
+    publicArticleId: string
     savedAt: Date
     _count: UserArticleCountAggregateOutputType | null
-    _avg: UserArticleAvgAggregateOutputType | null
-    _sum: UserArticleSumAggregateOutputType | null
     _min: UserArticleMinAggregateOutputType | null
     _max: UserArticleMaxAggregateOutputType | null
   }
@@ -6273,9 +6117,9 @@ export namespace Prisma {
       publicArticle: Prisma.$PublicArticlePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      userId: number
-      publicArticleId: number
+      id: string
+      userId: string
+      publicArticleId: string
       savedAt: Date
     }, ExtArgs["result"]["userArticle"]>
     composites: {}
@@ -6702,9 +6546,9 @@ export namespace Prisma {
    * Fields of the UserArticle model
    */
   interface UserArticleFieldRefs {
-    readonly id: FieldRef<"UserArticle", 'Int'>
-    readonly userId: FieldRef<"UserArticle", 'Int'>
-    readonly publicArticleId: FieldRef<"UserArticle", 'Int'>
+    readonly id: FieldRef<"UserArticle", 'String'>
+    readonly userId: FieldRef<"UserArticle", 'String'>
+    readonly publicArticleId: FieldRef<"UserArticle", 'String'>
     readonly savedAt: FieldRef<"UserArticle", 'DateTime'>
   }
     
@@ -7224,13 +7068,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
@@ -7252,6 +7089,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -7265,7 +7109,7 @@ export namespace Prisma {
     AND?: PublicVocabularyWhereInput | PublicVocabularyWhereInput[]
     OR?: PublicVocabularyWhereInput[]
     NOT?: PublicVocabularyWhereInput | PublicVocabularyWhereInput[]
-    id?: IntFilter<"PublicVocabulary"> | number
+    id?: StringFilter<"PublicVocabulary"> | string
     word?: StringFilter<"PublicVocabulary"> | string
     createdAt?: DateTimeFilter<"PublicVocabulary"> | Date | string
     updatedAt?: DateTimeFilter<"PublicVocabulary"> | Date | string
@@ -7297,7 +7141,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     word?: string
     AND?: PublicVocabularyWhereInput | PublicVocabularyWhereInput[]
     OR?: PublicVocabularyWhereInput[]
@@ -7329,17 +7173,15 @@ export namespace Prisma {
     synonyms?: SortOrderInput | SortOrder
     antonyms?: SortOrderInput | SortOrder
     _count?: PublicVocabularyCountOrderByAggregateInput
-    _avg?: PublicVocabularyAvgOrderByAggregateInput
     _max?: PublicVocabularyMaxOrderByAggregateInput
     _min?: PublicVocabularyMinOrderByAggregateInput
-    _sum?: PublicVocabularySumOrderByAggregateInput
   }
 
   export type PublicVocabularyScalarWhereWithAggregatesInput = {
     AND?: PublicVocabularyScalarWhereWithAggregatesInput | PublicVocabularyScalarWhereWithAggregatesInput[]
     OR?: PublicVocabularyScalarWhereWithAggregatesInput[]
     NOT?: PublicVocabularyScalarWhereWithAggregatesInput | PublicVocabularyScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"PublicVocabulary"> | number
+    id?: StringWithAggregatesFilter<"PublicVocabulary"> | string
     word?: StringWithAggregatesFilter<"PublicVocabulary"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PublicVocabulary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PublicVocabulary"> | Date | string
@@ -7357,7 +7199,7 @@ export namespace Prisma {
     AND?: PublicArticleWhereInput | PublicArticleWhereInput[]
     OR?: PublicArticleWhereInput[]
     NOT?: PublicArticleWhereInput | PublicArticleWhereInput[]
-    id?: IntFilter<"PublicArticle"> | number
+    id?: StringFilter<"PublicArticle"> | string
     slug?: StringFilter<"PublicArticle"> | string
     title?: StringFilter<"PublicArticle"> | string
     content?: StringFilter<"PublicArticle"> | string
@@ -7381,7 +7223,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     slug?: string
     AND?: PublicArticleWhereInput | PublicArticleWhereInput[]
     OR?: PublicArticleWhereInput[]
@@ -7405,17 +7247,15 @@ export namespace Prisma {
     author?: SortOrderInput | SortOrder
     coverImage?: SortOrderInput | SortOrder
     _count?: PublicArticleCountOrderByAggregateInput
-    _avg?: PublicArticleAvgOrderByAggregateInput
     _max?: PublicArticleMaxOrderByAggregateInput
     _min?: PublicArticleMinOrderByAggregateInput
-    _sum?: PublicArticleSumOrderByAggregateInput
   }
 
   export type PublicArticleScalarWhereWithAggregatesInput = {
     AND?: PublicArticleScalarWhereWithAggregatesInput | PublicArticleScalarWhereWithAggregatesInput[]
     OR?: PublicArticleScalarWhereWithAggregatesInput[]
     NOT?: PublicArticleScalarWhereWithAggregatesInput | PublicArticleScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"PublicArticle"> | number
+    id?: StringWithAggregatesFilter<"PublicArticle"> | string
     slug?: StringWithAggregatesFilter<"PublicArticle"> | string
     title?: StringWithAggregatesFilter<"PublicArticle"> | string
     content?: StringWithAggregatesFilter<"PublicArticle"> | string
@@ -7429,7 +7269,7 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    id?: IntFilter<"User"> | number
+    id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
@@ -7461,7 +7301,7 @@ export namespace Prisma {
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     email?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -7492,17 +7332,15 @@ export namespace Prisma {
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpires?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
-    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
-    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
     AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"User"> | number
+    id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -7519,9 +7357,9 @@ export namespace Prisma {
     AND?: UserVocabularyWhereInput | UserVocabularyWhereInput[]
     OR?: UserVocabularyWhereInput[]
     NOT?: UserVocabularyWhereInput | UserVocabularyWhereInput[]
-    id?: IntFilter<"UserVocabulary"> | number
-    userId?: IntFilter<"UserVocabulary"> | number
-    publicVocabularyId?: IntFilter<"UserVocabulary"> | number
+    id?: StringFilter<"UserVocabulary"> | string
+    userId?: StringFilter<"UserVocabulary"> | string
+    publicVocabularyId?: StringFilter<"UserVocabulary"> | string
     addedAt?: DateTimeFilter<"UserVocabulary"> | Date | string
     familiarity?: IntFilter<"UserVocabulary"> | number
     personalNote?: StringNullableFilter<"UserVocabulary"> | string | null
@@ -7545,13 +7383,13 @@ export namespace Prisma {
   }
 
   export type UserVocabularyWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     userId_publicVocabularyId?: UserVocabularyUserIdPublicVocabularyIdCompoundUniqueInput
     AND?: UserVocabularyWhereInput | UserVocabularyWhereInput[]
     OR?: UserVocabularyWhereInput[]
     NOT?: UserVocabularyWhereInput | UserVocabularyWhereInput[]
-    userId?: IntFilter<"UserVocabulary"> | number
-    publicVocabularyId?: IntFilter<"UserVocabulary"> | number
+    userId?: StringFilter<"UserVocabulary"> | string
+    publicVocabularyId?: StringFilter<"UserVocabulary"> | string
     addedAt?: DateTimeFilter<"UserVocabulary"> | Date | string
     familiarity?: IntFilter<"UserVocabulary"> | number
     personalNote?: StringNullableFilter<"UserVocabulary"> | string | null
@@ -7581,9 +7419,9 @@ export namespace Prisma {
     AND?: UserVocabularyScalarWhereWithAggregatesInput | UserVocabularyScalarWhereWithAggregatesInput[]
     OR?: UserVocabularyScalarWhereWithAggregatesInput[]
     NOT?: UserVocabularyScalarWhereWithAggregatesInput | UserVocabularyScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"UserVocabulary"> | number
-    userId?: IntWithAggregatesFilter<"UserVocabulary"> | number
-    publicVocabularyId?: IntWithAggregatesFilter<"UserVocabulary"> | number
+    id?: StringWithAggregatesFilter<"UserVocabulary"> | string
+    userId?: StringWithAggregatesFilter<"UserVocabulary"> | string
+    publicVocabularyId?: StringWithAggregatesFilter<"UserVocabulary"> | string
     addedAt?: DateTimeWithAggregatesFilter<"UserVocabulary"> | Date | string
     familiarity?: IntWithAggregatesFilter<"UserVocabulary"> | number
     personalNote?: StringNullableWithAggregatesFilter<"UserVocabulary"> | string | null
@@ -7595,9 +7433,9 @@ export namespace Prisma {
     AND?: UserArticleWhereInput | UserArticleWhereInput[]
     OR?: UserArticleWhereInput[]
     NOT?: UserArticleWhereInput | UserArticleWhereInput[]
-    id?: IntFilter<"UserArticle"> | number
-    userId?: IntFilter<"UserArticle"> | number
-    publicArticleId?: IntFilter<"UserArticle"> | number
+    id?: StringFilter<"UserArticle"> | string
+    userId?: StringFilter<"UserArticle"> | string
+    publicArticleId?: StringFilter<"UserArticle"> | string
     savedAt?: DateTimeFilter<"UserArticle"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     publicArticle?: XOR<PublicArticleScalarRelationFilter, PublicArticleWhereInput>
@@ -7613,13 +7451,13 @@ export namespace Prisma {
   }
 
   export type UserArticleWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    id?: string
     userId_publicArticleId?: UserArticleUserIdPublicArticleIdCompoundUniqueInput
     AND?: UserArticleWhereInput | UserArticleWhereInput[]
     OR?: UserArticleWhereInput[]
     NOT?: UserArticleWhereInput | UserArticleWhereInput[]
-    userId?: IntFilter<"UserArticle"> | number
-    publicArticleId?: IntFilter<"UserArticle"> | number
+    userId?: StringFilter<"UserArticle"> | string
+    publicArticleId?: StringFilter<"UserArticle"> | string
     savedAt?: DateTimeFilter<"UserArticle"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     publicArticle?: XOR<PublicArticleScalarRelationFilter, PublicArticleWhereInput>
@@ -7631,23 +7469,22 @@ export namespace Prisma {
     publicArticleId?: SortOrder
     savedAt?: SortOrder
     _count?: UserArticleCountOrderByAggregateInput
-    _avg?: UserArticleAvgOrderByAggregateInput
     _max?: UserArticleMaxOrderByAggregateInput
     _min?: UserArticleMinOrderByAggregateInput
-    _sum?: UserArticleSumOrderByAggregateInput
   }
 
   export type UserArticleScalarWhereWithAggregatesInput = {
     AND?: UserArticleScalarWhereWithAggregatesInput | UserArticleScalarWhereWithAggregatesInput[]
     OR?: UserArticleScalarWhereWithAggregatesInput[]
     NOT?: UserArticleScalarWhereWithAggregatesInput | UserArticleScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"UserArticle"> | number
-    userId?: IntWithAggregatesFilter<"UserArticle"> | number
-    publicArticleId?: IntWithAggregatesFilter<"UserArticle"> | number
+    id?: StringWithAggregatesFilter<"UserArticle"> | string
+    userId?: StringWithAggregatesFilter<"UserArticle"> | string
+    publicArticleId?: StringWithAggregatesFilter<"UserArticle"> | string
     savedAt?: DateTimeWithAggregatesFilter<"UserArticle"> | Date | string
   }
 
   export type PublicVocabularyCreateInput = {
+    id: string
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7663,7 +7500,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUncheckedCreateInput = {
-    id?: number
+    id: string
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7679,6 +7516,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7694,7 +7532,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7710,7 +7548,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyCreateManyInput = {
-    id?: number
+    id: string
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -7725,6 +7563,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7739,7 +7578,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7754,6 +7593,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleCreateInput = {
+    id: string
     slug: string
     title: string
     content: string
@@ -7765,7 +7605,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUncheckedCreateInput = {
-    id?: number
+    id: string
     slug: string
     title: string
     content: string
@@ -7777,6 +7617,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -7788,7 +7629,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -7800,7 +7641,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleCreateManyInput = {
-    id?: number
+    id: string
     slug: string
     title: string
     content: string
@@ -7811,6 +7652,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -7821,7 +7663,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -7832,6 +7674,7 @@ export namespace Prisma {
   }
 
   export type UserCreateInput = {
+    id: string
     email: string
     password: string
     name?: string | null
@@ -7847,7 +7690,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateInput = {
-    id?: number
+    id: string
     email: string
     password: string
     name?: string | null
@@ -7863,6 +7706,7 @@ export namespace Prisma {
   }
 
   export type UserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7878,7 +7722,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7894,7 +7738,7 @@ export namespace Prisma {
   }
 
   export type UserCreateManyInput = {
-    id?: number
+    id: string
     email: string
     password: string
     name?: string | null
@@ -7908,6 +7752,7 @@ export namespace Prisma {
   }
 
   export type UserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7921,7 +7766,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7935,6 +7780,7 @@ export namespace Prisma {
   }
 
   export type UserVocabularyCreateInput = {
+    id: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -7945,9 +7791,9 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedCreateInput = {
-    id?: number
-    userId: number
-    publicVocabularyId: number
+    id: string
+    userId: string
+    publicVocabularyId: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -7956,6 +7802,7 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7966,9 +7813,9 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    publicVocabularyId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    publicVocabularyId?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7977,9 +7824,9 @@ export namespace Prisma {
   }
 
   export type UserVocabularyCreateManyInput = {
-    id?: number
-    userId: number
-    publicVocabularyId: number
+    id: string
+    userId: string
+    publicVocabularyId: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -7988,6 +7835,7 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7996,9 +7844,9 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    publicVocabularyId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    publicVocabularyId?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8007,58 +7855,50 @@ export namespace Prisma {
   }
 
   export type UserArticleCreateInput = {
+    id: string
     savedAt?: Date | string
     user: UserCreateNestedOneWithoutUserArticlesInput
     publicArticle: PublicArticleCreateNestedOneWithoutUserArticlesInput
   }
 
   export type UserArticleUncheckedCreateInput = {
-    id?: number
-    userId: number
-    publicArticleId: number
+    id: string
+    userId: string
+    publicArticleId: string
     savedAt?: Date | string
   }
 
   export type UserArticleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutUserArticlesNestedInput
     publicArticle?: PublicArticleUpdateOneRequiredWithoutUserArticlesNestedInput
   }
 
   export type UserArticleUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    publicArticleId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    publicArticleId?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserArticleCreateManyInput = {
-    id?: number
-    userId: number
-    publicArticleId: number
+    id: string
+    userId: string
+    publicArticleId: string
     savedAt?: Date | string
   }
 
   export type UserArticleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserArticleUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    publicArticleId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    publicArticleId?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8130,10 +7970,6 @@ export namespace Prisma {
     antonyms?: SortOrder
   }
 
-  export type PublicVocabularyAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
   export type PublicVocabularyMaxOrderByAggregateInput = {
     id?: SortOrder
     word?: SortOrder
@@ -8162,26 +7998,6 @@ export namespace Prisma {
     pronunciation?: SortOrder
     synonyms?: SortOrder
     antonyms?: SortOrder
-  }
-
-  export type PublicVocabularySumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -8253,10 +8069,6 @@ export namespace Prisma {
     coverImage?: SortOrder
   }
 
-  export type PublicArticleAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
   export type PublicArticleMaxOrderByAggregateInput = {
     id?: SortOrder
     slug?: SortOrder
@@ -8277,10 +8089,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     author?: SortOrder
     coverImage?: SortOrder
-  }
-
-  export type PublicArticleSumOrderByAggregateInput = {
-    id?: SortOrder
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -8313,10 +8121,6 @@ export namespace Prisma {
     resetPasswordExpires?: SortOrder
   }
 
-  export type UserAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -8345,10 +8149,6 @@ export namespace Prisma {
     resetPasswordExpires?: SortOrder
   }
 
-  export type UserSumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -8371,6 +8171,17 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -8382,8 +8193,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUserIdPublicVocabularyIdCompoundUniqueInput = {
-    userId: number
-    publicVocabularyId: number
+    userId: string
+    publicVocabularyId: string
   }
 
   export type UserVocabularyCountOrderByAggregateInput = {
@@ -8398,9 +8209,6 @@ export namespace Prisma {
   }
 
   export type UserVocabularyAvgOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    publicVocabularyId?: SortOrder
     familiarity?: SortOrder
   }
 
@@ -8427,10 +8235,23 @@ export namespace Prisma {
   }
 
   export type UserVocabularySumOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    publicVocabularyId?: SortOrder
     familiarity?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type PublicArticleScalarRelationFilter = {
@@ -8439,8 +8260,8 @@ export namespace Prisma {
   }
 
   export type UserArticleUserIdPublicArticleIdCompoundUniqueInput = {
-    userId: number
-    publicArticleId: number
+    userId: string
+    publicArticleId: string
   }
 
   export type UserArticleCountOrderByAggregateInput = {
@@ -8448,12 +8269,6 @@ export namespace Prisma {
     userId?: SortOrder
     publicArticleId?: SortOrder
     savedAt?: SortOrder
-  }
-
-  export type UserArticleAvgOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    publicArticleId?: SortOrder
   }
 
   export type UserArticleMaxOrderByAggregateInput = {
@@ -8468,12 +8283,6 @@ export namespace Prisma {
     userId?: SortOrder
     publicArticleId?: SortOrder
     savedAt?: SortOrder
-  }
-
-  export type UserArticleSumOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    publicArticleId?: SortOrder
   }
 
   export type UserVocabularyCreateNestedManyWithoutPublicVocabularyInput = {
@@ -8514,14 +8323,6 @@ export namespace Prisma {
     update?: UserVocabularyUpdateWithWhereUniqueWithoutPublicVocabularyInput | UserVocabularyUpdateWithWhereUniqueWithoutPublicVocabularyInput[]
     updateMany?: UserVocabularyUpdateManyWithWhereWithoutPublicVocabularyInput | UserVocabularyUpdateManyWithWhereWithoutPublicVocabularyInput[]
     deleteMany?: UserVocabularyScalarWhereInput | UserVocabularyScalarWhereInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserVocabularyUncheckedUpdateManyWithoutPublicVocabularyNestedInput = {
@@ -8684,6 +8485,14 @@ export namespace Prisma {
     connect?: PublicVocabularyWhereUniqueInput
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type UserUpdateOneRequiredWithoutUserVocabulariesNestedInput = {
     create?: XOR<UserCreateWithoutUserVocabulariesInput, UserUncheckedCreateWithoutUserVocabulariesInput>
     connectOrCreate?: UserCreateOrConnectWithoutUserVocabulariesInput
@@ -8728,17 +8537,6 @@ export namespace Prisma {
     update?: XOR<XOR<PublicArticleUpdateToOneWithWhereWithoutUserArticlesInput, PublicArticleUpdateWithoutUserArticlesInput>, PublicArticleUncheckedUpdateWithoutUserArticlesInput>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -8778,33 +8576,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -8820,6 +8591,17 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -8902,7 +8684,35 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type UserVocabularyCreateWithoutPublicVocabularyInput = {
+    id: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -8912,8 +8722,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedCreateWithoutPublicVocabularyInput = {
-    id?: number
-    userId: number
+    id: string
+    userId: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -8950,9 +8760,9 @@ export namespace Prisma {
     AND?: UserVocabularyScalarWhereInput | UserVocabularyScalarWhereInput[]
     OR?: UserVocabularyScalarWhereInput[]
     NOT?: UserVocabularyScalarWhereInput | UserVocabularyScalarWhereInput[]
-    id?: IntFilter<"UserVocabulary"> | number
-    userId?: IntFilter<"UserVocabulary"> | number
-    publicVocabularyId?: IntFilter<"UserVocabulary"> | number
+    id?: StringFilter<"UserVocabulary"> | string
+    userId?: StringFilter<"UserVocabulary"> | string
+    publicVocabularyId?: StringFilter<"UserVocabulary"> | string
     addedAt?: DateTimeFilter<"UserVocabulary"> | Date | string
     familiarity?: IntFilter<"UserVocabulary"> | number
     personalNote?: StringNullableFilter<"UserVocabulary"> | string | null
@@ -8961,13 +8771,14 @@ export namespace Prisma {
   }
 
   export type UserArticleCreateWithoutPublicArticleInput = {
+    id: string
     savedAt?: Date | string
     user: UserCreateNestedOneWithoutUserArticlesInput
   }
 
   export type UserArticleUncheckedCreateWithoutPublicArticleInput = {
-    id?: number
-    userId: number
+    id: string
+    userId: string
     savedAt?: Date | string
   }
 
@@ -9000,13 +8811,14 @@ export namespace Prisma {
     AND?: UserArticleScalarWhereInput | UserArticleScalarWhereInput[]
     OR?: UserArticleScalarWhereInput[]
     NOT?: UserArticleScalarWhereInput | UserArticleScalarWhereInput[]
-    id?: IntFilter<"UserArticle"> | number
-    userId?: IntFilter<"UserArticle"> | number
-    publicArticleId?: IntFilter<"UserArticle"> | number
+    id?: StringFilter<"UserArticle"> | string
+    userId?: StringFilter<"UserArticle"> | string
+    publicArticleId?: StringFilter<"UserArticle"> | string
     savedAt?: DateTimeFilter<"UserArticle"> | Date | string
   }
 
   export type UserVocabularyCreateWithoutUserInput = {
+    id: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -9016,8 +8828,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedCreateWithoutUserInput = {
-    id?: number
-    publicVocabularyId: number
+    id: string
+    publicVocabularyId: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -9035,13 +8847,14 @@ export namespace Prisma {
   }
 
   export type UserArticleCreateWithoutUserInput = {
+    id: string
     savedAt?: Date | string
     publicArticle: PublicArticleCreateNestedOneWithoutUserArticlesInput
   }
 
   export type UserArticleUncheckedCreateWithoutUserInput = {
-    id?: number
-    publicArticleId: number
+    id: string
+    publicArticleId: string
     savedAt?: Date | string
   }
 
@@ -9087,6 +8900,7 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutUserVocabulariesInput = {
+    id: string
     email: string
     password: string
     name?: string | null
@@ -9101,7 +8915,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutUserVocabulariesInput = {
-    id?: number
+    id: string
     email: string
     password: string
     name?: string | null
@@ -9121,6 +8935,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyCreateWithoutUserVocabulariesInput = {
+    id: string
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9135,7 +8950,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUncheckedCreateWithoutUserVocabulariesInput = {
-    id?: number
+    id: string
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9166,6 +8981,7 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutUserVocabulariesInput = {
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9180,7 +8996,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateWithoutUserVocabulariesInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9206,6 +9022,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUpdateWithoutUserVocabulariesInput = {
+    id?: StringFieldUpdateOperationsInput | string
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9220,7 +9037,7 @@ export namespace Prisma {
   }
 
   export type PublicVocabularyUncheckedUpdateWithoutUserVocabulariesInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9235,6 +9052,7 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutUserArticlesInput = {
+    id: string
     email: string
     password: string
     name?: string | null
@@ -9249,7 +9067,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutUserArticlesInput = {
-    id?: number
+    id: string
     email: string
     password: string
     name?: string | null
@@ -9269,6 +9087,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleCreateWithoutUserArticlesInput = {
+    id: string
     slug: string
     title: string
     content: string
@@ -9279,7 +9098,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUncheckedCreateWithoutUserArticlesInput = {
-    id?: number
+    id: string
     slug: string
     title: string
     content: string
@@ -9306,6 +9125,7 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutUserArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9320,7 +9140,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateWithoutUserArticlesInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9346,6 +9166,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUpdateWithoutUserArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -9356,7 +9177,7 @@ export namespace Prisma {
   }
 
   export type PublicArticleUncheckedUpdateWithoutUserArticlesInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -9367,8 +9188,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyCreateManyPublicVocabularyInput = {
-    id?: number
-    userId: number
+    id: string
+    userId: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -9377,6 +9198,7 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUpdateWithoutPublicVocabularyInput = {
+    id?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9386,8 +9208,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedUpdateWithoutPublicVocabularyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9396,8 +9218,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedUpdateManyWithoutPublicVocabularyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9406,31 +9228,32 @@ export namespace Prisma {
   }
 
   export type UserArticleCreateManyPublicArticleInput = {
-    id?: number
-    userId: number
+    id: string
+    userId: string
     savedAt?: Date | string
   }
 
   export type UserArticleUpdateWithoutPublicArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutUserArticlesNestedInput
   }
 
   export type UserArticleUncheckedUpdateWithoutPublicArticleInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserArticleUncheckedUpdateManyWithoutPublicArticleInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserVocabularyCreateManyUserInput = {
-    id?: number
-    publicVocabularyId: number
+    id: string
+    publicVocabularyId: string
     addedAt?: Date | string
     familiarity?: number
     personalNote?: string | null
@@ -9439,12 +9262,13 @@ export namespace Prisma {
   }
 
   export type UserArticleCreateManyUserInput = {
-    id?: number
-    publicArticleId: number
+    id: string
+    publicArticleId: string
     savedAt?: Date | string
   }
 
   export type UserVocabularyUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9454,8 +9278,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    publicVocabularyId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    publicVocabularyId?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9464,8 +9288,8 @@ export namespace Prisma {
   }
 
   export type UserVocabularyUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    publicVocabularyId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    publicVocabularyId?: StringFieldUpdateOperationsInput | string
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     familiarity?: IntFieldUpdateOperationsInput | number
     personalNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9474,19 +9298,20 @@ export namespace Prisma {
   }
 
   export type UserArticleUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publicArticle?: PublicArticleUpdateOneRequiredWithoutUserArticlesNestedInput
   }
 
   export type UserArticleUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    publicArticleId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    publicArticleId?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserArticleUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    publicArticleId?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    publicArticleId?: StringFieldUpdateOperationsInput | string
     savedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

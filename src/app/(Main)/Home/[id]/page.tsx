@@ -4,8 +4,9 @@ import { notFound } from "next/navigation"
 import MainFunctionBar from "@/components/MainFunctionBar"
 import { FaBookmark } from "react-icons/fa6"
 
-export default async function HomeArticle({ params }: { params: { id: string } }) {
-  const article = await fetchBbcArticleBySlug(params.id)
+export default async function HomeArticle({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const article = await fetchBbcArticleBySlug(id)
 
   if (!article) return notFound()
 

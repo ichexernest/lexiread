@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "animejs": "^4.0.2",
+    "nanoid": "^5.1.5",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

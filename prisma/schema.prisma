@@ -13,7 +13,7 @@ datasource db {
 
 // 公用單字記錄格式
 model PublicVocabulary {
-  id                Int              @id @default(autoincrement())
+  id                String              @id
   word              String           @unique
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
@@ -35,7 +35,7 @@ model PublicVocabulary {
 
 // 公用文章記錄格式
 model PublicArticle {
-  id              Int              @id @default(autoincrement())
+  id              String              @id 
   slug            String           @unique
   title           String
   content         String          
@@ -52,7 +52,7 @@ model PublicArticle {
 
 // 用戶資訊格式
 model User {
-  id                  Int              @id @default(autoincrement())
+  id                  String              @id 
   email               String           @unique
   password            String           
   name                String?
@@ -76,9 +76,9 @@ model User {
 
 // 私人單字記錄格式
 model UserVocabulary {
-  id                Int              @id @default(autoincrement())
-  userId            Int
-  publicVocabularyId Int
+  id                String              @id
+  userId            String
+  publicVocabularyId String
   addedAt           DateTime         @default(now())
   
   // 個人學習狀態
@@ -98,9 +98,9 @@ model UserVocabulary {
 
 // 用戶收藏的文章
 model UserArticle {
-  id              Int              @id @default(autoincrement())
-  userId          Int
-  publicArticleId Int
+  id              String              @id
+  userId          String
+  publicArticleId String
   savedAt         DateTime         @default(now())
   
   // 關聯

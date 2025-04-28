@@ -5,7 +5,7 @@ import { useVocs } from '@/hooks/useVocs';
 import VocList from '../VocList';
 import VocCardWrapper from '../VocCardWrapper';
 import { FaSpinner } from 'react-icons/fa';
-import { Vocabulary as VocItemType } from '@/types/'; // 假設的類型定義
+import { UserVocabulary as VocItemType } from '@/types/'; // 假設的類型定義
 
 interface VocListContainerProps {
   initialVocs: VocItemType[];

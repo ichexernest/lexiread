@@ -1,12 +1,22 @@
 import {FaPlay } from "react-icons/fa";
+import MainButton from "../MainButton";
+import ProgressCircle from "../ProgressCircle";
 
 export default function LearningDashBoard({}) {
 
   return (
-    <div className=" py-24 px-4 shadow-lg rounded-xl bg-white/40 backdrop-blur-lg w-[720px] mx-auto">
-      <div>90%</div>
-          <button  className="rounded-full w-[60px] h-[60px] shadow-xl bg-white/40 text-2xl flex justify-center items-center backdrop-blur-lg hover:bg-white/60"><FaPlay/></button>
-      
+    <div className=" py-5 px-4 w-[720px] mx-auto flex justify-between items-center">
+     <div className="flex justfy-center items-center">
+     <ProgressCircle percent={90} />
+     <p>959 mastered vocabularies.</p>
+     </div>
+                <MainButton
+                  key={"/Quiz"}
+                  href={"/Quiz"}
+                  icon={<FaPlay />}
+                  hint={"Quiz"}
+                  haveHint={true}
+                />
   </div>
   );
 }
