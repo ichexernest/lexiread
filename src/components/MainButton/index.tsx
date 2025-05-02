@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 interface MainButtonProps {
+  size?: "sm" | "md" ;
   icon: React.ReactNode;
   hint: string;
   haveHint?: boolean;
@@ -10,6 +11,7 @@ interface MainButtonProps {
 }
 
 export default function MainButton({
+  size = "md",
   icon,
   hint,
   haveHint = true,
@@ -19,7 +21,7 @@ export default function MainButton({
   const ButtonContent = (
     <div className="relative group flex items-center justify-center">
       <div
-        className="rounded-full w-[60px] h-[60px] shadow-xl bg-white/40 text-2xl flex justify-center items-center backdrop-blur-lg hover:bg-white/60"
+        className={`rounded-full ${size === "sm" ? "w-[40px] h-[40px] text-lg" : "w-[60px] h-[60px] text-2xl"} shadow-xl bg-white/40 flex justify-center items-center backdrop-blur-lg hover:bg-white/60`}
         onClick={onClick}
       >
         {icon}

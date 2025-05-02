@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useVocs } from '@/hooks/useVocs';
 import VocList from '../VocList';
-import VocCardWrapper from '../VocCardWrapper';
+import WordInfoSuspense from '../VocCard'
 import { FaSpinner } from 'react-icons/fa';
 import { UserVocabulary as VocItemType } from '@/types/'; // 假設的類型定義
 import FinishLine from '../FinishLine';
@@ -68,10 +68,8 @@ export default function VocListContainer({ initialVocs }: VocListContainerProps)
       )}
       
       {selectedWord && (
-        <VocCardWrapper 
-          selectedWord={selectedWord} 
-          onClose={() => setSelectedWord(null)} 
-        />
+        <WordInfoSuspense word={selectedWord} onClose={() => setSelectedWord(null)} />
+
       )}
       
       <div ref={observerRef} className="h-12" />

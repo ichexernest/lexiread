@@ -20,7 +20,7 @@ export default function MainFunctionBar() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-3 left-0 right-0 flex justify-center items-center gap-4 p-4 md:left-0 md:flex-col md:right-auto">
+    <div className="fixed bottom-3 z-50 left-0 right-0 flex justify-center items-center gap-4 p-4 md:left-0 md:flex-col md:right-auto">
       {links.map(({ href, icon, hint }) => {
         const isActive =
           pathname === href || pathname.startsWith(href);
