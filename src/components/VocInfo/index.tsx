@@ -44,7 +44,7 @@ export default function VocInfo({ word }: { word: string }) {
       <div className="space-y-1">
         <p className="text-sm"><span className="font-semibold">Definition:</span> {data.definition}</p>
         {data.localDefinition && <p className="text-sm text-gray-600">{data.localDefinition}</p>}
-        {data.customDefinition && <p className="text-sm text-[#d89024]">✏️ {data.customDefinition}</p>}
+        {data.customDefinition && <p className="text-sm text-secondary">✏️ {data.customDefinition}</p>}
       </div>
 
       {(data.example || data.customExample || data.exampleTranslation) && (
@@ -52,7 +52,7 @@ export default function VocInfo({ word }: { word: string }) {
           <h2 className="text-sm font-semibold text-gray-700">Example</h2>
           {data.example && <p className="text-sm">「{data.example}」</p>}
           {data.exampleTranslation && <p className="text-sm text-gray-500">翻譯：{data.exampleTranslation}</p>}
-          {data.customExample && <p className="text-sm text-[#d89024]">✏️ {data.customExample}</p>}
+          {data.customExample && <p className="text-sm text-secondary">✏️ {data.customExample}</p>}
         </div>
       )}
 
@@ -63,8 +63,8 @@ export default function VocInfo({ word }: { word: string }) {
       </div>
 
       {data.personalNote && (
-        <div className="bg-[#EEE4D8] p-3 rounded-md text-sm border border-[#d89024]">
-          <p className="font-semibold mb-1 text-[#d89024]">Note：</p>
+        <div className="bg-primary p-3 rounded-md text-sm border border-secondary">
+          <p className="font-semibold mb-1 text-secondary">Note：</p>
           <p>{data.personalNote}</p>
         </div>
       )}

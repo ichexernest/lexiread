@@ -45,7 +45,7 @@ export default function SaveButton({
                 {loading ? (
                     <div className="animate-spin rounded-full w-[40px] h-[40px] border-b-2 border-white"></div>
                 ) : (
-                    <MainButton size="sm" icon={saved ? <FaBookmark className="text-[#d89024]" /> : <FaBookmark className="text-gray-300"/>} hint={saved ? "Unsave" : "Save"} haveHint={true} onClick={handleClick} />
+                    <MainButton size="sm" icon={saved ? <FaBookmark className="text-secondary" /> : <FaBookmark className="text-gray-300"/>} hint={saved ? "Unsave" : "Save"} haveHint={true} onClick={handleClick} />
                 )}
             </>
     );

@@ -3,7 +3,7 @@ import FamiliaritySign from "../FamiliaritySign";
 
 export default function VocItem({item, handleClick}:{item: UserVocabulary, handleClick: () => void}) {
   return (
-  <div onClick={handleClick} className="flex items-center justify-between py-5 w-full border-b border-[#dcccba] gap-2 px-3 hover:bg-[#dcccba]">
+  <div onClick={handleClick} className="flex items-center justify-between py-5 w-full border-b border-primary-hover gap-2 px-3 hover:bg-primary-hover cursor-pointer">
     
     <div className="flex items-center justify-start py-5gap-2">
 

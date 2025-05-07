@@ -1,5 +1,6 @@
 'use client'
 
+import PrimaryButton from '@/components/PrimaryButton';
 import { useRouter } from 'next/navigation';
 export default function Start() {
   console.log('`Start` component rendered');
@@ -11,9 +12,7 @@ export default function Start() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-inter)]">
       <p className='text-4xl font-bold'>Lexiread</p>
-      <button onClick={handleLogin} className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto">
-        start learning
-      </button>
+      <PrimaryButton onClick={handleLogin}>Start learning</PrimaryButton>
     </div>
   );
 }

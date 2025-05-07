@@ -10,7 +10,7 @@ export default function GlobalError({ error, reset }: { error: Error; reset: () 
         <p className="mt-4 text-lg">{error.message}</p>
         <button
           onClick={() => reset()}
-          className="mt-8 px-4 py-2 bg-blue-600 text-white rounded"
+          className="mt-8 px-4 py-2 bg-red-500 text-white rounded"
         >
           Try Again
         </button>

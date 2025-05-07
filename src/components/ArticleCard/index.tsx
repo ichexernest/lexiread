@@ -12,7 +12,7 @@ export default async function ArticleCard({ item }: { item: Article }) {
   const isSaved = await checkSaved("article", item.id);
 
   return (
-    <div className="flex flex-col items-stretch justify-stretch pb-8 py-5 min-w-full px-4 border-b hover:bg-[#dcccba]">
+    <div className="flex flex-col items-stretch justify-stretch pb-8 py-5 min-w-full px-4 border-b hover:bg-primary-hover">
       <Link href={`/Article/${item.id}`}>
         <img className="w-full rounded-xl" src={item.image} alt={item.title} />
         <div className="w-full text-start my-2">

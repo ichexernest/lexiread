@@ -1,15 +1,29 @@
 @import "tailwindcss";
+@layer theme, base, components, utilities;
 
-:root {
-  --background: #EEE4D8;
-  --foreground: #171717;
+@layer utilities {
+  .btn-color {
+    @apply bg-white/40  backdrop-blur-lg hover:bg-white/60 shadow-xl;
+  }
 }
 
-@theme inline {
+:root {
+  --primary: #EEE4D8;
+  --secondary: #d89024;
+  --primary-hover: #dcccba;
+  --content:#171717;
+  --color-gg-100: oklch(0.99 0 0);
+}
+
+@theme {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-content: var(--content);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
 }
 
 /* @media (prefers-color-scheme: dark) {
