@@ -1,12 +1,12 @@
 import ArticleCard from "@/components/ArticleCard";
-import { fetchBbcArticles } from "@/utils/fetchBbcArticles";
+import fetchService from "@/utils/fetch";
 import { Article } from "@/types/article";
 import Title from "@/components/Title"; 
 import FinishLine from "@/components/FinishLine";
 
 
 export default async function HomePage() {
-  const result: Article[] = await fetchBbcArticles()
+  const result: Article[] = await fetchService.getArticles()
 
   //throw new Error("Error fetching news data"); // Simulate an error
  // await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a delay

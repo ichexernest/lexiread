@@ -9,7 +9,6 @@ export default function VocInfo({ word }: { word: string }) {
   const [data, setData] = useState<UserVocabulary | null>(null)
   const [loading, setLoading] = useState(true)
 
-  word = 'wind' // for testing
 
   useEffect(() => {
     const fetchWordInfo = async () => {

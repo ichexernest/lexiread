@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import {
   FaAmilia,
+  FaGear,
   FaNewspaper
 } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
@@ -13,7 +14,7 @@ const links = [
   { href: "/Home", icon: <AiFillHome />, hint: "Home" },
   { href: "/Voc", icon: <FaAmilia />, hint: "Vocabularies" },
   { href: "/Article", icon: <FaNewspaper />, hint: "Articles" },
-  { href: "/Login", icon: <FaDoorOpen />, hint: "Logout" }
+  { href: "/Setting", icon: <FaGear />, hint: "Settings" }
 ];
 
 export default function MainFunctionBar() {

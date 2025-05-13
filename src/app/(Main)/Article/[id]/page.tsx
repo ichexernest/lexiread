@@ -1,4 +1,4 @@
-import { fetchBbcArticleBySlug } from "@/utils/fetchBbcArticleBySlug"
+import fetchService from "@/utils/fetch";
 import ArticleViewer from "@/components/ArticleViewer"
 import { notFound } from "next/navigation"
 
@@ -11,7 +11,7 @@ async function checkSaved(saveType: string, saveId: string): Promise<boolean> {
 
 export default async function ArticleContentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const article = await fetchBbcArticleBySlug(id)
+  const article = await fetchService.getArticleBySlug(id)
   const isSaved = await checkSaved("article", id);
 
   if (!article) return notFound()

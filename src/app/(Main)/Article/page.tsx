@@ -3,51 +3,10 @@ import ArticleCard from "@/components/ArticleCard";
 import { Article } from "@/types";
 import Title from "@/components/Title"; 
 import FinishLine from "@/components/FinishLine";
+import fetchService from "@/utils/fetch";
 
-const newsList: Article[] = [
-  { 
-    id:"1sdf",
-    title: "Richard Chamberlain, Shogun star, dies aged 90.", 
-    date: "2023-10-01",
-    author: "John Doe",
-    image: "https://picsum.photos/800/600"
-  },
-  { 
-    id:"2sdf",
-    title: "Richard Chamberlain, Shogun star, dies aged 90.", 
-    date: "2023-10-01",
-    author: "John Doe",
-    image: "https://picsum.photos/800/600"
-  },
-  { 
-    id:"3sdf",
-    title: "Richard Chamberlain, Shogun star, dies aged 90.", 
-    date: "2023-10-01",
-    author: "John Doe",
-    image: "https://picsum.photos/800/600"
-  },
-  { 
-    id:"4sdf",
-    title: "Richard Chamberlain, Shogun star, dies aged 90.", 
-    date: "2023-10-01",
-    author: "John Doe",
-    image: "https://picsum.photos/800/600"
-  },
-  { 
-    id:"5sdf",
-    title: "Richard Chamberlain, Shogun star, dies aged 90.", 
-    date: "2023-10-01",
-    author: "John Doe",
-    image: "https://picsum.photos/800/600"
-  },
-]
-
-export default function ArticlePage() {
-  const fetchNews = async () => {
-    return newsList;
-  }
-  
-  const result = use(fetchNews());
+export default async function ArticlePage() {
+  const result: Article[] = await fetchService.getArticles()
   
   return (
       <div className="flex flex-col items-center h-screen max-w-[720px]">
