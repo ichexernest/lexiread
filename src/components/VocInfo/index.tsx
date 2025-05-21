@@ -5,7 +5,12 @@ import { UserVocabulary } from '@/types'
 import SaveButton from '../SaveButton'
 import FamiliaritySign from '../FamiliaritySign'
 
-export default function VocInfo({ word }: { word: string }) {
+interface VocInfoProps {
+  word: string;
+}
+
+
+export default function VocInfo({ word }: VocInfoProps) {
   const [data, setData] = useState<UserVocabulary | null>(null)
   const [loading, setLoading] = useState(true)
 

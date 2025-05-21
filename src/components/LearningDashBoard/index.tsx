@@ -2,7 +2,7 @@ import {FaPlay } from "react-icons/fa";
 import MainButton from "../MainButton";
 import ProgressCircle from "../ProgressCircle";
 
-export default function LearningDashBoard({}) {
+export default function LearningDashBoard() {
 
   return (
     <div className=" py-5 px-4 w-[720px] mx-auto flex justify-between items-center">

@@ -7,7 +7,13 @@ import { useState } from "react"
 import { FullArticle } from "@/types"
 import SaveButton from "@/components/SaveButton"
 
-export default function ArticleViewer({ article, isSaved }: { article: FullArticle, isSaved: boolean }) {
+interface ArticleViewerProps {
+  article: FullArticle, 
+  isSaved: boolean
+}
+
+
+export default function ArticleViewer({ article, isSaved }: ArticleViewerProps) {
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
   const handleWordClick = (word : string | null) => {

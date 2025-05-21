@@ -4,15 +4,16 @@ import { useState } from "react";
 import { FaBookmark } from "react-icons/fa";
 import MainButton from "../MainButton"; // Adjust the path based on your project structure
 
+interface SaveButtonProps {
+    isSaved: boolean,
+    saveType: string,
+    saveId: string
+}
 export default function SaveButton({
     isSaved,
     saveType,
     saveId
-}: {
-    isSaved: boolean;
-    saveType: string;
-    saveId: string;
-}) {
+}: SaveButtonProps) {
     const [saved, setSaved] = useState<boolean>(isSaved);
     const [loading, setLoading] = useState<boolean>(false);
 

@@ -1,4 +1,8 @@
-export default function FamiliaritySign({familiarity }:{familiarity: number}) {
+interface FamiliaritySignProps {
+familiarity: number
+}
+
+export default function FamiliaritySign({familiarity }:FamiliaritySignProps) {
   const familiarityColor: Record<number, string> = {
     0: 'bg-red-200',
     1: 'bg-red-500',

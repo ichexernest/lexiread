@@ -7,7 +7,6 @@ import {
   FaNewspaper
 } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
-import { FaDoorOpen } from "react-icons/fa";
 import MainButton from "../MainButton";
 
 const links = [

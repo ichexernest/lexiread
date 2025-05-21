@@ -8,7 +8,12 @@ async function checkSaved(saveType: string, saveId: string): Promise<boolean> {
   return Math.random() > 0.5;
 }
 
-export default async function ArticleCard({ item }: { item: Article }) {
+interface ArticleCardProps {
+  item: Article;
+}
+
+
+export default async function ArticleCard({ item }: ArticleCardProps) {
   const isSaved = await checkSaved("article", item.id);
 
   return (

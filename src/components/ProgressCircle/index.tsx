@@ -1,7 +1,11 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-export default function ProgressCircle({ percent = 90 }: { percent: number }) {
+interface ProgressCircleProps {
+  percent: number
+}
+
+export default function ProgressCircle({ percent = 90 }: ProgressCircleProps) {
   const radius = 54
   const stroke = 8
   const normalizedRadius = radius - stroke / 2
