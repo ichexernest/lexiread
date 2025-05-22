@@ -9,7 +9,7 @@ export default function LoadingAnimation() {
     useEffect(() => {
         if (!roots.current) return;
 
-        const scope = createScope({ root: roots.current }).add(scope => {
+        const scope = createScope({ root: roots.current }).add(() => {
 
         animate('span', {
             // Property keyframes
