@@ -143,15 +143,9 @@ exports.Prisma.PublicArticleScalarFieldEnum = {
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  password: 'password',
-  name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  nativeLanguage: 'nativeLanguage',
-  emailVerified: 'emailVerified',
-  verificationToken: 'verificationToken',
-  resetPasswordToken: 'resetPasswordToken',
-  resetPasswordExpires: 'resetPasswordExpires'
+  nativeLanguage: 'nativeLanguage'
 };
 
 exports.Prisma.UserVocabularyScalarFieldEnum = {

@@ -40,6 +40,7 @@ export default function VocInfo({ word }: VocInfoProps) {
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold">{data.word}</h1>
+          <p className="text-sm text-gray-500">{data.id}</p>
           <p className="text-sm text-gray-500">{data.partOfSpeech}</p>
         </div>
         {data.familiarity && <FamiliaritySign familiarity={data.familiarity} />}
@@ -74,7 +75,7 @@ export default function VocInfo({ word }: VocInfoProps) {
       )}
 
       <div className="w-full flex justify-end pt-3 border-t border-gray-200">
-        <SaveButton isSaved={!!data.addedAt} saveId={word} saveType="voc" />
+        <SaveButton isSaved={!!data.addedAt} saveId={data.id} saveType="voc" />
       </div>
     </div>
   )

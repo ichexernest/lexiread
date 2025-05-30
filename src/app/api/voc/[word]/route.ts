@@ -1,7 +1,7 @@
 import { Vocabulary, UserVocabulary } from '@/types/vocabulary'
 import { OpenAI } from 'openai'
 import { customAlphabet } from 'nanoid'
-import { CiCoins1 } from 'react-icons/ci'
+import { addVocabularyToPublic, searchPublicVocabulary } from '@/prisma-db'
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY,})
 
 function parseIntoVoc(jsonText: string): Vocabulary | null {
@@ -29,43 +29,6 @@ function parseIntoVoc(jsonText: string): Vocabulary | null {
   }
 }
 
-const mockVocabularies: (Vocabulary | UserVocabulary)[] = [
-  // 第一筆：Vocabulary 型別 - 'cloud'
-  {
-    id: '1',
-    word: 'cloud',
-    partOfSpeech: 'noun',
-    definition: 'A visible mass of condensed water vapor floating in the atmosphere.',
-    localDefinition: '雲；在空中漂浮的水蒸氣凝結形成的可見團塊',
-    example: 'The sky was filled with dark clouds before the storm.',
-    exampleTranslation: '暴風雨前，天空佈滿了烏雲。',
-    pronunciation: 'klaʊd',
-    synonyms: 'mist, vapor',
-    antonyms: 'sunshine, clarity'
-  },
-
-  // 第二筆：UserVocabulary 型別 - 'wind'
-  {
-    id: '2',
-    word: 'wind',
-    partOfSpeech: 'noun',
-    definition: 'The perceptible natural movement of the air.',
-    localDefinition: '風；自然界中可感知的空氣流動',
-    example: 'The wind howled through the trees.',
-    exampleTranslation: '風在樹林間呼嘯而過。',
-    pronunciation: 'wɪnd',
-    synonyms: 'breeze, gale',
-    antonyms: 'stillness, calm',
-    
-    // UserVocabulary 特有欄位
-    addedAt: '2024-05-01T10:00:00Z',
-    familiarity: 4,
-    userId: 'user_abc123',
-    personalNote: '我每次在海邊散步都會想起這個字',
-    customDefinition: '風是一種自然力量，可以很溫柔也可以很強烈',
-    customExample: 'The wind gently pushed the leaves across the ground.'
-  }
-]
 export async function GET(
   _req: Request,
   context: { params: Promise<{ word: string }> }
@@ -74,8 +37,12 @@ export async function GET(
   const decodedWord = decodeURIComponent(word).toLowerCase()
   console.log('word', decodedWord)
  // const result = mockVocabularies.find(v => v.word.toLowerCase() === decodedWord)
-
- const prompt = `Please provide the vocabulary information for the word "${decodedWord}" in the following JSON format only, without any explanation:
+ const existingVoc = await searchPublicVocabulary(decodedWord)
+ if (existingVoc.length > 0) {
+  //TODO: add UserVocabulary check
+   return new Response(JSON.stringify(existingVoc[0]))
+ }else{
+   const prompt = `Please provide the vocabulary information for the word "${decodedWord}" in the following JSON format only, without any explanation:
 
  {
    "word": "string",
@@ -92,8 +59,7 @@ export async function GET(
  Ensure all keys are present.
  Return only a single JSON object.
  `
-
-const response = await openai.chat.completions.create({
+  const response = await openai.chat.completions.create({
   model: 'gpt-3.5-turbo',
   messages: [
     { role:'system',content: 'you are a professional English teacher, please answer with clear format.'},
@@ -101,14 +67,14 @@ const response = await openai.chat.completions.create({
   ],
   temperature: 0.5})
   const result = response.choices[0].message.content
-  if (!result) {
+    if (!result) {
     return new Response(JSON.stringify({ error: 'Empty GPT response' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
   }
   console.log('GPT response:', result)
-  const voc = parseIntoVoc(result)
+    const voc = parseIntoVoc(result)
   if (!voc) {
     return new Response(JSON.stringify({ error: 'Failed to parse vocabulary data' }), {
       status: 500,
@@ -122,11 +88,14 @@ const response = await openai.chat.completions.create({
       headers: { 'Content-Type': 'application/json' }
     })
   }
-  
+  await addVocabularyToPublic(voc as UserVocabulary)
+
 
   return new Response(JSON.stringify(voc), {
     status: 200,
     headers: { 'Content-Type': 'application/json' }
   })
+ }
+
 }
 

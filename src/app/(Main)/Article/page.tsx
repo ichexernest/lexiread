@@ -1,4 +1,3 @@
-import { use } from "react";
 import ArticleCard from "@/components/ArticleCard";
 import { Article } from "@/types";
 import Title from "@/components/Title"; 

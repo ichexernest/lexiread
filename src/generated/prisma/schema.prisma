@@ -53,8 +53,6 @@ model PublicArticle {
 model User {
   id        String   @id
   email     String   @unique
-  password  String
-  name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -64,12 +62,6 @@ model User {
   // 關聯
   userVocabularies UserVocabulary[] // 單字記錄
   userArticles     UserArticle[] // 收藏文章
-
-  // 認證相關欄位
-  emailVerified        Boolean   @default(false)
-  verificationToken    String?
-  resetPasswordToken   String?
-  resetPasswordExpires DateTime?
 }
 
 // 私人單字記錄格式

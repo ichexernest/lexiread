@@ -3613,43 +3613,25 @@ export namespace Prisma {
   export type UserMinAggregateOutputType = {
     id: string | null
     email: string | null
-    password: string | null
-    name: string | null
     createdAt: Date | null
     updatedAt: Date | null
     nativeLanguage: string | null
-    emailVerified: boolean | null
-    verificationToken: string | null
-    resetPasswordToken: string | null
-    resetPasswordExpires: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     email: string | null
-    password: string | null
-    name: string | null
     createdAt: Date | null
     updatedAt: Date | null
     nativeLanguage: string | null
-    emailVerified: boolean | null
-    verificationToken: string | null
-    resetPasswordToken: string | null
-    resetPasswordExpires: Date | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     email: number
-    password: number
-    name: number
     createdAt: number
     updatedAt: number
     nativeLanguage: number
-    emailVerified: number
-    verificationToken: number
-    resetPasswordToken: number
-    resetPasswordExpires: number
     _all: number
   }
 
@@ -3657,43 +3639,25 @@ export namespace Prisma {
   export type UserMinAggregateInputType = {
     id?: true
     email?: true
-    password?: true
-    name?: true
     createdAt?: true
     updatedAt?: true
     nativeLanguage?: true
-    emailVerified?: true
-    verificationToken?: true
-    resetPasswordToken?: true
-    resetPasswordExpires?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     email?: true
-    password?: true
-    name?: true
     createdAt?: true
     updatedAt?: true
     nativeLanguage?: true
-    emailVerified?: true
-    verificationToken?: true
-    resetPasswordToken?: true
-    resetPasswordExpires?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     email?: true
-    password?: true
-    name?: true
     createdAt?: true
     updatedAt?: true
     nativeLanguage?: true
-    emailVerified?: true
-    verificationToken?: true
-    resetPasswordToken?: true
-    resetPasswordExpires?: true
     _all?: true
   }
 
@@ -3772,15 +3736,9 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
-    password: string
-    name: string | null
     createdAt: Date
     updatedAt: Date
     nativeLanguage: string | null
-    emailVerified: boolean
-    verificationToken: string | null
-    resetPasswordToken: string | null
-    resetPasswordExpires: Date | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3803,15 +3761,9 @@ export namespace Prisma {
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    password?: boolean
-    name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     nativeLanguage?: boolean
-    emailVerified?: boolean
-    verificationToken?: boolean
-    resetPasswordToken?: boolean
-    resetPasswordExpires?: boolean
     userVocabularies?: boolean | User$userVocabulariesArgs<ExtArgs>
     userArticles?: boolean | User$userArticlesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -3820,46 +3772,28 @@ export namespace Prisma {
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    password?: boolean
-    name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     nativeLanguage?: boolean
-    emailVerified?: boolean
-    verificationToken?: boolean
-    resetPasswordToken?: boolean
-    resetPasswordExpires?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    password?: boolean
-    name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     nativeLanguage?: boolean
-    emailVerified?: boolean
-    verificationToken?: boolean
-    resetPasswordToken?: boolean
-    resetPasswordExpires?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     email?: boolean
-    password?: boolean
-    name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     nativeLanguage?: boolean
-    emailVerified?: boolean
-    verificationToken?: boolean
-    resetPasswordToken?: boolean
-    resetPasswordExpires?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "createdAt" | "updatedAt" | "nativeLanguage" | "emailVerified" | "verificationToken" | "resetPasswordToken" | "resetPasswordExpires", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "createdAt" | "updatedAt" | "nativeLanguage", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userVocabularies?: boolean | User$userVocabulariesArgs<ExtArgs>
     userArticles?: boolean | User$userArticlesArgs<ExtArgs>
@@ -3877,15 +3811,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
-      password: string
-      name: string | null
       createdAt: Date
       updatedAt: Date
       nativeLanguage: string | null
-      emailVerified: boolean
-      verificationToken: string | null
-      resetPasswordToken: string | null
-      resetPasswordExpires: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4313,15 +4241,9 @@ export namespace Prisma {
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly password: FieldRef<"User", 'String'>
-    readonly name: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly nativeLanguage: FieldRef<"User", 'String'>
-    readonly emailVerified: FieldRef<"User", 'Boolean'>
-    readonly verificationToken: FieldRef<"User", 'String'>
-    readonly resetPasswordToken: FieldRef<"User", 'String'>
-    readonly resetPasswordExpires: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -7008,15 +6930,9 @@ export namespace Prisma {
   export const UserScalarFieldEnum: {
     id: 'id',
     email: 'email',
-    password: 'password',
-    name: 'name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    nativeLanguage: 'nativeLanguage',
-    emailVerified: 'emailVerified',
-    verificationToken: 'verificationToken',
-    resetPasswordToken: 'resetPasswordToken',
-    resetPasswordExpires: 'resetPasswordExpires'
+    nativeLanguage: 'nativeLanguage'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -7078,13 +6994,6 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -7271,15 +7180,9 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
-    name?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     nativeLanguage?: StringNullableFilter<"User"> | string | null
-    emailVerified?: BoolFilter<"User"> | boolean
-    verificationToken?: StringNullableFilter<"User"> | string | null
-    resetPasswordToken?: StringNullableFilter<"User"> | string | null
-    resetPasswordExpires?: DateTimeNullableFilter<"User"> | Date | string | null
     userVocabularies?: UserVocabularyListRelationFilter
     userArticles?: UserArticleListRelationFilter
   }
@@ -7287,15 +7190,9 @@ export namespace Prisma {
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
-    name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     nativeLanguage?: SortOrderInput | SortOrder
-    emailVerified?: SortOrder
-    verificationToken?: SortOrderInput | SortOrder
-    resetPasswordToken?: SortOrderInput | SortOrder
-    resetPasswordExpires?: SortOrderInput | SortOrder
     userVocabularies?: UserVocabularyOrderByRelationAggregateInput
     userArticles?: UserArticleOrderByRelationAggregateInput
   }
@@ -7306,15 +7203,9 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    password?: StringFilter<"User"> | string
-    name?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     nativeLanguage?: StringNullableFilter<"User"> | string | null
-    emailVerified?: BoolFilter<"User"> | boolean
-    verificationToken?: StringNullableFilter<"User"> | string | null
-    resetPasswordToken?: StringNullableFilter<"User"> | string | null
-    resetPasswordExpires?: DateTimeNullableFilter<"User"> | Date | string | null
     userVocabularies?: UserVocabularyListRelationFilter
     userArticles?: UserArticleListRelationFilter
   }, "id" | "email">
@@ -7322,15 +7213,9 @@ export namespace Prisma {
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
-    name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     nativeLanguage?: SortOrderInput | SortOrder
-    emailVerified?: SortOrder
-    verificationToken?: SortOrderInput | SortOrder
-    resetPasswordToken?: SortOrderInput | SortOrder
-    resetPasswordExpires?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -7342,15 +7227,9 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    password?: StringWithAggregatesFilter<"User"> | string
-    name?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     nativeLanguage?: StringNullableWithAggregatesFilter<"User"> | string | null
-    emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
-    verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
-    resetPasswordToken?: StringNullableWithAggregatesFilter<"User"> | string | null
-    resetPasswordExpires?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
   export type UserVocabularyWhereInput = {
@@ -7676,15 +7555,9 @@ export namespace Prisma {
   export type UserCreateInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
     userVocabularies?: UserVocabularyCreateNestedManyWithoutUserInput
     userArticles?: UserArticleCreateNestedManyWithoutUserInput
   }
@@ -7692,15 +7565,9 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
     userVocabularies?: UserVocabularyUncheckedCreateNestedManyWithoutUserInput
     userArticles?: UserArticleUncheckedCreateNestedManyWithoutUserInput
   }
@@ -7708,15 +7575,9 @@ export namespace Prisma {
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userVocabularies?: UserVocabularyUpdateManyWithoutUserNestedInput
     userArticles?: UserArticleUpdateManyWithoutUserNestedInput
   }
@@ -7724,15 +7585,9 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userVocabularies?: UserVocabularyUncheckedUpdateManyWithoutUserNestedInput
     userArticles?: UserArticleUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -7740,43 +7595,25 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserVocabularyCreateInput = {
@@ -8091,84 +7928,28 @@ export namespace Prisma {
     coverImage?: SortOrder
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
-    name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     nativeLanguage?: SortOrder
-    emailVerified?: SortOrder
-    verificationToken?: SortOrder
-    resetPasswordToken?: SortOrder
-    resetPasswordExpires?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
-    name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     nativeLanguage?: SortOrder
-    emailVerified?: SortOrder
-    verificationToken?: SortOrder
-    resetPasswordToken?: SortOrder
-    resetPasswordExpires?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
-    name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     nativeLanguage?: SortOrder
-    emailVerified?: SortOrder
-    verificationToken?: SortOrder
-    resetPasswordToken?: SortOrder
-    resetPasswordExpires?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -8409,14 +8190,6 @@ export namespace Prisma {
     connect?: UserArticleWhereUniqueInput | UserArticleWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type UserVocabularyUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserVocabularyCreateWithoutUserInput, UserVocabularyUncheckedCreateWithoutUserInput> | UserVocabularyCreateWithoutUserInput[] | UserVocabularyUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserVocabularyCreateOrConnectWithoutUserInput | UserVocabularyCreateOrConnectWithoutUserInput[]
@@ -8646,44 +8419,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -8902,30 +8637,18 @@ export namespace Prisma {
   export type UserCreateWithoutUserVocabulariesInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
     userArticles?: UserArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserVocabulariesInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
     userArticles?: UserArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -8983,30 +8706,18 @@ export namespace Prisma {
   export type UserUpdateWithoutUserVocabulariesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userArticles?: UserArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserVocabulariesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userArticles?: UserArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -9054,30 +8765,18 @@ export namespace Prisma {
   export type UserCreateWithoutUserArticlesInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
     userVocabularies?: UserVocabularyCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserArticlesInput = {
     id: string
     email: string
-    password: string
-    name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     nativeLanguage?: string | null
-    emailVerified?: boolean
-    verificationToken?: string | null
-    resetPasswordToken?: string | null
-    resetPasswordExpires?: Date | string | null
     userVocabularies?: UserVocabularyUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -9127,30 +8826,18 @@ export namespace Prisma {
   export type UserUpdateWithoutUserArticlesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userVocabularies?: UserVocabularyUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserArticlesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     nativeLanguage?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userVocabularies?: UserVocabularyUncheckedUpdateManyWithoutUserNestedInput
   }
 

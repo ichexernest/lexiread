@@ -195,9 +195,6 @@ export default function SettingsClient({ userData }: { userData: Account }) {
                         </div>
                     ))}
                 </div>
-                <PrimaryButton onClick={() => openModal('addEmail')}>
-                    Add Email
-                </PrimaryButton>
             </div>
 
             {/* 已連結的帳號 */}

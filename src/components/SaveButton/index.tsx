@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FaBookmark } from "react-icons/fa";
 import MainButton from "../MainButton"; // Adjust the path based on your project structure
-
+import { toggleSaveItem } from "@/actions/saveItems"
 interface SaveButtonProps {
     isSaved: boolean,
     saveType: string,
@@ -17,28 +17,21 @@ export default function SaveButton({
     const [saved, setSaved] = useState<boolean>(isSaved);
     const [loading, setLoading] = useState<boolean>(false);
 
-    async function saveItem(saveType: string, saveId: string) {
-        console.log(`Saving ${saveType}-${saveId}...`);
-        await new Promise(res => setTimeout(res, 500));
+
+
+const handleClick = async () => {
+    if (loading) return
+    setLoading(true)
+    console.log('handleClick', saveType, saveId, saved)
+    const result = await toggleSaveItem(saveType, saveId, saved ? 'unsave' : 'save')
+    if (result.success) {
+      setSaved(!saved)
+    } else {
+      alert(result.message || '操作失敗')
     }
 
-    async function unsaveItem(saveType: string, saveId: string) {
-        console.log(`Unsaving ${saveType}-${saveId}...`);
-        await new Promise(res => setTimeout(res, 500));
-    }
-
-    const handleClick = async () => {
-        if (loading) return;
-        setLoading(true);
-        if (saved) {
-            await unsaveItem(saveType, saveId);
-            setSaved(false);
-        } else {
-            await saveItem(saveType, saveId);
-            setSaved(true);
-        }
-        setLoading(false);
-    };
+    setLoading(false)
+  }
 
 
     return (
