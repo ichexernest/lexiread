@@ -83,6 +83,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -143,6 +146,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
@@ -194,18 +202,17 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
-  "postinstall": false,
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:app.db"
+        "fromEnvVar": "DATABASE_URL",
+        "value": "postgresql://postgres:kExQIBmEmCiRobrJQqdVtFerPelJSjiz@metro.proxy.rlwy.net:49544/railway"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:app.db\"\n}\n\n// 公用單字記錄格式\nmodel PublicVocabulary {\n  id        String   @id\n  word      String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // 詞彙詳細資訊\n  partOfSpeech       String // 詞性\n  definition         String // 英文解釋\n  localDefinition    String? // 本地語言解釋\n  example            String? // 英文例句\n  exampleTranslation String? // 例句翻譯\n  pronunciation      String? // 發音\n\n  // 相關詞彙\n  synonyms String? // 同義詞 (以逗號分隔)\n  antonyms String? // 反義詞 (以逗號分隔)\n\n  userVocabularies UserVocabulary[]\n}\n\n// 公用文章記錄格式\nmodel PublicArticle {\n  id          String   @id\n  slug        String   @unique\n  title       String\n  content     String\n  publishedAt DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  // 文章資訊\n  author     String?\n  coverImage String? // 圖片URL\n\n  userArticles UserArticle[]\n}\n\n// 用戶資訊格式\nmodel User {\n  id        String   @id\n  email     String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // 用戶資訊\n  nativeLanguage String?\n\n  // 關聯\n  userVocabularies UserVocabulary[] // 單字記錄\n  userArticles     UserArticle[] // 收藏文章\n}\n\n// 私人單字記錄格式\nmodel UserVocabulary {\n  id                 String   @id\n  userId             String\n  publicVocabularyId String\n  addedAt            DateTime @default(now())\n\n  // 個人學習狀態\n  familiarity Int @default(0) // 熟悉度 (0-5)\n\n  // 個人客製化內容\n  personalNote     String?\n  customDefinition String? // 定義\n  customExample    String? // 例句\n\n  // 關聯\n  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)\n  publicVocabulary PublicVocabulary @relation(fields: [publicVocabularyId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, publicVocabularyId])\n}\n\n// 用戶收藏的文章\nmodel UserArticle {\n  id              String   @id\n  userId          String\n  publicArticleId String\n  savedAt         DateTime @default(now())\n\n  // 關聯\n  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n  publicArticle PublicArticle @relation(fields: [publicArticleId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, publicArticleId])\n}\n",
-  "inlineSchemaHash": "262db0c503461841b4f4153f43589fa0c2ccc7f611759107e6a4452ea7c6a307",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// 公用單字記錄格式\nmodel PublicVocabulary {\n  id        String   @id\n  word      String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // 詞彙詳細資訊\n  partOfSpeech       String // 詞性\n  definition         String // 英文解釋\n  localDefinition    String? // 本地語言解釋\n  example            String? // 英文例句\n  exampleTranslation String? // 例句翻譯\n  pronunciation      String? // 發音\n\n  // 相關詞彙\n  synonyms String? // 同義詞 (以逗號分隔)\n  antonyms String? // 反義詞 (以逗號分隔)\n\n  userVocabularies UserVocabulary[]\n}\n\n// 公用文章記錄格式\nmodel PublicArticle {\n  id          String   @id\n  slug        String   @unique\n  title       String\n  content     String\n  publishedAt DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  // 文章資訊\n  author     String?\n  coverImage String? // 圖片URL\n\n  userArticles UserArticle[]\n}\n\n// 用戶資訊格式\nmodel User {\n  id        String   @id\n  email     String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // 用戶資訊\n  nativeLanguage String?\n\n  // 關聯\n  userVocabularies UserVocabulary[] // 單字記錄\n  userArticles     UserArticle[] // 收藏文章\n}\n\n// 私人單字記錄格式\nmodel UserVocabulary {\n  id                 String   @id\n  userId             String\n  publicVocabularyId String\n  addedAt            DateTime @default(now())\n\n  // 個人學習狀態\n  familiarity Int @default(0) // 熟悉度 (0-5)\n\n  // 個人客製化內容\n  personalNote     String?\n  customDefinition String? // 定義\n  customExample    String? // 例句\n\n  // 關聯\n  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)\n  publicVocabulary PublicVocabulary @relation(fields: [publicVocabularyId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, publicVocabularyId])\n}\n\n// 用戶收藏的文章\nmodel UserArticle {\n  id              String   @id\n  userId          String\n  publicArticleId String\n  savedAt         DateTime @default(now())\n\n  // 關聯\n  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n  publicArticle PublicArticle @relation(fields: [publicArticleId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, publicArticleId])\n}\n",
+  "inlineSchemaHash": "d4503bb78638ee5a1d1b1c6505e8d9b88c77f8199cd790878f9765cacc21f3dd",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -216,7 +223,9 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {

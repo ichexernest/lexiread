@@ -3,13 +3,20 @@ import { NextResponse } from 'next/server'
 
 const isPublicRoute = createRouteMatcher(['/', '/sso-callback'])
 const isAdminRoute = createRouteMatcher(['/Admin(.*)'])
+
 export default clerkMiddleware(async(auth, req)=>{
   const {userId} = await auth()
+
   // if(!isProtectedRoute(req)) await auth.protect()
   if(!userId && !isPublicRoute(req)) {
     //return redirectToSignIn()
     return NextResponse.redirect(new URL('/', req.url))
   }
+
+  if (userId && req.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/Check', req.url))
+  }
+
   const sessionClaims = (await auth()).sessionClaims as { metadata?: { role?: string } };
   if(isAdminRoute(req) && sessionClaims?.metadata?.role !== 'admin') {
     return NextResponse.redirect(new URL("/Home", req.url))
