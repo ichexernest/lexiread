@@ -4,6 +4,14 @@ CREATE TABLE "PublicVocabulary" (
     "word" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PublicVocabulary_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "VocabularyDefinition" (
+    "id" TEXT NOT NULL,
+    "vocabularyId" TEXT NOT NULL,
     "partOfSpeech" TEXT NOT NULL,
     "definition" TEXT NOT NULL,
     "localDefinition" TEXT,
@@ -13,7 +21,7 @@ CREATE TABLE "PublicVocabulary" (
     "synonyms" TEXT,
     "antonyms" TEXT,
 
-    CONSTRAINT "PublicVocabulary_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "VocabularyDefinition_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -69,6 +77,9 @@ CREATE TABLE "UserArticle" (
 CREATE UNIQUE INDEX "PublicVocabulary_word_key" ON "PublicVocabulary"("word");
 
 -- CreateIndex
+CREATE INDEX "VocabularyDefinition_vocabularyId_idx" ON "VocabularyDefinition"("vocabularyId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "PublicArticle_slug_key" ON "PublicArticle"("slug");
 
 -- CreateIndex
@@ -79,6 +90,9 @@ CREATE UNIQUE INDEX "UserVocabulary_userId_publicVocabularyId_key" ON "UserVocab
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserArticle_userId_publicArticleId_key" ON "UserArticle"("userId", "publicArticleId");
+
+-- AddForeignKey
+ALTER TABLE "VocabularyDefinition" ADD CONSTRAINT "VocabularyDefinition_vocabularyId_fkey" FOREIGN KEY ("vocabularyId") REFERENCES "PublicVocabulary"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserVocabulary" ADD CONSTRAINT "UserVocabulary_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

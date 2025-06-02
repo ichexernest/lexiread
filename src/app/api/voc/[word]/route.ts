@@ -1,4 +1,4 @@
-import { Vocabulary, UserVocabulary } from '@/types/vocabulary'
+import { Vocabulary, VocabularyDefinition } from '@/types/vocabulary'
 import { OpenAI } from 'openai'
 import { customAlphabet } from 'nanoid'
 import { addVocabularyToPublic, searchPublicVocabulary } from '@/prisma-db'
@@ -6,26 +6,32 @@ const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY,})
 
 function parseIntoVoc(jsonText: string): Vocabulary | null {
   try {
-    const obj = JSON.parse(jsonText)
-    const nanoid = customAlphabet('1234567890abcdef', 12)
+    const obj = JSON.parse(jsonText);
+    const nanoid = customAlphabet('1234567890abcdef', 12);
+    const id = `pvoc_${nanoid()}`;
 
-    const voc: Vocabulary = {
-      id: `pvoc_${nanoid()}`,
-      word: obj.word ?? '',
-      partOfSpeech: obj.partOfSpeech ?? '',
-      definition: obj.definition ?? '',
-      localDefinition: obj.localDefinition ?? '',
-      example: obj.example ?? '',
-      exampleTranslation: obj.exampleTranslation ?? '',
-      pronunciation: obj.pronunciation ?? '',
-      synonyms: obj.synonyms ?? '',
-      antonyms: obj.antonyms ?? ''
-    }
+    if (!obj.word || !Array.isArray(obj.definitions) || obj.definitions.length === 0) return null;
 
-    return voc
+    const definitions = obj.definitions.map((def: VocabularyDefinition) => ({
+      id: `def_${nanoid()}`,
+      partOfSpeech: def.partOfSpeech ?? 'N/A',
+      definition: def.definition ?? 'N/A',
+      localDefinition: def.localDefinition ?? 'N/A',
+      example: def.example ?? 'N/A',
+      exampleTranslation: def.exampleTranslation ?? 'N/A',
+      pronunciation: def.pronunciation ?? 'N/A',
+      synonyms: def.synonyms ?? 'N/A',
+      antonyms: def.antonyms ?? 'N/A',
+    }));
+
+    return {
+      id,
+      word: obj.word,
+      definitions,
+    };
   } catch (err) {
-    console.error('Failed to parse vocabulary JSON:', err)
-    return null
+    console.error('Failed to parse vocabulary JSON:', err);
+    return null;
   }
 }
 
@@ -42,23 +48,36 @@ export async function GET(
   //TODO: add UserVocabulary check
    return new Response(JSON.stringify(existingVoc[0]))
  }else{
-   const prompt = `Please provide the vocabulary information for the word "${decodedWord}" in the following JSON format only, without any explanation:
+   const prompt =`Please provide the vocabulary information for the word "${decodedWord}" in the following JSON format only, without any extra explanation or commentary.
 
- {
-   "word": "string",
-   "partOfSpeech": "string",
-   "definition": "string",
-   "localDefinition": "string (in Traditional Chinese)",
-   "example": "string",
-   "exampleTranslation": "string (in Traditional Chinese)",
-   "pronunciation": "string",
-   "synonyms": "string (comma-separated)",
-   "antonyms": "string (comma-separated)"
- }
- Please make sure all values are filled, especially [localDefinition] and [exampleTranslation] in Traditional Chinese, not Simplified chinese. Avoid leaving them empty.
- Ensure all keys are present.
- Return only a single JSON object.
- `
+Format:
+
+{
+  "word": "string",
+  "definitions": [
+    {
+      "partOfSpeech": "string",
+      "definition": "string",
+      "localDefinition": "string (in Traditional Chinese)",
+      "example": "string",
+      "exampleTranslation": "string (in Traditional Chinese)",
+      "pronunciation": "string",
+      "synonyms": "string (comma-separated)",
+      "antonyms": "string (comma-separated)"
+    }
+  ]
+}
+
+Requirements:
+- Provide at least one definition object in the "definitions" array.
+- If a word has multiple parts of speech (e.g., noun, verb, adjective), provide at least one definition object for each of them.
+- Ensure all fields are filled, even optional ones (use "N/A" if nothing fits).
+- Make sure that:
+  - "localDefinition" and "exampleTranslation" are written only in Traditional Chinese, not Simplified Chinese.
+  - The entire response is valid JSON. 
+  - All values are strings, even if they're empty or not applicable.
+- Return only the JSON, no markdown formatting, no commentary.
+`;
   const response = await openai.chat.completions.create({
   model: 'gpt-3.5-turbo',
   messages: [
@@ -82,13 +101,16 @@ export async function GET(
     })
   }
 
-  if (!voc.word || !voc.definition) {
+  if (!voc.word || !voc.definitions) {
     return new Response(JSON.stringify({ error: 'Invalid data format' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     })
   }
-  await addVocabularyToPublic(voc as UserVocabulary)
+  await addVocabularyToPublic({
+    word: voc.word,
+    definitions: voc.definitions,
+  });
 
 
   return new Response(JSON.stringify(voc), {

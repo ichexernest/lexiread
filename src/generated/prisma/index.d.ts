@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type PublicVocabulary = $Result.DefaultSelection<Prisma.$PublicVocabularyPayload>
 /**
+ * Model VocabularyDefinition
+ * 
+ */
+export type VocabularyDefinition = $Result.DefaultSelection<Prisma.$VocabularyDefinitionPayload>
+/**
  * Model PublicArticle
  * 
  */
@@ -173,6 +178,16 @@ export class PrismaClient<
     * ```
     */
   get publicVocabulary(): Prisma.PublicVocabularyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.vocabularyDefinition`: Exposes CRUD operations for the **VocabularyDefinition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VocabularyDefinitions
+    * const vocabularyDefinitions = await prisma.vocabularyDefinition.findMany()
+    * ```
+    */
+  get vocabularyDefinition(): Prisma.VocabularyDefinitionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.publicArticle`: Exposes CRUD operations for the **PublicArticle** model.
@@ -654,6 +669,7 @@ export namespace Prisma {
 
   export const ModelName: {
     PublicVocabulary: 'PublicVocabulary',
+    VocabularyDefinition: 'VocabularyDefinition',
     PublicArticle: 'PublicArticle',
     User: 'User',
     UserVocabulary: 'UserVocabulary',
@@ -676,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "publicVocabulary" | "publicArticle" | "user" | "userVocabulary" | "userArticle"
+      modelProps: "publicVocabulary" | "vocabularyDefinition" | "publicArticle" | "user" | "userVocabulary" | "userArticle"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -751,6 +767,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PublicVocabularyCountArgs<ExtArgs>
             result: $Utils.Optional<PublicVocabularyCountAggregateOutputType> | number
+          }
+        }
+      }
+      VocabularyDefinition: {
+        payload: Prisma.$VocabularyDefinitionPayload<ExtArgs>
+        fields: Prisma.VocabularyDefinitionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VocabularyDefinitionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VocabularyDefinitionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>
+          }
+          findFirst: {
+            args: Prisma.VocabularyDefinitionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VocabularyDefinitionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>
+          }
+          findMany: {
+            args: Prisma.VocabularyDefinitionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>[]
+          }
+          create: {
+            args: Prisma.VocabularyDefinitionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>
+          }
+          createMany: {
+            args: Prisma.VocabularyDefinitionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VocabularyDefinitionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>[]
+          }
+          delete: {
+            args: Prisma.VocabularyDefinitionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>
+          }
+          update: {
+            args: Prisma.VocabularyDefinitionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>
+          }
+          deleteMany: {
+            args: Prisma.VocabularyDefinitionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VocabularyDefinitionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VocabularyDefinitionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>[]
+          }
+          upsert: {
+            args: Prisma.VocabularyDefinitionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VocabularyDefinitionPayload>
+          }
+          aggregate: {
+            args: Prisma.VocabularyDefinitionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVocabularyDefinition>
+          }
+          groupBy: {
+            args: Prisma.VocabularyDefinitionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VocabularyDefinitionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VocabularyDefinitionCountArgs<ExtArgs>
+            result: $Utils.Optional<VocabularyDefinitionCountAggregateOutputType> | number
           }
         }
       }
@@ -1135,6 +1225,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     publicVocabulary?: PublicVocabularyOmit
+    vocabularyDefinition?: VocabularyDefinitionOmit
     publicArticle?: PublicArticleOmit
     user?: UserOmit
     userVocabulary?: UserVocabularyOmit
@@ -1233,10 +1324,12 @@ export namespace Prisma {
    */
 
   export type PublicVocabularyCountOutputType = {
+    definitions: number
     userVocabularies: number
   }
 
   export type PublicVocabularyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    definitions?: boolean | PublicVocabularyCountOutputTypeCountDefinitionsArgs
     userVocabularies?: boolean | PublicVocabularyCountOutputTypeCountUserVocabulariesArgs
   }
 
@@ -1249,6 +1342,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the PublicVocabularyCountOutputType
      */
     select?: PublicVocabularyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PublicVocabularyCountOutputType without action
+   */
+  export type PublicVocabularyCountOutputTypeCountDefinitionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VocabularyDefinitionWhereInput
   }
 
   /**
@@ -1349,14 +1449,6 @@ export namespace Prisma {
     word: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    partOfSpeech: string | null
-    definition: string | null
-    localDefinition: string | null
-    example: string | null
-    exampleTranslation: string | null
-    pronunciation: string | null
-    synonyms: string | null
-    antonyms: string | null
   }
 
   export type PublicVocabularyMaxAggregateOutputType = {
@@ -1364,14 +1456,6 @@ export namespace Prisma {
     word: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    partOfSpeech: string | null
-    definition: string | null
-    localDefinition: string | null
-    example: string | null
-    exampleTranslation: string | null
-    pronunciation: string | null
-    synonyms: string | null
-    antonyms: string | null
   }
 
   export type PublicVocabularyCountAggregateOutputType = {
@@ -1379,14 +1463,6 @@ export namespace Prisma {
     word: number
     createdAt: number
     updatedAt: number
-    partOfSpeech: number
-    definition: number
-    localDefinition: number
-    example: number
-    exampleTranslation: number
-    pronunciation: number
-    synonyms: number
-    antonyms: number
     _all: number
   }
 
@@ -1396,14 +1472,6 @@ export namespace Prisma {
     word?: true
     createdAt?: true
     updatedAt?: true
-    partOfSpeech?: true
-    definition?: true
-    localDefinition?: true
-    example?: true
-    exampleTranslation?: true
-    pronunciation?: true
-    synonyms?: true
-    antonyms?: true
   }
 
   export type PublicVocabularyMaxAggregateInputType = {
@@ -1411,14 +1479,6 @@ export namespace Prisma {
     word?: true
     createdAt?: true
     updatedAt?: true
-    partOfSpeech?: true
-    definition?: true
-    localDefinition?: true
-    example?: true
-    exampleTranslation?: true
-    pronunciation?: true
-    synonyms?: true
-    antonyms?: true
   }
 
   export type PublicVocabularyCountAggregateInputType = {
@@ -1426,14 +1486,6 @@ export namespace Prisma {
     word?: true
     createdAt?: true
     updatedAt?: true
-    partOfSpeech?: true
-    definition?: true
-    localDefinition?: true
-    example?: true
-    exampleTranslation?: true
-    pronunciation?: true
-    synonyms?: true
-    antonyms?: true
     _all?: true
   }
 
@@ -1514,14 +1566,6 @@ export namespace Prisma {
     word: string
     createdAt: Date
     updatedAt: Date
-    partOfSpeech: string
-    definition: string
-    localDefinition: string | null
-    example: string | null
-    exampleTranslation: string | null
-    pronunciation: string | null
-    synonyms: string | null
-    antonyms: string | null
     _count: PublicVocabularyCountAggregateOutputType | null
     _min: PublicVocabularyMinAggregateOutputType | null
     _max: PublicVocabularyMaxAggregateOutputType | null
@@ -1546,14 +1590,7 @@ export namespace Prisma {
     word?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    partOfSpeech?: boolean
-    definition?: boolean
-    localDefinition?: boolean
-    example?: boolean
-    exampleTranslation?: boolean
-    pronunciation?: boolean
-    synonyms?: boolean
-    antonyms?: boolean
+    definitions?: boolean | PublicVocabulary$definitionsArgs<ExtArgs>
     userVocabularies?: boolean | PublicVocabulary$userVocabulariesArgs<ExtArgs>
     _count?: boolean | PublicVocabularyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publicVocabulary"]>
@@ -1563,14 +1600,6 @@ export namespace Prisma {
     word?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    partOfSpeech?: boolean
-    definition?: boolean
-    localDefinition?: boolean
-    example?: boolean
-    exampleTranslation?: boolean
-    pronunciation?: boolean
-    synonyms?: boolean
-    antonyms?: boolean
   }, ExtArgs["result"]["publicVocabulary"]>
 
   export type PublicVocabularySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1578,14 +1607,6 @@ export namespace Prisma {
     word?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    partOfSpeech?: boolean
-    definition?: boolean
-    localDefinition?: boolean
-    example?: boolean
-    exampleTranslation?: boolean
-    pronunciation?: boolean
-    synonyms?: boolean
-    antonyms?: boolean
   }, ExtArgs["result"]["publicVocabulary"]>
 
   export type PublicVocabularySelectScalar = {
@@ -1593,18 +1614,11 @@ export namespace Prisma {
     word?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    partOfSpeech?: boolean
-    definition?: boolean
-    localDefinition?: boolean
-    example?: boolean
-    exampleTranslation?: boolean
-    pronunciation?: boolean
-    synonyms?: boolean
-    antonyms?: boolean
   }
 
-  export type PublicVocabularyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "word" | "createdAt" | "updatedAt" | "partOfSpeech" | "definition" | "localDefinition" | "example" | "exampleTranslation" | "pronunciation" | "synonyms" | "antonyms", ExtArgs["result"]["publicVocabulary"]>
+  export type PublicVocabularyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "word" | "createdAt" | "updatedAt", ExtArgs["result"]["publicVocabulary"]>
   export type PublicVocabularyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    definitions?: boolean | PublicVocabulary$definitionsArgs<ExtArgs>
     userVocabularies?: boolean | PublicVocabulary$userVocabulariesArgs<ExtArgs>
     _count?: boolean | PublicVocabularyCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1614,6 +1628,7 @@ export namespace Prisma {
   export type $PublicVocabularyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PublicVocabulary"
     objects: {
+      definitions: Prisma.$VocabularyDefinitionPayload<ExtArgs>[]
       userVocabularies: Prisma.$UserVocabularyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -1621,14 +1636,6 @@ export namespace Prisma {
       word: string
       createdAt: Date
       updatedAt: Date
-      partOfSpeech: string
-      definition: string
-      localDefinition: string | null
-      example: string | null
-      exampleTranslation: string | null
-      pronunciation: string | null
-      synonyms: string | null
-      antonyms: string | null
     }, ExtArgs["result"]["publicVocabulary"]>
     composites: {}
   }
@@ -2023,6 +2030,7 @@ export namespace Prisma {
    */
   export interface Prisma__PublicVocabularyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    definitions<T extends PublicVocabulary$definitionsArgs<ExtArgs> = {}>(args?: Subset<T, PublicVocabulary$definitionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userVocabularies<T extends PublicVocabulary$userVocabulariesArgs<ExtArgs> = {}>(args?: Subset<T, PublicVocabulary$userVocabulariesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserVocabularyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2057,14 +2065,6 @@ export namespace Prisma {
     readonly word: FieldRef<"PublicVocabulary", 'String'>
     readonly createdAt: FieldRef<"PublicVocabulary", 'DateTime'>
     readonly updatedAt: FieldRef<"PublicVocabulary", 'DateTime'>
-    readonly partOfSpeech: FieldRef<"PublicVocabulary", 'String'>
-    readonly definition: FieldRef<"PublicVocabulary", 'String'>
-    readonly localDefinition: FieldRef<"PublicVocabulary", 'String'>
-    readonly example: FieldRef<"PublicVocabulary", 'String'>
-    readonly exampleTranslation: FieldRef<"PublicVocabulary", 'String'>
-    readonly pronunciation: FieldRef<"PublicVocabulary", 'String'>
-    readonly synonyms: FieldRef<"PublicVocabulary", 'String'>
-    readonly antonyms: FieldRef<"PublicVocabulary", 'String'>
   }
     
 
@@ -2453,6 +2453,30 @@ export namespace Prisma {
   }
 
   /**
+   * PublicVocabulary.definitions
+   */
+  export type PublicVocabulary$definitionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    where?: VocabularyDefinitionWhereInput
+    orderBy?: VocabularyDefinitionOrderByWithRelationInput | VocabularyDefinitionOrderByWithRelationInput[]
+    cursor?: VocabularyDefinitionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VocabularyDefinitionScalarFieldEnum | VocabularyDefinitionScalarFieldEnum[]
+  }
+
+  /**
    * PublicVocabulary.userVocabularies
    */
   export type PublicVocabulary$userVocabulariesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2492,6 +2516,1129 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PublicVocabularyInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VocabularyDefinition
+   */
+
+  export type AggregateVocabularyDefinition = {
+    _count: VocabularyDefinitionCountAggregateOutputType | null
+    _min: VocabularyDefinitionMinAggregateOutputType | null
+    _max: VocabularyDefinitionMaxAggregateOutputType | null
+  }
+
+  export type VocabularyDefinitionMinAggregateOutputType = {
+    id: string | null
+    vocabularyId: string | null
+    partOfSpeech: string | null
+    definition: string | null
+    localDefinition: string | null
+    example: string | null
+    exampleTranslation: string | null
+    pronunciation: string | null
+    synonyms: string | null
+    antonyms: string | null
+  }
+
+  export type VocabularyDefinitionMaxAggregateOutputType = {
+    id: string | null
+    vocabularyId: string | null
+    partOfSpeech: string | null
+    definition: string | null
+    localDefinition: string | null
+    example: string | null
+    exampleTranslation: string | null
+    pronunciation: string | null
+    synonyms: string | null
+    antonyms: string | null
+  }
+
+  export type VocabularyDefinitionCountAggregateOutputType = {
+    id: number
+    vocabularyId: number
+    partOfSpeech: number
+    definition: number
+    localDefinition: number
+    example: number
+    exampleTranslation: number
+    pronunciation: number
+    synonyms: number
+    antonyms: number
+    _all: number
+  }
+
+
+  export type VocabularyDefinitionMinAggregateInputType = {
+    id?: true
+    vocabularyId?: true
+    partOfSpeech?: true
+    definition?: true
+    localDefinition?: true
+    example?: true
+    exampleTranslation?: true
+    pronunciation?: true
+    synonyms?: true
+    antonyms?: true
+  }
+
+  export type VocabularyDefinitionMaxAggregateInputType = {
+    id?: true
+    vocabularyId?: true
+    partOfSpeech?: true
+    definition?: true
+    localDefinition?: true
+    example?: true
+    exampleTranslation?: true
+    pronunciation?: true
+    synonyms?: true
+    antonyms?: true
+  }
+
+  export type VocabularyDefinitionCountAggregateInputType = {
+    id?: true
+    vocabularyId?: true
+    partOfSpeech?: true
+    definition?: true
+    localDefinition?: true
+    example?: true
+    exampleTranslation?: true
+    pronunciation?: true
+    synonyms?: true
+    antonyms?: true
+    _all?: true
+  }
+
+  export type VocabularyDefinitionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VocabularyDefinition to aggregate.
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VocabularyDefinitions to fetch.
+     */
+    orderBy?: VocabularyDefinitionOrderByWithRelationInput | VocabularyDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VocabularyDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VocabularyDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VocabularyDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VocabularyDefinitions
+    **/
+    _count?: true | VocabularyDefinitionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VocabularyDefinitionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VocabularyDefinitionMaxAggregateInputType
+  }
+
+  export type GetVocabularyDefinitionAggregateType<T extends VocabularyDefinitionAggregateArgs> = {
+        [P in keyof T & keyof AggregateVocabularyDefinition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVocabularyDefinition[P]>
+      : GetScalarType<T[P], AggregateVocabularyDefinition[P]>
+  }
+
+
+
+
+  export type VocabularyDefinitionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VocabularyDefinitionWhereInput
+    orderBy?: VocabularyDefinitionOrderByWithAggregationInput | VocabularyDefinitionOrderByWithAggregationInput[]
+    by: VocabularyDefinitionScalarFieldEnum[] | VocabularyDefinitionScalarFieldEnum
+    having?: VocabularyDefinitionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VocabularyDefinitionCountAggregateInputType | true
+    _min?: VocabularyDefinitionMinAggregateInputType
+    _max?: VocabularyDefinitionMaxAggregateInputType
+  }
+
+  export type VocabularyDefinitionGroupByOutputType = {
+    id: string
+    vocabularyId: string
+    partOfSpeech: string
+    definition: string
+    localDefinition: string | null
+    example: string | null
+    exampleTranslation: string | null
+    pronunciation: string | null
+    synonyms: string | null
+    antonyms: string | null
+    _count: VocabularyDefinitionCountAggregateOutputType | null
+    _min: VocabularyDefinitionMinAggregateOutputType | null
+    _max: VocabularyDefinitionMaxAggregateOutputType | null
+  }
+
+  type GetVocabularyDefinitionGroupByPayload<T extends VocabularyDefinitionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VocabularyDefinitionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VocabularyDefinitionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VocabularyDefinitionGroupByOutputType[P]>
+            : GetScalarType<T[P], VocabularyDefinitionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VocabularyDefinitionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vocabularyId?: boolean
+    partOfSpeech?: boolean
+    definition?: boolean
+    localDefinition?: boolean
+    example?: boolean
+    exampleTranslation?: boolean
+    pronunciation?: boolean
+    synonyms?: boolean
+    antonyms?: boolean
+    vocabulary?: boolean | PublicVocabularyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vocabularyDefinition"]>
+
+  export type VocabularyDefinitionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vocabularyId?: boolean
+    partOfSpeech?: boolean
+    definition?: boolean
+    localDefinition?: boolean
+    example?: boolean
+    exampleTranslation?: boolean
+    pronunciation?: boolean
+    synonyms?: boolean
+    antonyms?: boolean
+    vocabulary?: boolean | PublicVocabularyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vocabularyDefinition"]>
+
+  export type VocabularyDefinitionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    vocabularyId?: boolean
+    partOfSpeech?: boolean
+    definition?: boolean
+    localDefinition?: boolean
+    example?: boolean
+    exampleTranslation?: boolean
+    pronunciation?: boolean
+    synonyms?: boolean
+    antonyms?: boolean
+    vocabulary?: boolean | PublicVocabularyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vocabularyDefinition"]>
+
+  export type VocabularyDefinitionSelectScalar = {
+    id?: boolean
+    vocabularyId?: boolean
+    partOfSpeech?: boolean
+    definition?: boolean
+    localDefinition?: boolean
+    example?: boolean
+    exampleTranslation?: boolean
+    pronunciation?: boolean
+    synonyms?: boolean
+    antonyms?: boolean
+  }
+
+  export type VocabularyDefinitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "vocabularyId" | "partOfSpeech" | "definition" | "localDefinition" | "example" | "exampleTranslation" | "pronunciation" | "synonyms" | "antonyms", ExtArgs["result"]["vocabularyDefinition"]>
+  export type VocabularyDefinitionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vocabulary?: boolean | PublicVocabularyDefaultArgs<ExtArgs>
+  }
+  export type VocabularyDefinitionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vocabulary?: boolean | PublicVocabularyDefaultArgs<ExtArgs>
+  }
+  export type VocabularyDefinitionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    vocabulary?: boolean | PublicVocabularyDefaultArgs<ExtArgs>
+  }
+
+  export type $VocabularyDefinitionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VocabularyDefinition"
+    objects: {
+      vocabulary: Prisma.$PublicVocabularyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      vocabularyId: string
+      partOfSpeech: string
+      definition: string
+      localDefinition: string | null
+      example: string | null
+      exampleTranslation: string | null
+      pronunciation: string | null
+      synonyms: string | null
+      antonyms: string | null
+    }, ExtArgs["result"]["vocabularyDefinition"]>
+    composites: {}
+  }
+
+  type VocabularyDefinitionGetPayload<S extends boolean | null | undefined | VocabularyDefinitionDefaultArgs> = $Result.GetResult<Prisma.$VocabularyDefinitionPayload, S>
+
+  type VocabularyDefinitionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VocabularyDefinitionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VocabularyDefinitionCountAggregateInputType | true
+    }
+
+  export interface VocabularyDefinitionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VocabularyDefinition'], meta: { name: 'VocabularyDefinition' } }
+    /**
+     * Find zero or one VocabularyDefinition that matches the filter.
+     * @param {VocabularyDefinitionFindUniqueArgs} args - Arguments to find a VocabularyDefinition
+     * @example
+     * // Get one VocabularyDefinition
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VocabularyDefinitionFindUniqueArgs>(args: SelectSubset<T, VocabularyDefinitionFindUniqueArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VocabularyDefinition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VocabularyDefinitionFindUniqueOrThrowArgs} args - Arguments to find a VocabularyDefinition
+     * @example
+     * // Get one VocabularyDefinition
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VocabularyDefinitionFindUniqueOrThrowArgs>(args: SelectSubset<T, VocabularyDefinitionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VocabularyDefinition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionFindFirstArgs} args - Arguments to find a VocabularyDefinition
+     * @example
+     * // Get one VocabularyDefinition
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VocabularyDefinitionFindFirstArgs>(args?: SelectSubset<T, VocabularyDefinitionFindFirstArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VocabularyDefinition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionFindFirstOrThrowArgs} args - Arguments to find a VocabularyDefinition
+     * @example
+     * // Get one VocabularyDefinition
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VocabularyDefinitionFindFirstOrThrowArgs>(args?: SelectSubset<T, VocabularyDefinitionFindFirstOrThrowArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VocabularyDefinitions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VocabularyDefinitions
+     * const vocabularyDefinitions = await prisma.vocabularyDefinition.findMany()
+     * 
+     * // Get first 10 VocabularyDefinitions
+     * const vocabularyDefinitions = await prisma.vocabularyDefinition.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const vocabularyDefinitionWithIdOnly = await prisma.vocabularyDefinition.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VocabularyDefinitionFindManyArgs>(args?: SelectSubset<T, VocabularyDefinitionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VocabularyDefinition.
+     * @param {VocabularyDefinitionCreateArgs} args - Arguments to create a VocabularyDefinition.
+     * @example
+     * // Create one VocabularyDefinition
+     * const VocabularyDefinition = await prisma.vocabularyDefinition.create({
+     *   data: {
+     *     // ... data to create a VocabularyDefinition
+     *   }
+     * })
+     * 
+     */
+    create<T extends VocabularyDefinitionCreateArgs>(args: SelectSubset<T, VocabularyDefinitionCreateArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VocabularyDefinitions.
+     * @param {VocabularyDefinitionCreateManyArgs} args - Arguments to create many VocabularyDefinitions.
+     * @example
+     * // Create many VocabularyDefinitions
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VocabularyDefinitionCreateManyArgs>(args?: SelectSubset<T, VocabularyDefinitionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VocabularyDefinitions and returns the data saved in the database.
+     * @param {VocabularyDefinitionCreateManyAndReturnArgs} args - Arguments to create many VocabularyDefinitions.
+     * @example
+     * // Create many VocabularyDefinitions
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VocabularyDefinitions and only return the `id`
+     * const vocabularyDefinitionWithIdOnly = await prisma.vocabularyDefinition.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VocabularyDefinitionCreateManyAndReturnArgs>(args?: SelectSubset<T, VocabularyDefinitionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VocabularyDefinition.
+     * @param {VocabularyDefinitionDeleteArgs} args - Arguments to delete one VocabularyDefinition.
+     * @example
+     * // Delete one VocabularyDefinition
+     * const VocabularyDefinition = await prisma.vocabularyDefinition.delete({
+     *   where: {
+     *     // ... filter to delete one VocabularyDefinition
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VocabularyDefinitionDeleteArgs>(args: SelectSubset<T, VocabularyDefinitionDeleteArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VocabularyDefinition.
+     * @param {VocabularyDefinitionUpdateArgs} args - Arguments to update one VocabularyDefinition.
+     * @example
+     * // Update one VocabularyDefinition
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VocabularyDefinitionUpdateArgs>(args: SelectSubset<T, VocabularyDefinitionUpdateArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VocabularyDefinitions.
+     * @param {VocabularyDefinitionDeleteManyArgs} args - Arguments to filter VocabularyDefinitions to delete.
+     * @example
+     * // Delete a few VocabularyDefinitions
+     * const { count } = await prisma.vocabularyDefinition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VocabularyDefinitionDeleteManyArgs>(args?: SelectSubset<T, VocabularyDefinitionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VocabularyDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VocabularyDefinitions
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VocabularyDefinitionUpdateManyArgs>(args: SelectSubset<T, VocabularyDefinitionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VocabularyDefinitions and returns the data updated in the database.
+     * @param {VocabularyDefinitionUpdateManyAndReturnArgs} args - Arguments to update many VocabularyDefinitions.
+     * @example
+     * // Update many VocabularyDefinitions
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VocabularyDefinitions and only return the `id`
+     * const vocabularyDefinitionWithIdOnly = await prisma.vocabularyDefinition.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VocabularyDefinitionUpdateManyAndReturnArgs>(args: SelectSubset<T, VocabularyDefinitionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VocabularyDefinition.
+     * @param {VocabularyDefinitionUpsertArgs} args - Arguments to update or create a VocabularyDefinition.
+     * @example
+     * // Update or create a VocabularyDefinition
+     * const vocabularyDefinition = await prisma.vocabularyDefinition.upsert({
+     *   create: {
+     *     // ... data to create a VocabularyDefinition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VocabularyDefinition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VocabularyDefinitionUpsertArgs>(args: SelectSubset<T, VocabularyDefinitionUpsertArgs<ExtArgs>>): Prisma__VocabularyDefinitionClient<$Result.GetResult<Prisma.$VocabularyDefinitionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VocabularyDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionCountArgs} args - Arguments to filter VocabularyDefinitions to count.
+     * @example
+     * // Count the number of VocabularyDefinitions
+     * const count = await prisma.vocabularyDefinition.count({
+     *   where: {
+     *     // ... the filter for the VocabularyDefinitions we want to count
+     *   }
+     * })
+    **/
+    count<T extends VocabularyDefinitionCountArgs>(
+      args?: Subset<T, VocabularyDefinitionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VocabularyDefinitionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VocabularyDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VocabularyDefinitionAggregateArgs>(args: Subset<T, VocabularyDefinitionAggregateArgs>): Prisma.PrismaPromise<GetVocabularyDefinitionAggregateType<T>>
+
+    /**
+     * Group by VocabularyDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VocabularyDefinitionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VocabularyDefinitionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VocabularyDefinitionGroupByArgs['orderBy'] }
+        : { orderBy?: VocabularyDefinitionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VocabularyDefinitionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVocabularyDefinitionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VocabularyDefinition model
+   */
+  readonly fields: VocabularyDefinitionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VocabularyDefinition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VocabularyDefinitionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    vocabulary<T extends PublicVocabularyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PublicVocabularyDefaultArgs<ExtArgs>>): Prisma__PublicVocabularyClient<$Result.GetResult<Prisma.$PublicVocabularyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VocabularyDefinition model
+   */
+  interface VocabularyDefinitionFieldRefs {
+    readonly id: FieldRef<"VocabularyDefinition", 'String'>
+    readonly vocabularyId: FieldRef<"VocabularyDefinition", 'String'>
+    readonly partOfSpeech: FieldRef<"VocabularyDefinition", 'String'>
+    readonly definition: FieldRef<"VocabularyDefinition", 'String'>
+    readonly localDefinition: FieldRef<"VocabularyDefinition", 'String'>
+    readonly example: FieldRef<"VocabularyDefinition", 'String'>
+    readonly exampleTranslation: FieldRef<"VocabularyDefinition", 'String'>
+    readonly pronunciation: FieldRef<"VocabularyDefinition", 'String'>
+    readonly synonyms: FieldRef<"VocabularyDefinition", 'String'>
+    readonly antonyms: FieldRef<"VocabularyDefinition", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VocabularyDefinition findUnique
+   */
+  export type VocabularyDefinitionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which VocabularyDefinition to fetch.
+     */
+    where: VocabularyDefinitionWhereUniqueInput
+  }
+
+  /**
+   * VocabularyDefinition findUniqueOrThrow
+   */
+  export type VocabularyDefinitionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which VocabularyDefinition to fetch.
+     */
+    where: VocabularyDefinitionWhereUniqueInput
+  }
+
+  /**
+   * VocabularyDefinition findFirst
+   */
+  export type VocabularyDefinitionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which VocabularyDefinition to fetch.
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VocabularyDefinitions to fetch.
+     */
+    orderBy?: VocabularyDefinitionOrderByWithRelationInput | VocabularyDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VocabularyDefinitions.
+     */
+    cursor?: VocabularyDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VocabularyDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VocabularyDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VocabularyDefinitions.
+     */
+    distinct?: VocabularyDefinitionScalarFieldEnum | VocabularyDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * VocabularyDefinition findFirstOrThrow
+   */
+  export type VocabularyDefinitionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which VocabularyDefinition to fetch.
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VocabularyDefinitions to fetch.
+     */
+    orderBy?: VocabularyDefinitionOrderByWithRelationInput | VocabularyDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VocabularyDefinitions.
+     */
+    cursor?: VocabularyDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VocabularyDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VocabularyDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VocabularyDefinitions.
+     */
+    distinct?: VocabularyDefinitionScalarFieldEnum | VocabularyDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * VocabularyDefinition findMany
+   */
+  export type VocabularyDefinitionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which VocabularyDefinitions to fetch.
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VocabularyDefinitions to fetch.
+     */
+    orderBy?: VocabularyDefinitionOrderByWithRelationInput | VocabularyDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VocabularyDefinitions.
+     */
+    cursor?: VocabularyDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VocabularyDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VocabularyDefinitions.
+     */
+    skip?: number
+    distinct?: VocabularyDefinitionScalarFieldEnum | VocabularyDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * VocabularyDefinition create
+   */
+  export type VocabularyDefinitionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VocabularyDefinition.
+     */
+    data: XOR<VocabularyDefinitionCreateInput, VocabularyDefinitionUncheckedCreateInput>
+  }
+
+  /**
+   * VocabularyDefinition createMany
+   */
+  export type VocabularyDefinitionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VocabularyDefinitions.
+     */
+    data: VocabularyDefinitionCreateManyInput | VocabularyDefinitionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VocabularyDefinition createManyAndReturn
+   */
+  export type VocabularyDefinitionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * The data used to create many VocabularyDefinitions.
+     */
+    data: VocabularyDefinitionCreateManyInput | VocabularyDefinitionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VocabularyDefinition update
+   */
+  export type VocabularyDefinitionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VocabularyDefinition.
+     */
+    data: XOR<VocabularyDefinitionUpdateInput, VocabularyDefinitionUncheckedUpdateInput>
+    /**
+     * Choose, which VocabularyDefinition to update.
+     */
+    where: VocabularyDefinitionWhereUniqueInput
+  }
+
+  /**
+   * VocabularyDefinition updateMany
+   */
+  export type VocabularyDefinitionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VocabularyDefinitions.
+     */
+    data: XOR<VocabularyDefinitionUpdateManyMutationInput, VocabularyDefinitionUncheckedUpdateManyInput>
+    /**
+     * Filter which VocabularyDefinitions to update
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * Limit how many VocabularyDefinitions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VocabularyDefinition updateManyAndReturn
+   */
+  export type VocabularyDefinitionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * The data used to update VocabularyDefinitions.
+     */
+    data: XOR<VocabularyDefinitionUpdateManyMutationInput, VocabularyDefinitionUncheckedUpdateManyInput>
+    /**
+     * Filter which VocabularyDefinitions to update
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * Limit how many VocabularyDefinitions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VocabularyDefinition upsert
+   */
+  export type VocabularyDefinitionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VocabularyDefinition to update in case it exists.
+     */
+    where: VocabularyDefinitionWhereUniqueInput
+    /**
+     * In case the VocabularyDefinition found by the `where` argument doesn't exist, create a new VocabularyDefinition with this data.
+     */
+    create: XOR<VocabularyDefinitionCreateInput, VocabularyDefinitionUncheckedCreateInput>
+    /**
+     * In case the VocabularyDefinition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VocabularyDefinitionUpdateInput, VocabularyDefinitionUncheckedUpdateInput>
+  }
+
+  /**
+   * VocabularyDefinition delete
+   */
+  export type VocabularyDefinitionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter which VocabularyDefinition to delete.
+     */
+    where: VocabularyDefinitionWhereUniqueInput
+  }
+
+  /**
+   * VocabularyDefinition deleteMany
+   */
+  export type VocabularyDefinitionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VocabularyDefinitions to delete
+     */
+    where?: VocabularyDefinitionWhereInput
+    /**
+     * Limit how many VocabularyDefinitions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VocabularyDefinition without action
+   */
+  export type VocabularyDefinitionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VocabularyDefinition
+     */
+    select?: VocabularyDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VocabularyDefinition
+     */
+    omit?: VocabularyDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VocabularyDefinitionInclude<ExtArgs> | null
   }
 
 
@@ -6912,7 +8059,15 @@ export namespace Prisma {
     id: 'id',
     word: 'word',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PublicVocabularyScalarFieldEnum = (typeof PublicVocabularyScalarFieldEnum)[keyof typeof PublicVocabularyScalarFieldEnum]
+
+
+  export const VocabularyDefinitionScalarFieldEnum: {
+    id: 'id',
+    vocabularyId: 'vocabularyId',
     partOfSpeech: 'partOfSpeech',
     definition: 'definition',
     localDefinition: 'localDefinition',
@@ -6923,7 +8078,7 @@ export namespace Prisma {
     antonyms: 'antonyms'
   };
 
-  export type PublicVocabularyScalarFieldEnum = (typeof PublicVocabularyScalarFieldEnum)[keyof typeof PublicVocabularyScalarFieldEnum]
+  export type VocabularyDefinitionScalarFieldEnum = (typeof VocabularyDefinitionScalarFieldEnum)[keyof typeof VocabularyDefinitionScalarFieldEnum]
 
 
   export const PublicArticleScalarFieldEnum: {
@@ -7071,14 +8226,7 @@ export namespace Prisma {
     word?: StringFilter<"PublicVocabulary"> | string
     createdAt?: DateTimeFilter<"PublicVocabulary"> | Date | string
     updatedAt?: DateTimeFilter<"PublicVocabulary"> | Date | string
-    partOfSpeech?: StringFilter<"PublicVocabulary"> | string
-    definition?: StringFilter<"PublicVocabulary"> | string
-    localDefinition?: StringNullableFilter<"PublicVocabulary"> | string | null
-    example?: StringNullableFilter<"PublicVocabulary"> | string | null
-    exampleTranslation?: StringNullableFilter<"PublicVocabulary"> | string | null
-    pronunciation?: StringNullableFilter<"PublicVocabulary"> | string | null
-    synonyms?: StringNullableFilter<"PublicVocabulary"> | string | null
-    antonyms?: StringNullableFilter<"PublicVocabulary"> | string | null
+    definitions?: VocabularyDefinitionListRelationFilter
     userVocabularies?: UserVocabularyListRelationFilter
   }
 
@@ -7087,14 +8235,7 @@ export namespace Prisma {
     word?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    partOfSpeech?: SortOrder
-    definition?: SortOrder
-    localDefinition?: SortOrderInput | SortOrder
-    example?: SortOrderInput | SortOrder
-    exampleTranslation?: SortOrderInput | SortOrder
-    pronunciation?: SortOrderInput | SortOrder
-    synonyms?: SortOrderInput | SortOrder
-    antonyms?: SortOrderInput | SortOrder
+    definitions?: VocabularyDefinitionOrderByRelationAggregateInput
     userVocabularies?: UserVocabularyOrderByRelationAggregateInput
   }
 
@@ -7106,14 +8247,7 @@ export namespace Prisma {
     NOT?: PublicVocabularyWhereInput | PublicVocabularyWhereInput[]
     createdAt?: DateTimeFilter<"PublicVocabulary"> | Date | string
     updatedAt?: DateTimeFilter<"PublicVocabulary"> | Date | string
-    partOfSpeech?: StringFilter<"PublicVocabulary"> | string
-    definition?: StringFilter<"PublicVocabulary"> | string
-    localDefinition?: StringNullableFilter<"PublicVocabulary"> | string | null
-    example?: StringNullableFilter<"PublicVocabulary"> | string | null
-    exampleTranslation?: StringNullableFilter<"PublicVocabulary"> | string | null
-    pronunciation?: StringNullableFilter<"PublicVocabulary"> | string | null
-    synonyms?: StringNullableFilter<"PublicVocabulary"> | string | null
-    antonyms?: StringNullableFilter<"PublicVocabulary"> | string | null
+    definitions?: VocabularyDefinitionListRelationFilter
     userVocabularies?: UserVocabularyListRelationFilter
   }, "id" | "word">
 
@@ -7122,14 +8256,6 @@ export namespace Prisma {
     word?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    partOfSpeech?: SortOrder
-    definition?: SortOrder
-    localDefinition?: SortOrderInput | SortOrder
-    example?: SortOrderInput | SortOrder
-    exampleTranslation?: SortOrderInput | SortOrder
-    pronunciation?: SortOrderInput | SortOrder
-    synonyms?: SortOrderInput | SortOrder
-    antonyms?: SortOrderInput | SortOrder
     _count?: PublicVocabularyCountOrderByAggregateInput
     _max?: PublicVocabularyMaxOrderByAggregateInput
     _min?: PublicVocabularyMinOrderByAggregateInput
@@ -7143,14 +8269,86 @@ export namespace Prisma {
     word?: StringWithAggregatesFilter<"PublicVocabulary"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PublicVocabulary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PublicVocabulary"> | Date | string
-    partOfSpeech?: StringWithAggregatesFilter<"PublicVocabulary"> | string
-    definition?: StringWithAggregatesFilter<"PublicVocabulary"> | string
-    localDefinition?: StringNullableWithAggregatesFilter<"PublicVocabulary"> | string | null
-    example?: StringNullableWithAggregatesFilter<"PublicVocabulary"> | string | null
-    exampleTranslation?: StringNullableWithAggregatesFilter<"PublicVocabulary"> | string | null
-    pronunciation?: StringNullableWithAggregatesFilter<"PublicVocabulary"> | string | null
-    synonyms?: StringNullableWithAggregatesFilter<"PublicVocabulary"> | string | null
-    antonyms?: StringNullableWithAggregatesFilter<"PublicVocabulary"> | string | null
+  }
+
+  export type VocabularyDefinitionWhereInput = {
+    AND?: VocabularyDefinitionWhereInput | VocabularyDefinitionWhereInput[]
+    OR?: VocabularyDefinitionWhereInput[]
+    NOT?: VocabularyDefinitionWhereInput | VocabularyDefinitionWhereInput[]
+    id?: StringFilter<"VocabularyDefinition"> | string
+    vocabularyId?: StringFilter<"VocabularyDefinition"> | string
+    partOfSpeech?: StringFilter<"VocabularyDefinition"> | string
+    definition?: StringFilter<"VocabularyDefinition"> | string
+    localDefinition?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    example?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    exampleTranslation?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    pronunciation?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    synonyms?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    antonyms?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    vocabulary?: XOR<PublicVocabularyScalarRelationFilter, PublicVocabularyWhereInput>
+  }
+
+  export type VocabularyDefinitionOrderByWithRelationInput = {
+    id?: SortOrder
+    vocabularyId?: SortOrder
+    partOfSpeech?: SortOrder
+    definition?: SortOrder
+    localDefinition?: SortOrderInput | SortOrder
+    example?: SortOrderInput | SortOrder
+    exampleTranslation?: SortOrderInput | SortOrder
+    pronunciation?: SortOrderInput | SortOrder
+    synonyms?: SortOrderInput | SortOrder
+    antonyms?: SortOrderInput | SortOrder
+    vocabulary?: PublicVocabularyOrderByWithRelationInput
+  }
+
+  export type VocabularyDefinitionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VocabularyDefinitionWhereInput | VocabularyDefinitionWhereInput[]
+    OR?: VocabularyDefinitionWhereInput[]
+    NOT?: VocabularyDefinitionWhereInput | VocabularyDefinitionWhereInput[]
+    vocabularyId?: StringFilter<"VocabularyDefinition"> | string
+    partOfSpeech?: StringFilter<"VocabularyDefinition"> | string
+    definition?: StringFilter<"VocabularyDefinition"> | string
+    localDefinition?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    example?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    exampleTranslation?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    pronunciation?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    synonyms?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    antonyms?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    vocabulary?: XOR<PublicVocabularyScalarRelationFilter, PublicVocabularyWhereInput>
+  }, "id">
+
+  export type VocabularyDefinitionOrderByWithAggregationInput = {
+    id?: SortOrder
+    vocabularyId?: SortOrder
+    partOfSpeech?: SortOrder
+    definition?: SortOrder
+    localDefinition?: SortOrderInput | SortOrder
+    example?: SortOrderInput | SortOrder
+    exampleTranslation?: SortOrderInput | SortOrder
+    pronunciation?: SortOrderInput | SortOrder
+    synonyms?: SortOrderInput | SortOrder
+    antonyms?: SortOrderInput | SortOrder
+    _count?: VocabularyDefinitionCountOrderByAggregateInput
+    _max?: VocabularyDefinitionMaxOrderByAggregateInput
+    _min?: VocabularyDefinitionMinOrderByAggregateInput
+  }
+
+  export type VocabularyDefinitionScalarWhereWithAggregatesInput = {
+    AND?: VocabularyDefinitionScalarWhereWithAggregatesInput | VocabularyDefinitionScalarWhereWithAggregatesInput[]
+    OR?: VocabularyDefinitionScalarWhereWithAggregatesInput[]
+    NOT?: VocabularyDefinitionScalarWhereWithAggregatesInput | VocabularyDefinitionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VocabularyDefinition"> | string
+    vocabularyId?: StringWithAggregatesFilter<"VocabularyDefinition"> | string
+    partOfSpeech?: StringWithAggregatesFilter<"VocabularyDefinition"> | string
+    definition?: StringWithAggregatesFilter<"VocabularyDefinition"> | string
+    localDefinition?: StringNullableWithAggregatesFilter<"VocabularyDefinition"> | string | null
+    example?: StringNullableWithAggregatesFilter<"VocabularyDefinition"> | string | null
+    exampleTranslation?: StringNullableWithAggregatesFilter<"VocabularyDefinition"> | string | null
+    pronunciation?: StringNullableWithAggregatesFilter<"VocabularyDefinition"> | string | null
+    synonyms?: StringNullableWithAggregatesFilter<"VocabularyDefinition"> | string | null
+    antonyms?: StringNullableWithAggregatesFilter<"VocabularyDefinition"> | string | null
   }
 
   export type PublicArticleWhereInput = {
@@ -7416,14 +8614,7 @@ export namespace Prisma {
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    partOfSpeech: string
-    definition: string
-    localDefinition?: string | null
-    example?: string | null
-    exampleTranslation?: string | null
-    pronunciation?: string | null
-    synonyms?: string | null
-    antonyms?: string | null
+    definitions?: VocabularyDefinitionCreateNestedManyWithoutVocabularyInput
     userVocabularies?: UserVocabularyCreateNestedManyWithoutPublicVocabularyInput
   }
 
@@ -7432,14 +8623,7 @@ export namespace Prisma {
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    partOfSpeech: string
-    definition: string
-    localDefinition?: string | null
-    example?: string | null
-    exampleTranslation?: string | null
-    pronunciation?: string | null
-    synonyms?: string | null
-    antonyms?: string | null
+    definitions?: VocabularyDefinitionUncheckedCreateNestedManyWithoutVocabularyInput
     userVocabularies?: UserVocabularyUncheckedCreateNestedManyWithoutPublicVocabularyInput
   }
 
@@ -7448,14 +8632,7 @@ export namespace Prisma {
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    partOfSpeech?: StringFieldUpdateOperationsInput | string
-    definition?: StringFieldUpdateOperationsInput | string
-    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
-    example?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
-    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
-    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
-    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    definitions?: VocabularyDefinitionUpdateManyWithoutVocabularyNestedInput
     userVocabularies?: UserVocabularyUpdateManyWithoutPublicVocabularyNestedInput
   }
 
@@ -7464,14 +8641,7 @@ export namespace Prisma {
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    partOfSpeech?: StringFieldUpdateOperationsInput | string
-    definition?: StringFieldUpdateOperationsInput | string
-    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
-    example?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
-    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
-    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
-    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    definitions?: VocabularyDefinitionUncheckedUpdateManyWithoutVocabularyNestedInput
     userVocabularies?: UserVocabularyUncheckedUpdateManyWithoutPublicVocabularyNestedInput
   }
 
@@ -7480,6 +8650,38 @@ export namespace Prisma {
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type PublicVocabularyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    word?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicVocabularyUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    word?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VocabularyDefinitionCreateInput = {
+    id?: string
+    partOfSpeech: string
+    definition: string
+    localDefinition?: string | null
+    example?: string | null
+    exampleTranslation?: string | null
+    pronunciation?: string | null
+    synonyms?: string | null
+    antonyms?: string | null
+    vocabulary: PublicVocabularyCreateNestedOneWithoutDefinitionsInput
+  }
+
+  export type VocabularyDefinitionUncheckedCreateInput = {
+    id?: string
+    vocabularyId: string
     partOfSpeech: string
     definition: string
     localDefinition?: string | null
@@ -7490,11 +8692,22 @@ export namespace Prisma {
     antonyms?: string | null
   }
 
-  export type PublicVocabularyUpdateManyMutationInput = {
+  export type VocabularyDefinitionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    word?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    partOfSpeech?: StringFieldUpdateOperationsInput | string
+    definition?: StringFieldUpdateOperationsInput | string
+    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
+    example?: NullableStringFieldUpdateOperationsInput | string | null
+    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
+    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
+    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    vocabulary?: PublicVocabularyUpdateOneRequiredWithoutDefinitionsNestedInput
+  }
+
+  export type VocabularyDefinitionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vocabularyId?: StringFieldUpdateOperationsInput | string
     partOfSpeech?: StringFieldUpdateOperationsInput | string
     definition?: StringFieldUpdateOperationsInput | string
     localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7505,11 +8718,34 @@ export namespace Prisma {
     antonyms?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type PublicVocabularyUncheckedUpdateManyInput = {
+  export type VocabularyDefinitionCreateManyInput = {
+    id?: string
+    vocabularyId: string
+    partOfSpeech: string
+    definition: string
+    localDefinition?: string | null
+    example?: string | null
+    exampleTranslation?: string | null
+    pronunciation?: string | null
+    synonyms?: string | null
+    antonyms?: string | null
+  }
+
+  export type VocabularyDefinitionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    word?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    partOfSpeech?: StringFieldUpdateOperationsInput | string
+    definition?: StringFieldUpdateOperationsInput | string
+    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
+    example?: NullableStringFieldUpdateOperationsInput | string | null
+    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
+    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
+    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type VocabularyDefinitionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vocabularyId?: StringFieldUpdateOperationsInput | string
     partOfSpeech?: StringFieldUpdateOperationsInput | string
     definition?: StringFieldUpdateOperationsInput | string
     localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7813,19 +9049,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type VocabularyDefinitionListRelationFilter = {
+    every?: VocabularyDefinitionWhereInput
+    some?: VocabularyDefinitionWhereInput
+    none?: VocabularyDefinitionWhereInput
   }
 
   export type UserVocabularyListRelationFilter = {
@@ -7834,9 +9061,8 @@ export namespace Prisma {
     none?: UserVocabularyWhereInput
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
+  export type VocabularyDefinitionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type UserVocabularyOrderByRelationAggregateInput = {
@@ -7848,14 +9074,6 @@ export namespace Prisma {
     word?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    partOfSpeech?: SortOrder
-    definition?: SortOrder
-    localDefinition?: SortOrder
-    example?: SortOrder
-    exampleTranslation?: SortOrder
-    pronunciation?: SortOrder
-    synonyms?: SortOrder
-    antonyms?: SortOrder
   }
 
   export type PublicVocabularyMaxOrderByAggregateInput = {
@@ -7863,14 +9081,6 @@ export namespace Prisma {
     word?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    partOfSpeech?: SortOrder
-    definition?: SortOrder
-    localDefinition?: SortOrder
-    example?: SortOrder
-    exampleTranslation?: SortOrder
-    pronunciation?: SortOrder
-    synonyms?: SortOrder
-    antonyms?: SortOrder
   }
 
   export type PublicVocabularyMinOrderByAggregateInput = {
@@ -7878,14 +9088,6 @@ export namespace Prisma {
     word?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    partOfSpeech?: SortOrder
-    definition?: SortOrder
-    localDefinition?: SortOrder
-    example?: SortOrder
-    exampleTranslation?: SortOrder
-    pronunciation?: SortOrder
-    synonyms?: SortOrder
-    antonyms?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -7918,6 +9120,70 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type PublicVocabularyScalarRelationFilter = {
+    is?: PublicVocabularyWhereInput
+    isNot?: PublicVocabularyWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type VocabularyDefinitionCountOrderByAggregateInput = {
+    id?: SortOrder
+    vocabularyId?: SortOrder
+    partOfSpeech?: SortOrder
+    definition?: SortOrder
+    localDefinition?: SortOrder
+    example?: SortOrder
+    exampleTranslation?: SortOrder
+    pronunciation?: SortOrder
+    synonyms?: SortOrder
+    antonyms?: SortOrder
+  }
+
+  export type VocabularyDefinitionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    vocabularyId?: SortOrder
+    partOfSpeech?: SortOrder
+    definition?: SortOrder
+    localDefinition?: SortOrder
+    example?: SortOrder
+    exampleTranslation?: SortOrder
+    pronunciation?: SortOrder
+    synonyms?: SortOrder
+    antonyms?: SortOrder
+  }
+
+  export type VocabularyDefinitionMinOrderByAggregateInput = {
+    id?: SortOrder
+    vocabularyId?: SortOrder
+    partOfSpeech?: SortOrder
+    definition?: SortOrder
+    localDefinition?: SortOrder
+    example?: SortOrder
+    exampleTranslation?: SortOrder
+    pronunciation?: SortOrder
+    synonyms?: SortOrder
+    antonyms?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8021,11 +9287,6 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
-  export type PublicVocabularyScalarRelationFilter = {
-    is?: PublicVocabularyWhereInput
-    isNot?: PublicVocabularyWhereInput
-  }
-
   export type UserVocabularyUserIdPublicVocabularyIdCompoundUniqueInput = {
     userId: string
     publicVocabularyId: string
@@ -8119,11 +9380,25 @@ export namespace Prisma {
     savedAt?: SortOrder
   }
 
+  export type VocabularyDefinitionCreateNestedManyWithoutVocabularyInput = {
+    create?: XOR<VocabularyDefinitionCreateWithoutVocabularyInput, VocabularyDefinitionUncheckedCreateWithoutVocabularyInput> | VocabularyDefinitionCreateWithoutVocabularyInput[] | VocabularyDefinitionUncheckedCreateWithoutVocabularyInput[]
+    connectOrCreate?: VocabularyDefinitionCreateOrConnectWithoutVocabularyInput | VocabularyDefinitionCreateOrConnectWithoutVocabularyInput[]
+    createMany?: VocabularyDefinitionCreateManyVocabularyInputEnvelope
+    connect?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+  }
+
   export type UserVocabularyCreateNestedManyWithoutPublicVocabularyInput = {
     create?: XOR<UserVocabularyCreateWithoutPublicVocabularyInput, UserVocabularyUncheckedCreateWithoutPublicVocabularyInput> | UserVocabularyCreateWithoutPublicVocabularyInput[] | UserVocabularyUncheckedCreateWithoutPublicVocabularyInput[]
     connectOrCreate?: UserVocabularyCreateOrConnectWithoutPublicVocabularyInput | UserVocabularyCreateOrConnectWithoutPublicVocabularyInput[]
     createMany?: UserVocabularyCreateManyPublicVocabularyInputEnvelope
     connect?: UserVocabularyWhereUniqueInput | UserVocabularyWhereUniqueInput[]
+  }
+
+  export type VocabularyDefinitionUncheckedCreateNestedManyWithoutVocabularyInput = {
+    create?: XOR<VocabularyDefinitionCreateWithoutVocabularyInput, VocabularyDefinitionUncheckedCreateWithoutVocabularyInput> | VocabularyDefinitionCreateWithoutVocabularyInput[] | VocabularyDefinitionUncheckedCreateWithoutVocabularyInput[]
+    connectOrCreate?: VocabularyDefinitionCreateOrConnectWithoutVocabularyInput | VocabularyDefinitionCreateOrConnectWithoutVocabularyInput[]
+    createMany?: VocabularyDefinitionCreateManyVocabularyInputEnvelope
+    connect?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
   }
 
   export type UserVocabularyUncheckedCreateNestedManyWithoutPublicVocabularyInput = {
@@ -8141,8 +9416,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type VocabularyDefinitionUpdateManyWithoutVocabularyNestedInput = {
+    create?: XOR<VocabularyDefinitionCreateWithoutVocabularyInput, VocabularyDefinitionUncheckedCreateWithoutVocabularyInput> | VocabularyDefinitionCreateWithoutVocabularyInput[] | VocabularyDefinitionUncheckedCreateWithoutVocabularyInput[]
+    connectOrCreate?: VocabularyDefinitionCreateOrConnectWithoutVocabularyInput | VocabularyDefinitionCreateOrConnectWithoutVocabularyInput[]
+    upsert?: VocabularyDefinitionUpsertWithWhereUniqueWithoutVocabularyInput | VocabularyDefinitionUpsertWithWhereUniqueWithoutVocabularyInput[]
+    createMany?: VocabularyDefinitionCreateManyVocabularyInputEnvelope
+    set?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    disconnect?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    delete?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    connect?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    update?: VocabularyDefinitionUpdateWithWhereUniqueWithoutVocabularyInput | VocabularyDefinitionUpdateWithWhereUniqueWithoutVocabularyInput[]
+    updateMany?: VocabularyDefinitionUpdateManyWithWhereWithoutVocabularyInput | VocabularyDefinitionUpdateManyWithWhereWithoutVocabularyInput[]
+    deleteMany?: VocabularyDefinitionScalarWhereInput | VocabularyDefinitionScalarWhereInput[]
   }
 
   export type UserVocabularyUpdateManyWithoutPublicVocabularyNestedInput = {
@@ -8159,6 +9444,20 @@ export namespace Prisma {
     deleteMany?: UserVocabularyScalarWhereInput | UserVocabularyScalarWhereInput[]
   }
 
+  export type VocabularyDefinitionUncheckedUpdateManyWithoutVocabularyNestedInput = {
+    create?: XOR<VocabularyDefinitionCreateWithoutVocabularyInput, VocabularyDefinitionUncheckedCreateWithoutVocabularyInput> | VocabularyDefinitionCreateWithoutVocabularyInput[] | VocabularyDefinitionUncheckedCreateWithoutVocabularyInput[]
+    connectOrCreate?: VocabularyDefinitionCreateOrConnectWithoutVocabularyInput | VocabularyDefinitionCreateOrConnectWithoutVocabularyInput[]
+    upsert?: VocabularyDefinitionUpsertWithWhereUniqueWithoutVocabularyInput | VocabularyDefinitionUpsertWithWhereUniqueWithoutVocabularyInput[]
+    createMany?: VocabularyDefinitionCreateManyVocabularyInputEnvelope
+    set?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    disconnect?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    delete?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    connect?: VocabularyDefinitionWhereUniqueInput | VocabularyDefinitionWhereUniqueInput[]
+    update?: VocabularyDefinitionUpdateWithWhereUniqueWithoutVocabularyInput | VocabularyDefinitionUpdateWithWhereUniqueWithoutVocabularyInput[]
+    updateMany?: VocabularyDefinitionUpdateManyWithWhereWithoutVocabularyInput | VocabularyDefinitionUpdateManyWithWhereWithoutVocabularyInput[]
+    deleteMany?: VocabularyDefinitionScalarWhereInput | VocabularyDefinitionScalarWhereInput[]
+  }
+
   export type UserVocabularyUncheckedUpdateManyWithoutPublicVocabularyNestedInput = {
     create?: XOR<UserVocabularyCreateWithoutPublicVocabularyInput, UserVocabularyUncheckedCreateWithoutPublicVocabularyInput> | UserVocabularyCreateWithoutPublicVocabularyInput[] | UserVocabularyUncheckedCreateWithoutPublicVocabularyInput[]
     connectOrCreate?: UserVocabularyCreateOrConnectWithoutPublicVocabularyInput | UserVocabularyCreateOrConnectWithoutPublicVocabularyInput[]
@@ -8171,6 +9470,24 @@ export namespace Prisma {
     update?: UserVocabularyUpdateWithWhereUniqueWithoutPublicVocabularyInput | UserVocabularyUpdateWithWhereUniqueWithoutPublicVocabularyInput[]
     updateMany?: UserVocabularyUpdateManyWithWhereWithoutPublicVocabularyInput | UserVocabularyUpdateManyWithWhereWithoutPublicVocabularyInput[]
     deleteMany?: UserVocabularyScalarWhereInput | UserVocabularyScalarWhereInput[]
+  }
+
+  export type PublicVocabularyCreateNestedOneWithoutDefinitionsInput = {
+    create?: XOR<PublicVocabularyCreateWithoutDefinitionsInput, PublicVocabularyUncheckedCreateWithoutDefinitionsInput>
+    connectOrCreate?: PublicVocabularyCreateOrConnectWithoutDefinitionsInput
+    connect?: PublicVocabularyWhereUniqueInput
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type PublicVocabularyUpdateOneRequiredWithoutDefinitionsNestedInput = {
+    create?: XOR<PublicVocabularyCreateWithoutDefinitionsInput, PublicVocabularyUncheckedCreateWithoutDefinitionsInput>
+    connectOrCreate?: PublicVocabularyCreateOrConnectWithoutDefinitionsInput
+    upsert?: PublicVocabularyUpsertWithoutDefinitionsInput
+    connect?: PublicVocabularyWhereUniqueInput
+    update?: XOR<XOR<PublicVocabularyUpdateToOneWithWhereWithoutDefinitionsInput, PublicVocabularyUpdateWithoutDefinitionsInput>, PublicVocabularyUncheckedUpdateWithoutDefinitionsInput>
   }
 
   export type UserArticleCreateNestedManyWithoutPublicArticleInput = {
@@ -8388,20 +9705,6 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -8442,6 +9745,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8499,6 +9816,40 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type VocabularyDefinitionCreateWithoutVocabularyInput = {
+    id?: string
+    partOfSpeech: string
+    definition: string
+    localDefinition?: string | null
+    example?: string | null
+    exampleTranslation?: string | null
+    pronunciation?: string | null
+    synonyms?: string | null
+    antonyms?: string | null
+  }
+
+  export type VocabularyDefinitionUncheckedCreateWithoutVocabularyInput = {
+    id?: string
+    partOfSpeech: string
+    definition: string
+    localDefinition?: string | null
+    example?: string | null
+    exampleTranslation?: string | null
+    pronunciation?: string | null
+    synonyms?: string | null
+    antonyms?: string | null
+  }
+
+  export type VocabularyDefinitionCreateOrConnectWithoutVocabularyInput = {
+    where: VocabularyDefinitionWhereUniqueInput
+    create: XOR<VocabularyDefinitionCreateWithoutVocabularyInput, VocabularyDefinitionUncheckedCreateWithoutVocabularyInput>
+  }
+
+  export type VocabularyDefinitionCreateManyVocabularyInputEnvelope = {
+    data: VocabularyDefinitionCreateManyVocabularyInput | VocabularyDefinitionCreateManyVocabularyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserVocabularyCreateWithoutPublicVocabularyInput = {
     id: string
     addedAt?: Date | string
@@ -8529,6 +9880,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VocabularyDefinitionUpsertWithWhereUniqueWithoutVocabularyInput = {
+    where: VocabularyDefinitionWhereUniqueInput
+    update: XOR<VocabularyDefinitionUpdateWithoutVocabularyInput, VocabularyDefinitionUncheckedUpdateWithoutVocabularyInput>
+    create: XOR<VocabularyDefinitionCreateWithoutVocabularyInput, VocabularyDefinitionUncheckedCreateWithoutVocabularyInput>
+  }
+
+  export type VocabularyDefinitionUpdateWithWhereUniqueWithoutVocabularyInput = {
+    where: VocabularyDefinitionWhereUniqueInput
+    data: XOR<VocabularyDefinitionUpdateWithoutVocabularyInput, VocabularyDefinitionUncheckedUpdateWithoutVocabularyInput>
+  }
+
+  export type VocabularyDefinitionUpdateManyWithWhereWithoutVocabularyInput = {
+    where: VocabularyDefinitionScalarWhereInput
+    data: XOR<VocabularyDefinitionUpdateManyMutationInput, VocabularyDefinitionUncheckedUpdateManyWithoutVocabularyInput>
+  }
+
+  export type VocabularyDefinitionScalarWhereInput = {
+    AND?: VocabularyDefinitionScalarWhereInput | VocabularyDefinitionScalarWhereInput[]
+    OR?: VocabularyDefinitionScalarWhereInput[]
+    NOT?: VocabularyDefinitionScalarWhereInput | VocabularyDefinitionScalarWhereInput[]
+    id?: StringFilter<"VocabularyDefinition"> | string
+    vocabularyId?: StringFilter<"VocabularyDefinition"> | string
+    partOfSpeech?: StringFilter<"VocabularyDefinition"> | string
+    definition?: StringFilter<"VocabularyDefinition"> | string
+    localDefinition?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    example?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    exampleTranslation?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    pronunciation?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    synonyms?: StringNullableFilter<"VocabularyDefinition"> | string | null
+    antonyms?: StringNullableFilter<"VocabularyDefinition"> | string | null
+  }
+
   export type UserVocabularyUpsertWithWhereUniqueWithoutPublicVocabularyInput = {
     where: UserVocabularyWhereUniqueInput
     update: XOR<UserVocabularyUpdateWithoutPublicVocabularyInput, UserVocabularyUncheckedUpdateWithoutPublicVocabularyInput>
@@ -8557,6 +9940,54 @@ export namespace Prisma {
     personalNote?: StringNullableFilter<"UserVocabulary"> | string | null
     customDefinition?: StringNullableFilter<"UserVocabulary"> | string | null
     customExample?: StringNullableFilter<"UserVocabulary"> | string | null
+  }
+
+  export type PublicVocabularyCreateWithoutDefinitionsInput = {
+    id: string
+    word: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userVocabularies?: UserVocabularyCreateNestedManyWithoutPublicVocabularyInput
+  }
+
+  export type PublicVocabularyUncheckedCreateWithoutDefinitionsInput = {
+    id: string
+    word: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userVocabularies?: UserVocabularyUncheckedCreateNestedManyWithoutPublicVocabularyInput
+  }
+
+  export type PublicVocabularyCreateOrConnectWithoutDefinitionsInput = {
+    where: PublicVocabularyWhereUniqueInput
+    create: XOR<PublicVocabularyCreateWithoutDefinitionsInput, PublicVocabularyUncheckedCreateWithoutDefinitionsInput>
+  }
+
+  export type PublicVocabularyUpsertWithoutDefinitionsInput = {
+    update: XOR<PublicVocabularyUpdateWithoutDefinitionsInput, PublicVocabularyUncheckedUpdateWithoutDefinitionsInput>
+    create: XOR<PublicVocabularyCreateWithoutDefinitionsInput, PublicVocabularyUncheckedCreateWithoutDefinitionsInput>
+    where?: PublicVocabularyWhereInput
+  }
+
+  export type PublicVocabularyUpdateToOneWithWhereWithoutDefinitionsInput = {
+    where?: PublicVocabularyWhereInput
+    data: XOR<PublicVocabularyUpdateWithoutDefinitionsInput, PublicVocabularyUncheckedUpdateWithoutDefinitionsInput>
+  }
+
+  export type PublicVocabularyUpdateWithoutDefinitionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    word?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userVocabularies?: UserVocabularyUpdateManyWithoutPublicVocabularyNestedInput
+  }
+
+  export type PublicVocabularyUncheckedUpdateWithoutDefinitionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    word?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userVocabularies?: UserVocabularyUncheckedUpdateManyWithoutPublicVocabularyNestedInput
   }
 
   export type UserArticleCreateWithoutPublicArticleInput = {
@@ -8719,14 +10150,7 @@ export namespace Prisma {
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    partOfSpeech: string
-    definition: string
-    localDefinition?: string | null
-    example?: string | null
-    exampleTranslation?: string | null
-    pronunciation?: string | null
-    synonyms?: string | null
-    antonyms?: string | null
+    definitions?: VocabularyDefinitionCreateNestedManyWithoutVocabularyInput
   }
 
   export type PublicVocabularyUncheckedCreateWithoutUserVocabulariesInput = {
@@ -8734,14 +10158,7 @@ export namespace Prisma {
     word: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    partOfSpeech: string
-    definition: string
-    localDefinition?: string | null
-    example?: string | null
-    exampleTranslation?: string | null
-    pronunciation?: string | null
-    synonyms?: string | null
-    antonyms?: string | null
+    definitions?: VocabularyDefinitionUncheckedCreateNestedManyWithoutVocabularyInput
   }
 
   export type PublicVocabularyCreateOrConnectWithoutUserVocabulariesInput = {
@@ -8794,14 +10211,7 @@ export namespace Prisma {
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    partOfSpeech?: StringFieldUpdateOperationsInput | string
-    definition?: StringFieldUpdateOperationsInput | string
-    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
-    example?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
-    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
-    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
-    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    definitions?: VocabularyDefinitionUpdateManyWithoutVocabularyNestedInput
   }
 
   export type PublicVocabularyUncheckedUpdateWithoutUserVocabulariesInput = {
@@ -8809,14 +10219,7 @@ export namespace Prisma {
     word?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    partOfSpeech?: StringFieldUpdateOperationsInput | string
-    definition?: StringFieldUpdateOperationsInput | string
-    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
-    example?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
-    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
-    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
-    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    definitions?: VocabularyDefinitionUncheckedUpdateManyWithoutVocabularyNestedInput
   }
 
   export type UserCreateWithoutUserArticlesInput = {
@@ -8931,6 +10334,18 @@ export namespace Prisma {
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type VocabularyDefinitionCreateManyVocabularyInput = {
+    id?: string
+    partOfSpeech: string
+    definition: string
+    localDefinition?: string | null
+    example?: string | null
+    exampleTranslation?: string | null
+    pronunciation?: string | null
+    synonyms?: string | null
+    antonyms?: string | null
+  }
+
   export type UserVocabularyCreateManyPublicVocabularyInput = {
     id: string
     userId: string
@@ -8939,6 +10354,42 @@ export namespace Prisma {
     personalNote?: string | null
     customDefinition?: string | null
     customExample?: string | null
+  }
+
+  export type VocabularyDefinitionUpdateWithoutVocabularyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    partOfSpeech?: StringFieldUpdateOperationsInput | string
+    definition?: StringFieldUpdateOperationsInput | string
+    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
+    example?: NullableStringFieldUpdateOperationsInput | string | null
+    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
+    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
+    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type VocabularyDefinitionUncheckedUpdateWithoutVocabularyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    partOfSpeech?: StringFieldUpdateOperationsInput | string
+    definition?: StringFieldUpdateOperationsInput | string
+    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
+    example?: NullableStringFieldUpdateOperationsInput | string | null
+    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
+    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
+    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type VocabularyDefinitionUncheckedUpdateManyWithoutVocabularyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    partOfSpeech?: StringFieldUpdateOperationsInput | string
+    definition?: StringFieldUpdateOperationsInput | string
+    localDefinition?: NullableStringFieldUpdateOperationsInput | string | null
+    example?: NullableStringFieldUpdateOperationsInput | string | null
+    exampleTranslation?: NullableStringFieldUpdateOperationsInput | string | null
+    pronunciation?: NullableStringFieldUpdateOperationsInput | string | null
+    synonyms?: NullableStringFieldUpdateOperationsInput | string | null
+    antonyms?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserVocabularyUpdateWithoutPublicVocabularyInput = {

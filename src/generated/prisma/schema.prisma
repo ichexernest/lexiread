@@ -18,19 +18,26 @@ model PublicVocabulary {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // 詞彙詳細資訊
-  partOfSpeech       String // 詞性
-  definition         String // 英文解釋
-  localDefinition    String? // 本地語言解釋
-  example            String? // 英文例句
-  exampleTranslation String? // 例句翻譯
-  pronunciation      String? // 發音
-
-  // 相關詞彙
-  synonyms String? // 同義詞 (以逗號分隔)
-  antonyms String? // 反義詞 (以逗號分隔)
+  definitions VocabularyDefinition[]
 
   userVocabularies UserVocabulary[]
+}
+
+model VocabularyDefinition {
+  id           String           @id @default(cuid())
+  vocabulary   PublicVocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  vocabularyId String
+
+  partOfSpeech       String
+  definition         String
+  localDefinition    String?
+  example            String?
+  exampleTranslation String?
+  pronunciation      String?
+  synonyms           String?
+  antonyms           String?
+
+  @@index([vocabularyId])
 }
 
 // 公用文章記錄格式

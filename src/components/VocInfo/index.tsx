@@ -9,11 +9,9 @@ interface VocInfoProps {
   word: string;
 }
 
-
 export default function VocInfo({ word }: VocInfoProps) {
   const [data, setData] = useState<UserVocabulary | null>(null)
   const [loading, setLoading] = useState(true)
-
 
   useEffect(() => {
     const fetchWordInfo = async () => {
@@ -35,37 +33,54 @@ export default function VocInfo({ word }: VocInfoProps) {
   if (loading) return <p className="text-gray-500">Loading...</p>
   if (!data) return <p className="text-red-500">找不到「{word}」的資料。</p>
 
+  const def = data.definitions?.[0] ?? null
+
   return (
     <div className="max-w-xl mx-auto mt-10 space-y-4 text-gray-800">
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold">{data.word}</h1>
           <p className="text-sm text-gray-500">{data.id}</p>
-          <p className="text-sm text-gray-500">{data.partOfSpeech}</p>
         </div>
-        {data.familiarity && <FamiliaritySign familiarity={data.familiarity} />}
+        {data.familiarity !== undefined && <FamiliaritySign familiarity={data.familiarity} />}
       </div>
+      {data.definitions?.length > 0 && (
+        <div className="space-y-4">
+          {data.definitions.map((d, index) => (
+            <div key={index} className="space-y-1">
+              <div className='flex justify-start items-center gap-2'>
+                {d.partOfSpeech && (
+                  <p className="text-sm text-gray-500">{d.partOfSpeech}</p>
+                )}
+                {d.localDefinition && (
+                  <p className="text-sm text-gray-600">{d.localDefinition}</p>
+                )}
+              </div>
 
-      <div className="space-y-1">
-        <p className="text-sm"><span className="font-semibold">Definition:</span> {data.definition}</p>
-        {data.localDefinition && <p className="text-sm text-gray-600">{data.localDefinition}</p>}
-        {data.customDefinition && <p className="text-sm text-secondary">✏️ {data.customDefinition}</p>}
-      </div>
-
-      {(data.example || data.customExample || data.exampleTranslation) && (
-        <div className="space-y-1">
-          <h2 className="text-sm font-semibold text-gray-700">Example</h2>
-          {data.example && <p className="text-sm">「{data.example}」</p>}
-          {data.exampleTranslation && <p className="text-sm text-gray-500">翻譯：{data.exampleTranslation}</p>}
-          {data.customExample && <p className="text-sm text-secondary">✏️ {data.customExample}</p>}
+              <p className="text-sm">
+                <span className="font-semibold">Definition:</span> {d.definition}
+              </p>
+            </div>
+          ))}
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-2 text-sm">
-        {data.pronunciation && <p><span className="font-semibold">Pronunciation：</span>[{data.pronunciation}]</p>}
-        {data.synonyms && <p><span className="font-semibold">Synonyms：</span>{data.synonyms}</p>}
-        {data.antonyms && <p><span className="font-semibold">Antonyms：</span>{data.antonyms}</p>}
+        {def?.pronunciation && <p><span className="font-semibold">Pronunciation：</span>[{def.pronunciation}]</p>}
+        {def?.synonyms && <p><span className="font-semibold">Synonyms：</span>{def.synonyms}</p>}
+        {def?.antonyms && <p><span className="font-semibold">Antonyms：</span>{def.antonyms}</p>}
       </div>
+
+      {(def?.example || def?.exampleTranslation || data.customExample) && (
+        <div className="space-y-1">
+          <h2 className="text-sm font-semibold text-gray-700">Example</h2>
+          {def.example && <p className="text-sm">「{def.example}」</p>}
+          {def.exampleTranslation && <p className="text-sm text-gray-500">{def.exampleTranslation}</p>}
+        </div>
+      )}
+
+      {data.customDefinition && <p className="text-sm text-secondary">✏️ {data.customDefinition}</p>}
+      {data.customExample && <p className="text-sm text-secondary">✏️ {data.customExample}</p>}
 
       {data.personalNote && (
         <div className="bg-primary p-3 rounded-md text-sm border border-secondary">

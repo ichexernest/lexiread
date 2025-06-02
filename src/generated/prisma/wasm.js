@@ -121,7 +121,12 @@ exports.Prisma.PublicVocabularyScalarFieldEnum = {
   id: 'id',
   word: 'word',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VocabularyDefinitionScalarFieldEnum = {
+  id: 'id',
+  vocabularyId: 'vocabularyId',
   partOfSpeech: 'partOfSpeech',
   definition: 'definition',
   localDefinition: 'localDefinition',
@@ -187,6 +192,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   PublicVocabulary: 'PublicVocabulary',
+  VocabularyDefinition: 'VocabularyDefinition',
   PublicArticle: 'PublicArticle',
   User: 'User',
   UserVocabulary: 'UserVocabulary',

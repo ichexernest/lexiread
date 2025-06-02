@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
-export const Vocabulary = z.object({
+export const VocabularyDefinition = z.object({
   id: z.string(),
-  word: z.string(),
   partOfSpeech: z.string(),
   definition: z.string(),
   localDefinition: z.string().optional(),
@@ -12,6 +11,13 @@ export const Vocabulary = z.object({
   synonyms: z.string().optional(),
   antonyms: z.string().optional(),
 });
+
+export const Vocabulary = z.object({
+  id: z.string(),
+  word: z.string(),
+  definitions: z.array(VocabularyDefinition),
+});
+
 export const UserVocabulary = Vocabulary.extend({
   addedAt: z.string(),
   familiarity: z.number(),
@@ -19,7 +25,8 @@ export const UserVocabulary = Vocabulary.extend({
   customDefinition: z.string().optional(),
   customExample: z.string().optional(),
   userId: z.string(),
-})
+});
 
 export type UserVocabulary = z.infer<typeof UserVocabulary>;
 export type Vocabulary = z.infer<typeof Vocabulary>;
+export type VocabularyDefinition = z.infer<typeof VocabularyDefinition>;
