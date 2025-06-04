@@ -1,6 +1,6 @@
 import VocListContainer from '@/components/VocListContainer';
 import LearningDashBoard from '@/components/LearningDashBoard';
-import { UserVocabulary } from '@/types';
+import { Vocabulary } from '@/types';
 import { getUserFullVocabularyList } from '@/prisma-db';
 import { currentUser } from '@clerk/nextjs/server';
 import Title from '@/components/Title';
@@ -8,7 +8,7 @@ import Title from '@/components/Title';
 
 export default async function VocabularyPage() {
     const clerkUser = await currentUser();
-  const initialVocs: UserVocabulary[] = await getUserFullVocabularyList(clerkUser!.id); 
+  const initialVocs: Vocabulary[] = await getUserFullVocabularyList(clerkUser!.id); 
   return (
     <div className="flex flex-col items-center min-h-screen w-full max-w-[720px] mx-auto">
       <Title className="p-10">Saved Vocabularies</Title>

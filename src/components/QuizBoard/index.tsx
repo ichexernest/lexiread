@@ -1,11 +1,11 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { UserVocabulary } from '@/types'
+import { Vocabulary } from '@/types'
 import { useRouter } from 'next/navigation'
 import PrimaryButton from '../PrimaryButton'
 
 interface QuizBoardProps {
-  items: UserVocabulary[]
+  items: Vocabulary[]
 }
 
 type QuizResult = {
@@ -18,7 +18,7 @@ export default function QuizBoard({ items }: QuizBoardProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false)
   const [results, setResults] = useState<QuizResult[]>([])
-  const [def, setDef] = useState<UserVocabulary['definitions'][0] | null>(null)
+  const [def, setDef] = useState<Vocabulary['definitions'][0] | null>(null)
 
   const currentItem = items[currentIndex]
 

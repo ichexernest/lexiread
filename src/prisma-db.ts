@@ -1,11 +1,17 @@
 import { customAlphabet } from 'nanoid'
 import { PrismaClient } from '@/generated/prisma' 
+import { Vocabulary } from './types';
+import { 
+  transformUserVocabularyToVocabulary,
+  transformPublicVocabularyToVocabulary,
+  transformExamVocabularyToVocabulary,
+} from '@/utils/tr';
 const prisma = new PrismaClient()
 
 async function seedAll() {
     const nanoid = customAlphabet('1234567890abcdef', 12)
 
-     const vocabularyData = [
+    const vocabularyData = [
     {
       word: 'apple',
       definitions: [
@@ -69,8 +75,8 @@ async function seedAll() {
     .finally(() => prisma.$disconnect());
   
 
-// 取得用戶儲存的完整單字清單（含公用與私人資料）
-export async function getUserFullVocabularyList(userId: string) {
+// 取得用戶儲存的完整單字清單
+export async function getUserFullVocabularyList(userId: string): Promise<Vocabulary[]> {
   const fakedelay = Math.random() * 5000;
   await new Promise((resolve) => setTimeout(resolve, fakedelay));
 
@@ -86,29 +92,278 @@ export async function getUserFullVocabularyList(userId: string) {
     },
   });
 
-  return result.map((voc) => ({
-    id: voc.publicVocabulary.id,
-    word: voc.publicVocabulary.word,
-    definitions: voc.publicVocabulary.definitions.map((def) => ({
+  return result.map(transformUserVocabularyToVocabulary);
+}
+
+// 查詢公用和私人單字
+export async function findVocabularyWithUserProgress(
+  word: string, 
+  userId?: string
+): Promise<Vocabulary | null> {
+  console.log('findVocabularyWithUserProgress', word, userId);
+  const publicVoc = await prisma.publicVocabulary.findFirst({
+    where: { word: word.toLowerCase() },
+    include: {
+      definitions: true,
+      userVocabularies: userId ? {
+        where: { userId: userId },
+        take: 1
+      } : false
+    }
+  });
+
+  if (!publicVoc) {
+    return null;
+  }
+
+  const userVoc = publicVoc.userVocabularies?.[0];
+
+  // 根據 Vocabulary 類型組合返回資料
+  const vocabulary: Vocabulary = {
+    publicVocabularyId: publicVoc.id,
+    userVocabularyId: userVoc?.id,
+    word: publicVoc.word,
+    definitions: publicVoc.definitions.map(def => ({
       id: def.id,
       partOfSpeech: def.partOfSpeech,
       definition: def.definition,
-      localDefinition: def.localDefinition ?? undefined,
-      example: def.example ?? undefined,
-      exampleTranslation: def.exampleTranslation ?? undefined,
-      pronunciation: def.pronunciation ?? undefined,
-      synonyms: def.synonyms ?? undefined,
-      antonyms: def.antonyms ?? undefined,
+      localDefinition: def.localDefinition || undefined,
+      example: def.example || undefined,
+      exampleTranslation: def.exampleTranslation || undefined,
+      pronunciation: def.pronunciation || undefined,
+      synonyms: def.synonyms || undefined,
+      antonyms: def.antonyms || undefined,
     })),
-    addedAt: voc.addedAt.toISOString().split('T')[0],
-    familiarity: voc.familiarity,
-    personalNote: voc.personalNote ?? undefined,
-    customDefinition: voc.customDefinition ?? undefined,
-    customExample: voc.customExample ?? undefined,
-    userId: voc.userId,
-  }));
+    // 用戶相關的欄位，如果有 userVoc 就填入，沒有就 undefined
+    addedAt: userVoc?.addedAt.toISOString(),
+    familiarity: userVoc?.familiarity,
+    personalNote: userVoc?.personalNote || undefined,
+    customDefinition: userVoc?.customDefinition || undefined,
+    customExample: userVoc?.customExample || undefined,
+    userId: userVoc?.userId,
+  };
+
+  return vocabulary;
 }
 
+// 存入單字到PublicVocabulary
+export async function addVocabularyToPublic(vocabularyData: Vocabulary): Promise<boolean> {
+  try {
+
+    await prisma.publicVocabulary.create({
+      data: {
+        id: vocabularyData.publicVocabularyId,
+        word: vocabularyData.word,
+        definitions: {
+          create: vocabularyData.definitions.map((def) => ({
+            id: def.id,
+            partOfSpeech: def.partOfSpeech,
+            definition: def.definition,
+            localDefinition: def.localDefinition,
+            example: def.example,
+            exampleTranslation: def.exampleTranslation,
+            pronunciation: def.pronunciation,
+            synonyms: def.synonyms,
+            antonyms: def.antonyms,
+          })),
+        },
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Failed to add vocabulary to public:', error);
+    return false;
+  }
+}
+// 存入單字到UserVocabulary
+// 這個函式會先檢查PublicVocabulary中是否已存在該單字
+export async function addVocabularyByUser(
+  userId: string,
+  publicVocabularyId: string,
+): Promise<boolean> {
+  try {
+    const nanoid = customAlphabet('1234567890abcdef', 12);
+    console.log('addVocabularyByUser', userId, publicVocabularyId);
+    
+    // 檢查PublicVocabulary是否存在
+    const publicVocabulary = await prisma.publicVocabulary.findUnique({
+      where: { id: publicVocabularyId },
+    });
+    
+    if (!publicVocabulary) {
+      console.error('Vocabulary does not exist in PublicVocabulary.');
+      return false;
+    }
+    
+    // 檢查用戶是否已經儲存過這個單字
+    const existingUserVocabulary = await prisma.userVocabulary.findUnique({
+      where: {
+        userId_publicVocabularyId: {
+          userId,
+          publicVocabularyId: publicVocabularyId,
+        },
+      },
+    });
+    
+    if (existingUserVocabulary) {
+      console.error('User has already saved this vocabulary');
+      return false;
+    }
+    
+    // 創建用戶單字記錄
+    await prisma.userVocabulary.create({
+      data: {
+        id: `uvoc_${nanoid()}`,
+        userId,
+        publicVocabularyId: publicVocabularyId,
+        familiarity: 0,
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Failed to add vocabulary by user:', error);
+    return false;
+  }
+}
+
+// 從UserVocabulary中移除單字
+export async function removeVocabularyByUser(userId: string, publicVocabularyId: string): Promise<boolean> {
+  try {
+    await prisma.userVocabulary.delete({
+      where: {
+        userId_publicVocabularyId: {
+          userId,
+          publicVocabularyId,
+        },
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Failed to remove vocabulary by user:', error);
+    return false;
+  }
+}
+
+//更新UserVocabulary中該單字的內容
+export async function updateVocabulary(
+  userId: string,
+  publicVocabularyId: string,
+  updates: {
+    familiarity?: number
+    personalNote?: string
+    customDefinition?: string
+    customExample?: string
+  }
+): Promise<boolean> {
+  try {
+    await prisma.userVocabulary.update({
+      where: {
+        userId_publicVocabularyId: {
+          userId,
+          publicVocabularyId,
+        },
+      },
+      data: updates,
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Failed to update vocabulary:', error);
+    return false;
+  }
+}
+// 搜尋公用單字
+export async function searchPublicVocabulary(searchTerm: string, limit: number = 20): Promise<Vocabulary[]> {
+  const results = await prisma.publicVocabulary.findMany({
+    where: {
+      OR: [
+        { word: { contains: searchTerm, mode: 'insensitive' } },
+        {
+          definitions: {
+            some: {
+              OR: [
+                { definition: { contains: searchTerm, mode: 'insensitive' } },
+                { localDefinition: { contains: searchTerm, mode: 'insensitive' } },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    take: limit,
+    orderBy: { word: 'asc' },
+    include: {
+      definitions: true,
+    },
+  });
+
+  return results.map(transformPublicVocabularyToVocabulary);
+}
+
+export async function findExactPublicVocabulary(searchTerm: string): Promise<Vocabulary | null> {
+  const result = await prisma.publicVocabulary.findFirst({
+    where: {
+      word: {
+        equals: searchTerm,
+        mode: 'insensitive'
+      }
+    },
+    include: {
+      definitions: true,
+    },
+  });
+
+  if (!result) {
+    return null;
+  }
+
+  return transformPublicVocabularyToVocabulary(result);
+}
+
+
+export async function getPublicVocabularyById(id: string): Promise<Vocabulary | null> {
+  const result = await prisma.publicVocabulary.findUnique({
+    where: { id },
+    include: {
+      definitions: true,
+    },
+  });
+
+  if (!result) {
+    return null;
+  }
+
+  return transformPublicVocabularyToVocabulary(result);
+}
+
+
+// 從UserVocabulary隨機抓出15個familiarity < 5的單字
+export async function pickExamVocabulary(userId: string, limit: number = 15): Promise<Vocabulary[]> {
+  const vocabularies = await prisma.userVocabulary.findMany({
+    where: {
+      userId,
+      familiarity: { lt: 5 },
+    },
+    include: {
+      publicVocabulary: {
+        include: {
+          definitions: true,
+        },
+      },
+    },
+  });
+
+  const shuffled = vocabularies.sort(() => 0.5 - Math.random());
+  const selected = shuffled.slice(0, limit);
+
+  return selected.map(transformExamVocabularyToVocabulary);
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------
 
 // 取得用戶儲存的完整文章清單
 export async function getUserFullArticleList(userId: string) {
@@ -132,47 +387,6 @@ export async function getUserFullArticleList(userId: string) {
     userId: article.userId,
   }));
 }
-  
-// 存入單字到PublicVocabulary
-export async function addVocabularyToPublic(vocabularyData: {
-  word: string;
-  definitions: Array<{
-    partOfSpeech: string;
-    definition: string;
-    localDefinition?: string;
-    example?: string;
-    exampleTranslation?: string;
-    pronunciation?: string;
-    synonyms?: string;
-    antonyms?: string;
-  }>;
-}) {
-  const nanoid = customAlphabet('1234567890abcdef', 12);
-  const vocabularyId = `pvoc_${nanoid()}`;
-
-  return await prisma.publicVocabulary.create({
-    data: {
-      id: vocabularyId,
-      word: vocabularyData.word,
-      definitions: {
-        create: vocabularyData.definitions.map((def) => ({
-          id: `def_${nanoid()}`, // 每個定義給一個唯一 ID
-          partOfSpeech: def.partOfSpeech,
-          definition: def.definition,
-          localDefinition: def.localDefinition,
-          example: def.example,
-          exampleTranslation: def.exampleTranslation,
-          pronunciation: def.pronunciation,
-          synonyms: def.synonyms,
-          antonyms: def.antonyms,
-        })),
-      },
-    },
-    include: {
-      definitions: true,
-    },
-  });
-}
 // 存入文章到PublicArticle
 export async function addArticleToPublic(articleData: {
   slug: string;
@@ -190,89 +404,6 @@ export async function addArticleToPublic(articleData: {
     },
   });
 }
-
-// 存入單字到UserVocabulary
-// 這個函式會先檢查PublicVocabulary中是否已存在該單字
-export async function addVocabularyByUser(
-  userId: string,
-  publicVocabularyId: string,
-) {
-  const nanoid = customAlphabet('1234567890abcdef', 12);
-  console.log('addVocabularyByUser', userId, publicVocabularyId);
-  // check if PublicVocabulary exists in PublicVocabulary
-  const publicVocabulary = await prisma.publicVocabulary.findUnique({
-    where: { id: publicVocabularyId },
-    include: {
-      definitions: true,
-    },
-  });
-  
-  // check if publicVocabulary is null
-  if (!publicVocabulary) {
-      throw new Error('Vocabulary does not exist in PublicVocabulary.');
-  }
-  
-  // 檢查用戶是否已經儲存過這個單字
-  const existingUserVocabulary = await prisma.userVocabulary.findUnique({
-    where: {
-      userId_publicVocabularyId: {
-        userId,
-        publicVocabularyId: publicVocabularyId,
-      },
-    },
-  });
-  
-  if (existingUserVocabulary) {
-    throw new Error('User has already saved this vocabulary');
-  }
-  
-  // 創建用戶單字記錄
-  return await prisma.userVocabulary.create({
-    data: {
-      id: `uvoc_${nanoid()}`,
-      userId,
-      publicVocabularyId: publicVocabularyId,
-      familiarity: 0,
-    },
-    include: {
-      publicVocabulary: true,
-    },
-  });
-}
-
-// 從UserVocabulary中移除單字
-export async function removeVocabularyByUser(userId: string, publicVocabularyId: string) {
-  return await prisma.userVocabulary.delete({
-    where: {
-      userId_publicVocabularyId: {
-        userId,
-        publicVocabularyId,
-      },
-    },
-  });
-}
-
-//更新UserVocabulary中該單字的內容
-export async function updateVocabulary(
-    userId: string,
-    publicVocabularyId: string,
-    updates: {
-      familiarity?: number
-      personalNote?: string
-      customDefinition?: string
-      customExample?: string
-    }
-  ) {
-    return prisma.userVocabulary.update({
-      where: {
-        userId_publicVocabularyId: {
-          userId,
-          publicVocabularyId,
-        },
-      },
-      data: updates,
-    });
-  }
 
 // 存入文章到UserArticle
 // 這個函式會先檢查PublicArticle中是否已存在該文章
@@ -329,47 +460,22 @@ export async function removeArticleByUser(userId: string, publicArticleId: strin
   });
 }
 
-// 從UserVocabulary隨機抓出15個familiarity < 5的單字
-export async function pickExamVocabulary(userId: string, limit: number = 15) {
-  const vocabularies = await prisma.userVocabulary.findMany({
+// 搜尋公用文章
+export async function searchPublicArticles(searchTerm: string, limit: number = 20) {
+  return await prisma.publicArticle.findMany({
     where: {
-      userId,
-      familiarity: { lt: 5 },
+      OR: [
+        { title: { contains: searchTerm } },
+        { content: { contains: searchTerm } },
+        { author: { contains: searchTerm } },
+      ],
     },
-    include: {
-      publicVocabulary: {
-        include: {
-          definitions: true,
-        },
-      },
-    },
+    take: limit,
+    orderBy: { publishedAt: 'desc' },
   });
-
-  const shuffled = vocabularies.sort(() => 0.5 - Math.random());
-  const selected = shuffled.slice(0, limit);
-
-  return selected.map((voc) => ({
-    id: voc.publicVocabulary.id,
-    word: voc.publicVocabulary.word,
-    definitions: voc.publicVocabulary.definitions.map((def) => ({
-      id: def.id,
-      partOfSpeech: def.partOfSpeech,
-      definition: def.definition,
-      localDefinition: def.localDefinition ?? undefined,
-      example: def.example ?? undefined,
-      exampleTranslation: def.exampleTranslation ?? undefined,
-      pronunciation: def.pronunciation ?? undefined,
-      synonyms: def.synonyms ?? undefined,
-      antonyms: def.antonyms ?? undefined,
-    })),
-    familiarity: voc.familiarity,
-    personalNote: voc.personalNote ?? undefined,
-    customDefinition: voc.customDefinition ?? undefined,
-    customExample: voc.customExample ?? undefined,
-    userId: voc.userId,
-  }));
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------
 
 // 用戶相關操作
 export async function findUserById(id: string) {
@@ -442,64 +548,4 @@ export async function syncClerkUserToDatabase(clerkUser: {
     console.error('Error syncing user to database:', error);
     throw error;
   }
-}
-
-// 額外的實用函式
-
-// 搜尋公用單字
-export async function searchPublicVocabulary(searchTerm: string, limit: number = 20) {
-  const results = await prisma.publicVocabulary.findMany({
-    where: {
-      OR: [
-        { word: { contains: searchTerm, mode: 'insensitive' } },
-        {
-          definitions: {
-            some: {
-              OR: [
-                { definition: { contains: searchTerm, mode: 'insensitive' } },
-                { localDefinition: { contains: searchTerm, mode: 'insensitive' } },
-              ],
-            },
-          },
-        },
-      ],
-    },
-    take: limit,
-    orderBy: { word: 'asc' },
-    include: {
-      definitions: true,
-    },
-  });
-
-  return results.map((voc) => ({
-    id: voc.id,
-    word: voc.word,
-    definitions: voc.definitions.map((def) => ({
-      id: def.id,
-      partOfSpeech: def.partOfSpeech,
-      definition: def.definition,
-      localDefinition: def.localDefinition ?? undefined,
-      example: def.example ?? undefined,
-      exampleTranslation: def.exampleTranslation ?? undefined,
-      pronunciation: def.pronunciation ?? undefined,
-      synonyms: def.synonyms ?? undefined,
-      antonyms: def.antonyms ?? undefined,
-    })),
-  }));
-}
-
-
-// 搜尋公用文章
-export async function searchPublicArticles(searchTerm: string, limit: number = 20) {
-  return await prisma.publicArticle.findMany({
-    where: {
-      OR: [
-        { title: { contains: searchTerm } },
-        { content: { contains: searchTerm } },
-        { author: { contains: searchTerm } },
-      ],
-    },
-    take: limit,
-    orderBy: { publishedAt: 'desc' },
-  });
 }

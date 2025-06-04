@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { UserVocabulary } from '@/types'
+import { Vocabulary } from '@/types'
 import SaveButton from '../SaveButton'
 import FamiliaritySign from '../FamiliaritySign'
 
@@ -10,7 +10,7 @@ interface VocInfoProps {
 }
 
 export default function VocInfo({ word }: VocInfoProps) {
-  const [data, setData] = useState<UserVocabulary | null>(null)
+  const [data, setData] = useState<Vocabulary | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function VocInfo({ word }: VocInfoProps) {
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold">{data.word}</h1>
-          <p className="text-sm text-gray-500">{data.id}</p>
+          <p className="text-sm text-gray-500">{data.publicVocabularyId}</p>
         </div>
         {data.familiarity !== undefined && <FamiliaritySign familiarity={data.familiarity} />}
       </div>
@@ -90,7 +90,7 @@ export default function VocInfo({ word }: VocInfoProps) {
       )}
 
       <div className="w-full flex justify-end pt-3 border-t border-gray-200">
-        <SaveButton isSaved={!!data.addedAt} saveId={data.id} saveType="voc" />
+        <SaveButton isSaved={data.userVocabularyId !== null} saveId={data.publicVocabularyId} saveType="voc" />
       </div>
     </div>
   )
