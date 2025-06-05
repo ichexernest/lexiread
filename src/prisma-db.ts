@@ -484,21 +484,16 @@ export async function getTodayArticlesWithUserProgress(userId?: string): Promise
     const endOfDay = new Date(today);
     endOfDay.setHours(23, 59, 59, 999);
 
-    // 嘗試抓今天的文章
+    console.log('=== 開始查詢文章 ===');
+    console.log('userId:', userId);
+
+    // 第一步：先獲取今日文章
     let articles = await prisma.publicArticle.findMany({
       where: {
         publishedAt: {
           gte: startOfDay,
           lte: endOfDay,
         },
-      },
-      include: {
-        userArticles: userId
-          ? {
-              where: { userId },
-              take: 1,
-            }
-          : false,
       },
       orderBy: {
         publishedAt: 'desc',
@@ -508,6 +503,7 @@ export async function getTodayArticlesWithUserProgress(userId?: string): Promise
 
     // 如果今天沒有文章，改抓昨天的
     if (articles.length === 0) {
+      console.log('今天沒有文章，查詢昨天的');
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
 
@@ -523,14 +519,6 @@ export async function getTodayArticlesWithUserProgress(userId?: string): Promise
             lte: endOfYesterday,
           },
         },
-        include: {
-          userArticles: userId
-            ? {
-                where: { userId },
-                take: 1,
-              }
-            : false,
-        },
         orderBy: {
           publishedAt: 'desc',
         },
@@ -538,26 +526,69 @@ export async function getTodayArticlesWithUserProgress(userId?: string): Promise
       });
     }
 
-    return articles.map((article) => {
-      const userArticle = article.userArticles?.[0];
+    console.log('找到的文章數量:', articles.length);
+    console.log('文章列表:', articles.map(a => ({ id: a.id, title: a.title })));
+
+    const userArticleMap = new Map<string, string>();
+    
+    if (userId && articles.length > 0) {
+      const publicArticleIds = articles.map(article => article.id);
+      console.log('要查詢的文章 IDs:', publicArticleIds);
+      
+      const userArticles = await prisma.userArticle.findMany({
+        where: {
+          userId: userId,
+          publicArticleId: {
+            in: publicArticleIds
+          }
+        }
+      });
+
+      console.log('找到的用戶文章記錄:', userArticles);
+      console.log('用戶文章記錄數量:', userArticles.length);
+
+      // 建立 publicArticleId -> userArticle.id 的對應關係
+      userArticles.forEach(userArticle => {
+        console.log(`設定對應: ${userArticle.publicArticleId} -> ${userArticle.id}`);
+        userArticleMap.set(userArticle.publicArticleId, userArticle.id);
+      });
+
+      console.log('最終的 userArticleMap:', Object.fromEntries(userArticleMap));
+    } else {
+      console.log('跳過用戶文章查詢，原因:', !userId ? 'no userId' : 'no articles');
+    }
+
+    // 第三步：組合結果
+    const result = articles.map((article) => {
+      const userArticleId = userArticleMap.get(article.id) || null;
+      console.log(`文章 ${article.id} 對應的 userArticleId:`, userArticleId);
 
       return {
         publicArticleId: article.id,
-        userArticleId: userArticle?.id,
+        userArticleId: userArticleId || undefined,
         title: article.title,
         date: article.publishedAt.toISOString(),
         author: article.author || 'BBC News',
         image: article.coverImage || '',
         slug: article.slug,
-        savedAt: userArticle?.savedAt?.toISOString(),
-        userId: userArticle?.userId,
+        isBookmarked: !!userArticleId,
       };
     });
+
+    console.log('最終結果:', result.map(r => ({ 
+      title: r.title, 
+      userArticleId: r.userArticleId, 
+      isBookmarked: r.isBookmarked 
+    })));
+
+    return result;
+
   } catch (error) {
     console.error('獲取今日 BBC 文章失敗:', error);
     throw error;
   }
 }
+
 // 從UserArticle中移除文章
 export async function removeArticleByUser(userId: string, publicArticleId: string): Promise<boolean> {
     try {

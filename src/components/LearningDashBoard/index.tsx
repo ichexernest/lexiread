@@ -12,10 +12,10 @@ export default function LearningDashBoard({ initialVocs }: LearningDashBoardProp
   const masteredVocs = initialVocs.filter(voc => voc.familiarity! >= 4).length;
   const progress = totalVocs > 0 ? (masteredVocs / totalVocs) * 100 : 0;
   return (
-    <div className=" py-5 px-4 w-[720px] mx-auto flex justify-between items-center">
+    <div className=" py-5 px-4 w-full mx-auto flex justify-between items-center">
      <div className="flex justfy-center items-center">
      <ProgressCircle percent={progress} />
-     <p>{masteredVocs} mastered vocabularies.</p>
+     <p className="text-xs md:text-md">{masteredVocs} mastered vocabularies.</p>
      </div>
                 <MainButton
                   key={"/Quiz"}

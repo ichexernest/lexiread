@@ -164,9 +164,9 @@ const fetchAndSaveBBCArticles = async (): Promise<Article[]> => {
     }
 }
 
-const getTodayArticles = async (): Promise<Article[]> => {
+const getTodayArticles = async (userId:string): Promise<Article[]> => {
     try {
-        const articles = await getTodayArticlesWithUserProgress();
+        const articles = await getTodayArticlesWithUserProgress(userId);
         return articles;
     } catch (error) {
         console.error('getTodayArticles Error:', error);

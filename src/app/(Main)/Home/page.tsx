@@ -27,8 +27,8 @@ export default async function HomePage() {
   }
 
 
-  const result: Article[] = await fetchService.getTodayArticles();
-
+  const result: Article[] = await fetchService.getTodayArticles(clerkUser!.id);
+  console.log('result', result)
 
   return (
     <div className="flex flex-col items-center h-screen min-h-screen w-full max-w-[720px] mx-auto">
