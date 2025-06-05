@@ -6,11 +6,9 @@ Lexiread is an interactive language learning platform that helps users improve t
 
 <div align="center">
   
-  **[Visit Lexiread](https://lexiread.vercel.app)** | **[Watch Demo Video](your-demo-video-link)**
+  **[Visit Lexiread](https://lexiread.vercel.app)** 
   
-  ![Lexiread Demo](https://your-screenshot-url.png)
-  
-  _Enhance your vocabulary learning experience with Lexiread_
+
 </div>
 
 
