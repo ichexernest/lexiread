@@ -476,9 +476,7 @@ export async function addArticleByUser(
   });
 }
 // 從資料庫獲取今日文章，查詢今日文章及用戶是否收藏
-export async function getTodayArticlesWithUserProgress  (
-  userId?: string
-): Promise<Article[]> {
+export async function getTodayArticlesWithUserProgress(userId?: string): Promise<Article[]> {
   try {
     const today = new Date();
     const startOfDay = new Date(today);
@@ -486,28 +484,61 @@ export async function getTodayArticlesWithUserProgress  (
     const endOfDay = new Date(today);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const articles = await prisma.publicArticle.findMany({
+    // 嘗試抓今天的文章
+    let articles = await prisma.publicArticle.findMany({
       where: {
         publishedAt: {
           gte: startOfDay,
-          lte: endOfDay
+          lte: endOfDay,
         },
       },
       include: {
         userArticles: userId
           ? {
               where: { userId },
-              take: 1
+              take: 1,
             }
-          : false
+          : false,
       },
       orderBy: {
-        publishedAt: 'desc'
+        publishedAt: 'desc',
       },
-      take: 5
+      take: 5,
     });
 
-    const fullArticles: Article[] = articles.map(article => {
+    // 如果今天沒有文章，改抓昨天的
+    if (articles.length === 0) {
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const startOfYesterday = new Date(yesterday);
+      startOfYesterday.setHours(0, 0, 0, 0);
+      const endOfYesterday = new Date(yesterday);
+      endOfYesterday.setHours(23, 59, 59, 999);
+
+      articles = await prisma.publicArticle.findMany({
+        where: {
+          publishedAt: {
+            gte: startOfYesterday,
+            lte: endOfYesterday,
+          },
+        },
+        include: {
+          userArticles: userId
+            ? {
+                where: { userId },
+                take: 1,
+              }
+            : false,
+        },
+        orderBy: {
+          publishedAt: 'desc',
+        },
+        take: 5,
+      });
+    }
+
+    return articles.map((article) => {
       const userArticle = article.userArticles?.[0];
 
       return {
@@ -518,17 +549,15 @@ export async function getTodayArticlesWithUserProgress  (
         author: article.author || 'BBC News',
         image: article.coverImage || '',
         slug: article.slug,
-        savedAt: userArticle?.savedAt.toISOString(),
-        userId: userArticle?.userId
+        savedAt: userArticle?.savedAt?.toISOString(),
+        userId: userArticle?.userId,
       };
     });
-
-    return fullArticles;
   } catch (error) {
     console.error('獲取今日 BBC 文章失敗:', error);
     throw error;
   }
-};
+}
 // 從UserArticle中移除文章
 export async function removeArticleByUser(userId: string, publicArticleId: string): Promise<boolean> {
     try {
