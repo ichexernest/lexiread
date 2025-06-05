@@ -16,27 +16,26 @@ Lexiread is an interactive language learning platform that helps users improve t
 
 ### 📚 Reading Experience
 - Interactive article reading interface
+- AI-powered GPT vocabulary explanation
 - Click-to-define vocabulary lookup
 - Save articles for later reading
 - Contextual learning
+- Daily curated selection of 5 news articles
 
 ### 📝 Vocabulary Management
 - Personal vocabulary tracking
 - Word familiarity tracking
-- Spaced repetition learning system
-- Progress tracking
+- Personal learning progress tracking
 
 ### ⚡ Quiz System
 - Interactive vocabulary quizzes
 - Real-time feedback
-- Progress tracking
-- Quiz completion rewards
+- Randomized tests based on word familiarity
 
 ### 👤 User Management
 - Secure authentication via Clerk
 - Multiple login options (Google, Facebook)
 - Personal profile management
-- Learning progress tracking
 
 ## Tech Stack
 
@@ -44,19 +43,7 @@ Lexiread is an interactive language learning platform that helps users improve t
 - **Backend**: Next.js API Routes
 - **Database**: Prisma with PostgreSQL
 - **Authentication**: Clerk
-- **State Management**: React Hooks
 - **Styling**: TailwindCSS
-
-## Project Structure
-```
-src/
-├── actions/         # Server actions
-├── app/            # Next.js app router pages
-├── components/     # React components
-├── hooks/         # Custom React hooks
-├── types/         # TypeScript type definitions
-└── utils/         # Utility functions
-```
 
 ## Getting Started
 
@@ -98,9 +85,3 @@ CLERK_SECRET_KEY=
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
-
-[Your chosen license]
-
----
-Built with ❤️ using Next.js
