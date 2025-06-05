@@ -20,12 +20,18 @@ export default function QuizBoard({ items }: QuizBoardProps) {
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false)
   const [results, setResults] = useState<QuizResult[]>([])
   const [def, setDef] = useState<Vocabulary['definitions'][0] | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false) // 新增：防止重複提交
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isCompleted, setIsCompleted] = useState(false) // 新增：標記測驗是否完成
 
   const currentItem = items[currentIndex]
 
   useEffect(() => {
-    const defs = currentItem.definitions
+    if (isCompleted) return // 如果測驗已完成，不執行後續邏輯
+    
+    const current = items[currentIndex]
+    if (!current) return
+    
+    const defs = current.definitions
     if (defs && defs.length > 0) {
       const chosen = defs.length === 1
         ? defs[0]
@@ -34,12 +40,12 @@ export default function QuizBoard({ items }: QuizBoardProps) {
     } else {
       setDef(null)
     }
-  }, [currentIndex, currentItem]) // 修正：加入 currentItem 依賴
+  }, [currentIndex, items, isCompleted])
 
   const handleReveal = () => setIsAnswerRevealed(true)
 
   const handleAnswer = async (userVocabularyId: string, word: string, result: 'remembered' | 'notSure' | 'forgotten') => {
-    if (isSubmitting) return // 防止重複點擊
+    if (isSubmitting) return
 
     const resultItem = { userVocabularyId, word, result }
     setResults((prev) => [...prev, resultItem])
@@ -48,13 +54,13 @@ export default function QuizBoard({ items }: QuizBoardProps) {
     if (currentIndex < items.length - 1) {
       setCurrentIndex((prev) => prev + 1)
     } else {
-      // 最後一題，提交結果
+      // 最後一題，標記為完成並提交結果
+      setIsCompleted(true)
       setIsSubmitting(true)
       
       try {
-        const finalResult = [...results, resultItem] // 修正：使用 resultItem 而不是重新建立物件
+        const finalResult = [...results, resultItem]
 
-        // 修正：加入正確的 headers 和錯誤處理
         const response = await fetch('/api/quiz', { 
           method: 'POST', 
           headers: {
@@ -66,7 +72,8 @@ export default function QuizBoard({ items }: QuizBoardProps) {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
-                const learnedWords = finalResult
+
+        const learnedWords = finalResult
           .filter(item => item.result === 'remembered')
           .map(item => item.word)
 
@@ -75,8 +82,8 @@ export default function QuizBoard({ items }: QuizBoardProps) {
         router.push(`/Quiz/Result?${query.toString()}`)
       } catch (error) {
         console.error('Failed to submit quiz results:', error)
-        // 可以加入錯誤處理，例如顯示錯誤訊息
         setIsSubmitting(false)
+        setIsCompleted(false) // 發生錯誤時重置狀態
       }
     }
   }
@@ -87,8 +94,23 @@ export default function QuizBoard({ items }: QuizBoardProps) {
   }
 
   // 檢查 currentItem 是否存在
-  if (!currentItem) {
+  if (!currentItem && !isCompleted) {
     return <div>Loading...</div>
+  }
+
+  // 測驗完成後顯示載入畫面
+  if (isCompleted) {
+    return (
+      <div className="flex flex-col w-full max-w-[720px] mx-auto">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full h-[400px] bg-white rounded-xl p-6 shadow-md m-4 text-black flex flex-col items-center justify-center">
+            <div className="text-2xl font-semibold mb-4">Quiz Completed! 🎉</div>
+            <div className="text-lg text-gray-600 mb-4">Processing your results...</div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -138,7 +160,7 @@ export default function QuizBoard({ items }: QuizBoardProps) {
         )}
       </div>
 
-      {isSubmitting && (
+      {isSubmitting && !isCompleted && (
         <div className="text-center mt-4 text-sm text-gray-600">
           Submitting results...
         </div>
