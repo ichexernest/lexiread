@@ -1,7 +1,7 @@
 import { addVocabularyToPublic, findVocabularyWithUserProgress } from '@/prisma-db'
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import  utils from '@/utils/utils'
+import fetchService from '@/utils/fetch'
 
 
 export async function GET(
@@ -49,7 +49,7 @@ export async function GET(
 
     // 不存在則從 GPT 獲取
     console.log('Fetching from GPT...');
-    const vocFromGPT = await utils.fetchVocabularyFromGPT(decodedWord);
+    const vocFromGPT = await fetchService.getVocabularyFromGPT(decodedWord);
     
     if (!vocFromGPT) {
       return NextResponse.json(

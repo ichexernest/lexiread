@@ -1,112 +1,197 @@
 // vocabulary-transformer.ts
-import { Vocabulary, VocabularyDefinition } from '@/types/vocabulary';
+import { Article, Vocabulary, VocabularyDefinition, validateVocabulary, Content } from '@/types';
+import { customAlphabet } from 'nanoid'
+import { UserArticle, PublicArticle, ArticleContent } from '@/generated/prisma';
 
 // Prisma 返回的原始數據類型
 export interface PrismaVocabularyDefinition {
-  id: string;
-  partOfSpeech: string;
-  definition: string;
-  localDefinition: string | null;
-  example: string | null;
-  exampleTranslation: string | null;
-  pronunciation: string | null;
-  synonyms: string | null;
-  antonyms: string | null;
+    id: string;
+    partOfSpeech: string;
+    definition: string;
+    localDefinition: string | null;
+    example: string | null;
+    exampleTranslation: string | null;
+    pronunciation: string | null;
+    synonyms: string | null;
+    antonyms: string | null;
 }
 
 export interface PrismaPublicVocabulary {
-  id: string;
-  word: string;
-  definitions: PrismaVocabularyDefinition[];
+    id: string;
+    word: string;
+    definitions: PrismaVocabularyDefinition[];
 }
 
 export interface PrismaUserVocabulary {
-  id: string;
-  userId: string;
-  publicVocabularyId: string;
-  addedAt: Date;
-  familiarity: number;
-  personalNote: string | null;
-  customDefinition: string | null;
-  customExample: string | null;
-  publicVocabulary: PrismaPublicVocabulary;
+    id: string;
+    userId: string;
+    publicVocabularyId: string;
+    addedAt: Date;
+    familiarity: number;
+    personalNote: string | null;
+    customDefinition: string | null;
+    customExample: string | null;
+    publicVocabulary: PrismaPublicVocabulary;
 }
 
 export interface PrismaUserVocabularyWithoutPublic {
-  userId: string;
-  publicVocabularyId: string;
-  addedAt: Date;
-  familiarity: number;
-  personalNote: string | null;
-  customDefinition: string | null;
-  customExample: string | null;
+    userId: string;
+    publicVocabularyId: string;
+    addedAt: Date;
+    familiarity: number;
+    personalNote: string | null;
+    customDefinition: string | null;
+    customExample: string | null;
 }
 
+export interface GPTVocabularyResponse {
+    word: string;
+    definitions: Array<{
+        partOfSpeech: string;
+        definition: string;
+        localDefinition: string;
+        example: string;
+        exampleTranslation: string;
+        pronunciation: string;
+        synonyms: string;
+        antonyms: string;
+    }>;
+}
+
+export type PrismaFullArticle = UserArticle & {
+    publicArticle: PublicArticle;
+};
+
+export type PrismaArticleContent = ArticleContent & { id: string };
 /**
  * 轉換 Prisma VocabularyDefinition 到前端類型
  */
 export function transformVocabularyDefinition(
-  def: PrismaVocabularyDefinition
+    def: PrismaVocabularyDefinition
 ): VocabularyDefinition {
-  return {
-    id: def.id,
-    partOfSpeech: def.partOfSpeech,
-    definition: def.definition,
-    localDefinition: def.localDefinition || undefined,
-    example: def.example || undefined,
-    exampleTranslation: def.exampleTranslation || undefined,
-    pronunciation: def.pronunciation || undefined,
-    synonyms: def.synonyms || undefined,
-    antonyms: def.antonyms || undefined,
-  };
+    return {
+        id: def.id,
+        partOfSpeech: def.partOfSpeech,
+        definition: def.definition,
+        localDefinition: def.localDefinition || undefined,
+        example: def.example || undefined,
+        exampleTranslation: def.exampleTranslation || undefined,
+        pronunciation: def.pronunciation || undefined,
+        synonyms: def.synonyms || undefined,
+        antonyms: def.antonyms || undefined,
+    };
 }
 
 /**
  * 轉換 PublicVocabulary 到前端 Vocabulary 類型
  */
 export function transformPublicVocabularyToVocabulary(
-  publicVoc: PrismaPublicVocabulary
+    publicVoc: PrismaPublicVocabulary
 ): Vocabulary {
-  return {
-    publicVocabularyId: publicVoc.id,
-    word: publicVoc.word,
-    definitions: publicVoc.definitions.map(transformVocabularyDefinition),
-  };
+    return {
+        publicVocabularyId: publicVoc.id,
+        word: publicVoc.word,
+        definitions: publicVoc.definitions.map(transformVocabularyDefinition),
+    };
 }
 
 /**
  * 轉換 UserVocabulary 到前端 Vocabulary 類型
  */
 export function transformUserVocabularyToVocabulary(
-  userVoc: PrismaUserVocabulary
+    userVoc: PrismaUserVocabulary
 ): Vocabulary {
-  return {
-    publicVocabularyId: userVoc.publicVocabulary.id,
-    word: userVoc.publicVocabulary.word,
-    definitions: userVoc.publicVocabulary.definitions.map(transformVocabularyDefinition),
-    addedAt: userVoc.addedAt.toISOString().split('T')[0],
-    familiarity: userVoc.familiarity,
-    personalNote: userVoc.personalNote || undefined,
-    customDefinition: userVoc.customDefinition || undefined,
-    customExample: userVoc.customExample || undefined,
-    userId: userVoc.userId,
-  };
+    return {
+        publicVocabularyId: userVoc.publicVocabulary.id,
+        word: userVoc.publicVocabulary.word,
+        definitions: userVoc.publicVocabulary.definitions.map(transformVocabularyDefinition),
+        addedAt: userVoc.addedAt.toISOString().split('T')[0],
+        familiarity: userVoc.familiarity,
+        personalNote: userVoc.personalNote || undefined,
+        customDefinition: userVoc.customDefinition || undefined,
+        customExample: userVoc.customExample || undefined,
+        userId: userVoc.userId,
+    };
 }
 
 /**
  * 轉換考試用的單字數據到前端 Vocabulary 類型
  */
 export function transformExamVocabularyToVocabulary(
-  examVoc: PrismaUserVocabulary
+    examVoc: PrismaUserVocabulary
 ): Vocabulary {
-  return {
-    publicVocabularyId: examVoc.publicVocabulary.id,
-    word: examVoc.publicVocabulary.word,
-    definitions: examVoc.publicVocabulary.definitions.map(transformVocabularyDefinition),
-    familiarity: examVoc.familiarity,
-    personalNote: examVoc.personalNote || undefined,
-    customDefinition: examVoc.customDefinition || undefined,
-    customExample: examVoc.customExample || undefined,
-    userId: examVoc.userId,
-  };
+    return {
+        publicVocabularyId: examVoc.publicVocabulary.id,
+        userVocabularyId: examVoc.id,
+        word: examVoc.publicVocabulary.word,
+        definitions: examVoc.publicVocabulary.definitions.map(transformVocabularyDefinition),
+        familiarity: examVoc.familiarity,
+        personalNote: examVoc.personalNote || undefined,
+        customDefinition: examVoc.customDefinition || undefined,
+        customExample: examVoc.customExample || undefined,
+        userId: examVoc.userId,
+    };
+}
+
+export function parseGPTResponseToVocabulary(jsonText: string): (Vocabulary | null) {
+    try {
+        const obj: GPTVocabularyResponse = JSON.parse(jsonText);
+        const nanoid = customAlphabet('1234567890abcdef', 12);
+
+        // 驗證必要欄位
+        if (!obj.word || !Array.isArray(obj.definitions) || obj.definitions.length === 0) {
+            console.error('Invalid GPT response structure:', obj);
+            return null;
+        }
+
+        // 轉換定義格式，添加 id 並處理 undefined 值
+        const definitions: VocabularyDefinition[] = obj.definitions.map((def) => ({
+            id: `def_${nanoid()}`,
+            partOfSpeech: def.partOfSpeech || 'N/A',
+            definition: def.definition || 'N/A',
+            localDefinition: def.localDefinition === 'N/A' ? undefined : def.localDefinition,
+            example: def.example === 'N/A' ? undefined : def.example,
+            exampleTranslation: def.exampleTranslation === 'N/A' ? undefined : def.exampleTranslation,
+            pronunciation: def.pronunciation === 'N/A' ? undefined : def.pronunciation,
+            synonyms: def.synonyms === 'N/A' ? undefined : def.synonyms,
+            antonyms: def.antonyms === 'N/A' ? undefined : def.antonyms,
+        }));
+
+        const vocabulary: Vocabulary = {
+            publicVocabularyId: `pvoc_${nanoid()}`,
+            word: obj.word.toLowerCase(),
+            definitions,
+        };
+
+        // 使用 Zod 驗證數據格式
+        return validateVocabulary(vocabulary);
+    } catch (err) {
+        console.error('Failed to parse vocabulary JSON:', err);
+        return null;
+    }
+}
+
+//----------------------------------------------------------------------------
+
+
+export function transformFullArticleToArticle(fullArticle: PrismaFullArticle): Article {
+    return {
+        publicArticleId: fullArticle.publicArticle.id,
+        userArticleId: fullArticle.id,
+        title: fullArticle.publicArticle.title,
+        date: fullArticle.publicArticle.publishedAt.toISOString(),
+        author: fullArticle.publicArticle.author || 'BBC News',
+        image: fullArticle.publicArticle.coverImage || '',
+        slug: fullArticle.publicArticle.slug,
+        savedAt: fullArticle.savedAt.toISOString(),
+        userId: fullArticle.userId,
+    };
+}
+
+export function transformContentToArticleContent(content: PrismaArticleContent): Content {
+    return {
+        content: content.content,
+        contentId: content.id,
+        createdAt: content.createdAt.toISOString(),
+    };
 }

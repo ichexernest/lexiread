@@ -29,6 +29,11 @@ export type VocabularyDefinition = $Result.DefaultSelection<Prisma.$VocabularyDe
  */
 export type PublicArticle = $Result.DefaultSelection<Prisma.$PublicArticlePayload>
 /**
+ * Model ArticleContent
+ * 
+ */
+export type ArticleContent = $Result.DefaultSelection<Prisma.$ArticleContentPayload>
+/**
  * Model User
  * 
  */
@@ -198,6 +203,16 @@ export class PrismaClient<
     * ```
     */
   get publicArticle(): Prisma.PublicArticleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.articleContent`: Exposes CRUD operations for the **ArticleContent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ArticleContents
+    * const articleContents = await prisma.articleContent.findMany()
+    * ```
+    */
+  get articleContent(): Prisma.ArticleContentDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -671,6 +686,7 @@ export namespace Prisma {
     PublicVocabulary: 'PublicVocabulary',
     VocabularyDefinition: 'VocabularyDefinition',
     PublicArticle: 'PublicArticle',
+    ArticleContent: 'ArticleContent',
     User: 'User',
     UserVocabulary: 'UserVocabulary',
     UserArticle: 'UserArticle'
@@ -692,7 +708,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "publicVocabulary" | "vocabularyDefinition" | "publicArticle" | "user" | "userVocabulary" | "userArticle"
+      modelProps: "publicVocabulary" | "vocabularyDefinition" | "publicArticle" | "articleContent" | "user" | "userVocabulary" | "userArticle"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -915,6 +931,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PublicArticleCountArgs<ExtArgs>
             result: $Utils.Optional<PublicArticleCountAggregateOutputType> | number
+          }
+        }
+      }
+      ArticleContent: {
+        payload: Prisma.$ArticleContentPayload<ExtArgs>
+        fields: Prisma.ArticleContentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArticleContentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArticleContentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>
+          }
+          findFirst: {
+            args: Prisma.ArticleContentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArticleContentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>
+          }
+          findMany: {
+            args: Prisma.ArticleContentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>[]
+          }
+          create: {
+            args: Prisma.ArticleContentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>
+          }
+          createMany: {
+            args: Prisma.ArticleContentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArticleContentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>[]
+          }
+          delete: {
+            args: Prisma.ArticleContentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>
+          }
+          update: {
+            args: Prisma.ArticleContentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>
+          }
+          deleteMany: {
+            args: Prisma.ArticleContentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArticleContentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArticleContentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>[]
+          }
+          upsert: {
+            args: Prisma.ArticleContentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleContentPayload>
+          }
+          aggregate: {
+            args: Prisma.ArticleContentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArticleContent>
+          }
+          groupBy: {
+            args: Prisma.ArticleContentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArticleContentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArticleContentCountArgs<ExtArgs>
+            result: $Utils.Optional<ArticleContentCountAggregateOutputType> | number
           }
         }
       }
@@ -1227,6 +1317,7 @@ export namespace Prisma {
     publicVocabulary?: PublicVocabularyOmit
     vocabularyDefinition?: VocabularyDefinitionOmit
     publicArticle?: PublicArticleOmit
+    articleContent?: ArticleContentOmit
     user?: UserOmit
     userVocabulary?: UserVocabularyOmit
     userArticle?: UserArticleOmit
@@ -3656,33 +3747,33 @@ export namespace Prisma {
     id: string | null
     slug: string | null
     title: string | null
-    content: string | null
     publishedAt: Date | null
     updatedAt: Date | null
     author: string | null
     coverImage: string | null
+    contentId: string | null
   }
 
   export type PublicArticleMaxAggregateOutputType = {
     id: string | null
     slug: string | null
     title: string | null
-    content: string | null
     publishedAt: Date | null
     updatedAt: Date | null
     author: string | null
     coverImage: string | null
+    contentId: string | null
   }
 
   export type PublicArticleCountAggregateOutputType = {
     id: number
     slug: number
     title: number
-    content: number
     publishedAt: number
     updatedAt: number
     author: number
     coverImage: number
+    contentId: number
     _all: number
   }
 
@@ -3691,33 +3782,33 @@ export namespace Prisma {
     id?: true
     slug?: true
     title?: true
-    content?: true
     publishedAt?: true
     updatedAt?: true
     author?: true
     coverImage?: true
+    contentId?: true
   }
 
   export type PublicArticleMaxAggregateInputType = {
     id?: true
     slug?: true
     title?: true
-    content?: true
     publishedAt?: true
     updatedAt?: true
     author?: true
     coverImage?: true
+    contentId?: true
   }
 
   export type PublicArticleCountAggregateInputType = {
     id?: true
     slug?: true
     title?: true
-    content?: true
     publishedAt?: true
     updatedAt?: true
     author?: true
     coverImage?: true
+    contentId?: true
     _all?: true
   }
 
@@ -3797,11 +3888,11 @@ export namespace Prisma {
     id: string
     slug: string
     title: string
-    content: string
     publishedAt: Date
     updatedAt: Date
     author: string | null
     coverImage: string | null
+    contentId: string | null
     _count: PublicArticleCountAggregateOutputType | null
     _min: PublicArticleMinAggregateOutputType | null
     _max: PublicArticleMaxAggregateOutputType | null
@@ -3825,11 +3916,12 @@ export namespace Prisma {
     id?: boolean
     slug?: boolean
     title?: boolean
-    content?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
     author?: boolean
     coverImage?: boolean
+    contentId?: boolean
+    content?: boolean | PublicArticle$contentArgs<ExtArgs>
     userArticles?: boolean | PublicArticle$userArticlesArgs<ExtArgs>
     _count?: boolean | PublicArticleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["publicArticle"]>
@@ -3838,57 +3930,65 @@ export namespace Prisma {
     id?: boolean
     slug?: boolean
     title?: boolean
-    content?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
     author?: boolean
     coverImage?: boolean
+    contentId?: boolean
+    content?: boolean | PublicArticle$contentArgs<ExtArgs>
   }, ExtArgs["result"]["publicArticle"]>
 
   export type PublicArticleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     slug?: boolean
     title?: boolean
-    content?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
     author?: boolean
     coverImage?: boolean
+    contentId?: boolean
+    content?: boolean | PublicArticle$contentArgs<ExtArgs>
   }, ExtArgs["result"]["publicArticle"]>
 
   export type PublicArticleSelectScalar = {
     id?: boolean
     slug?: boolean
     title?: boolean
-    content?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
     author?: boolean
     coverImage?: boolean
+    contentId?: boolean
   }
 
-  export type PublicArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "content" | "publishedAt" | "updatedAt" | "author" | "coverImage", ExtArgs["result"]["publicArticle"]>
+  export type PublicArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "publishedAt" | "updatedAt" | "author" | "coverImage" | "contentId", ExtArgs["result"]["publicArticle"]>
   export type PublicArticleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    content?: boolean | PublicArticle$contentArgs<ExtArgs>
     userArticles?: boolean | PublicArticle$userArticlesArgs<ExtArgs>
     _count?: boolean | PublicArticleCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type PublicArticleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type PublicArticleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PublicArticleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    content?: boolean | PublicArticle$contentArgs<ExtArgs>
+  }
+  export type PublicArticleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    content?: boolean | PublicArticle$contentArgs<ExtArgs>
+  }
 
   export type $PublicArticlePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PublicArticle"
     objects: {
+      content: Prisma.$ArticleContentPayload<ExtArgs> | null
       userArticles: Prisma.$UserArticlePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       slug: string
       title: string
-      content: string
       publishedAt: Date
       updatedAt: Date
       author: string | null
       coverImage: string | null
+      contentId: string | null
     }, ExtArgs["result"]["publicArticle"]>
     composites: {}
   }
@@ -4283,6 +4383,7 @@ export namespace Prisma {
    */
   export interface Prisma__PublicArticleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    content<T extends PublicArticle$contentArgs<ExtArgs> = {}>(args?: Subset<T, PublicArticle$contentArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     userArticles<T extends PublicArticle$userArticlesArgs<ExtArgs> = {}>(args?: Subset<T, PublicArticle$userArticlesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4316,11 +4417,11 @@ export namespace Prisma {
     readonly id: FieldRef<"PublicArticle", 'String'>
     readonly slug: FieldRef<"PublicArticle", 'String'>
     readonly title: FieldRef<"PublicArticle", 'String'>
-    readonly content: FieldRef<"PublicArticle", 'String'>
     readonly publishedAt: FieldRef<"PublicArticle", 'DateTime'>
     readonly updatedAt: FieldRef<"PublicArticle", 'DateTime'>
     readonly author: FieldRef<"PublicArticle", 'String'>
     readonly coverImage: FieldRef<"PublicArticle", 'String'>
+    readonly contentId: FieldRef<"PublicArticle", 'String'>
   }
     
 
@@ -4570,6 +4671,10 @@ export namespace Prisma {
      */
     data: PublicArticleCreateManyInput | PublicArticleCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicArticleIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4640,6 +4745,10 @@ export namespace Prisma {
      * Limit how many PublicArticles to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicArticleIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4709,6 +4818,25 @@ export namespace Prisma {
   }
 
   /**
+   * PublicArticle.content
+   */
+  export type PublicArticle$contentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    where?: ArticleContentWhereInput
+  }
+
+  /**
    * PublicArticle.userArticles
    */
   export type PublicArticle$userArticlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4748,6 +4876,1043 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PublicArticleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ArticleContent
+   */
+
+  export type AggregateArticleContent = {
+    _count: ArticleContentCountAggregateOutputType | null
+    _min: ArticleContentMinAggregateOutputType | null
+    _max: ArticleContentMaxAggregateOutputType | null
+  }
+
+  export type ArticleContentMinAggregateOutputType = {
+    id: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type ArticleContentMaxAggregateOutputType = {
+    id: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type ArticleContentCountAggregateOutputType = {
+    id: number
+    content: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ArticleContentMinAggregateInputType = {
+    id?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type ArticleContentMaxAggregateInputType = {
+    id?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type ArticleContentCountAggregateInputType = {
+    id?: true
+    content?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ArticleContentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArticleContent to aggregate.
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleContents to fetch.
+     */
+    orderBy?: ArticleContentOrderByWithRelationInput | ArticleContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArticleContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleContents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ArticleContents
+    **/
+    _count?: true | ArticleContentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArticleContentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArticleContentMaxAggregateInputType
+  }
+
+  export type GetArticleContentAggregateType<T extends ArticleContentAggregateArgs> = {
+        [P in keyof T & keyof AggregateArticleContent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArticleContent[P]>
+      : GetScalarType<T[P], AggregateArticleContent[P]>
+  }
+
+
+
+
+  export type ArticleContentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleContentWhereInput
+    orderBy?: ArticleContentOrderByWithAggregationInput | ArticleContentOrderByWithAggregationInput[]
+    by: ArticleContentScalarFieldEnum[] | ArticleContentScalarFieldEnum
+    having?: ArticleContentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArticleContentCountAggregateInputType | true
+    _min?: ArticleContentMinAggregateInputType
+    _max?: ArticleContentMaxAggregateInputType
+  }
+
+  export type ArticleContentGroupByOutputType = {
+    id: string
+    content: string
+    createdAt: Date
+    _count: ArticleContentCountAggregateOutputType | null
+    _min: ArticleContentMinAggregateOutputType | null
+    _max: ArticleContentMaxAggregateOutputType | null
+  }
+
+  type GetArticleContentGroupByPayload<T extends ArticleContentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArticleContentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArticleContentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArticleContentGroupByOutputType[P]>
+            : GetScalarType<T[P], ArticleContentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArticleContentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    createdAt?: boolean
+    article?: boolean | ArticleContent$articleArgs<ExtArgs>
+  }, ExtArgs["result"]["articleContent"]>
+
+  export type ArticleContentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["articleContent"]>
+
+  export type ArticleContentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["articleContent"]>
+
+  export type ArticleContentSelectScalar = {
+    id?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }
+
+  export type ArticleContentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt", ExtArgs["result"]["articleContent"]>
+  export type ArticleContentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    article?: boolean | ArticleContent$articleArgs<ExtArgs>
+  }
+  export type ArticleContentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ArticleContentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ArticleContentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ArticleContent"
+    objects: {
+      article: Prisma.$PublicArticlePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      content: string
+      createdAt: Date
+    }, ExtArgs["result"]["articleContent"]>
+    composites: {}
+  }
+
+  type ArticleContentGetPayload<S extends boolean | null | undefined | ArticleContentDefaultArgs> = $Result.GetResult<Prisma.$ArticleContentPayload, S>
+
+  type ArticleContentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArticleContentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArticleContentCountAggregateInputType | true
+    }
+
+  export interface ArticleContentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArticleContent'], meta: { name: 'ArticleContent' } }
+    /**
+     * Find zero or one ArticleContent that matches the filter.
+     * @param {ArticleContentFindUniqueArgs} args - Arguments to find a ArticleContent
+     * @example
+     * // Get one ArticleContent
+     * const articleContent = await prisma.articleContent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArticleContentFindUniqueArgs>(args: SelectSubset<T, ArticleContentFindUniqueArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ArticleContent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArticleContentFindUniqueOrThrowArgs} args - Arguments to find a ArticleContent
+     * @example
+     * // Get one ArticleContent
+     * const articleContent = await prisma.articleContent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArticleContentFindUniqueOrThrowArgs>(args: SelectSubset<T, ArticleContentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArticleContent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentFindFirstArgs} args - Arguments to find a ArticleContent
+     * @example
+     * // Get one ArticleContent
+     * const articleContent = await prisma.articleContent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArticleContentFindFirstArgs>(args?: SelectSubset<T, ArticleContentFindFirstArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArticleContent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentFindFirstOrThrowArgs} args - Arguments to find a ArticleContent
+     * @example
+     * // Get one ArticleContent
+     * const articleContent = await prisma.articleContent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArticleContentFindFirstOrThrowArgs>(args?: SelectSubset<T, ArticleContentFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ArticleContents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ArticleContents
+     * const articleContents = await prisma.articleContent.findMany()
+     * 
+     * // Get first 10 ArticleContents
+     * const articleContents = await prisma.articleContent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const articleContentWithIdOnly = await prisma.articleContent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArticleContentFindManyArgs>(args?: SelectSubset<T, ArticleContentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ArticleContent.
+     * @param {ArticleContentCreateArgs} args - Arguments to create a ArticleContent.
+     * @example
+     * // Create one ArticleContent
+     * const ArticleContent = await prisma.articleContent.create({
+     *   data: {
+     *     // ... data to create a ArticleContent
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArticleContentCreateArgs>(args: SelectSubset<T, ArticleContentCreateArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ArticleContents.
+     * @param {ArticleContentCreateManyArgs} args - Arguments to create many ArticleContents.
+     * @example
+     * // Create many ArticleContents
+     * const articleContent = await prisma.articleContent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArticleContentCreateManyArgs>(args?: SelectSubset<T, ArticleContentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ArticleContents and returns the data saved in the database.
+     * @param {ArticleContentCreateManyAndReturnArgs} args - Arguments to create many ArticleContents.
+     * @example
+     * // Create many ArticleContents
+     * const articleContent = await prisma.articleContent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ArticleContents and only return the `id`
+     * const articleContentWithIdOnly = await prisma.articleContent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArticleContentCreateManyAndReturnArgs>(args?: SelectSubset<T, ArticleContentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ArticleContent.
+     * @param {ArticleContentDeleteArgs} args - Arguments to delete one ArticleContent.
+     * @example
+     * // Delete one ArticleContent
+     * const ArticleContent = await prisma.articleContent.delete({
+     *   where: {
+     *     // ... filter to delete one ArticleContent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArticleContentDeleteArgs>(args: SelectSubset<T, ArticleContentDeleteArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ArticleContent.
+     * @param {ArticleContentUpdateArgs} args - Arguments to update one ArticleContent.
+     * @example
+     * // Update one ArticleContent
+     * const articleContent = await prisma.articleContent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArticleContentUpdateArgs>(args: SelectSubset<T, ArticleContentUpdateArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ArticleContents.
+     * @param {ArticleContentDeleteManyArgs} args - Arguments to filter ArticleContents to delete.
+     * @example
+     * // Delete a few ArticleContents
+     * const { count } = await prisma.articleContent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArticleContentDeleteManyArgs>(args?: SelectSubset<T, ArticleContentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArticleContents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ArticleContents
+     * const articleContent = await prisma.articleContent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArticleContentUpdateManyArgs>(args: SelectSubset<T, ArticleContentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArticleContents and returns the data updated in the database.
+     * @param {ArticleContentUpdateManyAndReturnArgs} args - Arguments to update many ArticleContents.
+     * @example
+     * // Update many ArticleContents
+     * const articleContent = await prisma.articleContent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ArticleContents and only return the `id`
+     * const articleContentWithIdOnly = await prisma.articleContent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArticleContentUpdateManyAndReturnArgs>(args: SelectSubset<T, ArticleContentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ArticleContent.
+     * @param {ArticleContentUpsertArgs} args - Arguments to update or create a ArticleContent.
+     * @example
+     * // Update or create a ArticleContent
+     * const articleContent = await prisma.articleContent.upsert({
+     *   create: {
+     *     // ... data to create a ArticleContent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ArticleContent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArticleContentUpsertArgs>(args: SelectSubset<T, ArticleContentUpsertArgs<ExtArgs>>): Prisma__ArticleContentClient<$Result.GetResult<Prisma.$ArticleContentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ArticleContents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentCountArgs} args - Arguments to filter ArticleContents to count.
+     * @example
+     * // Count the number of ArticleContents
+     * const count = await prisma.articleContent.count({
+     *   where: {
+     *     // ... the filter for the ArticleContents we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArticleContentCountArgs>(
+      args?: Subset<T, ArticleContentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArticleContentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ArticleContent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArticleContentAggregateArgs>(args: Subset<T, ArticleContentAggregateArgs>): Prisma.PrismaPromise<GetArticleContentAggregateType<T>>
+
+    /**
+     * Group by ArticleContent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleContentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArticleContentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArticleContentGroupByArgs['orderBy'] }
+        : { orderBy?: ArticleContentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArticleContentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArticleContentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ArticleContent model
+   */
+  readonly fields: ArticleContentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ArticleContent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArticleContentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    article<T extends ArticleContent$articleArgs<ExtArgs> = {}>(args?: Subset<T, ArticleContent$articleArgs<ExtArgs>>): Prisma__PublicArticleClient<$Result.GetResult<Prisma.$PublicArticlePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ArticleContent model
+   */
+  interface ArticleContentFieldRefs {
+    readonly id: FieldRef<"ArticleContent", 'String'>
+    readonly content: FieldRef<"ArticleContent", 'String'>
+    readonly createdAt: FieldRef<"ArticleContent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ArticleContent findUnique
+   */
+  export type ArticleContentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleContent to fetch.
+     */
+    where: ArticleContentWhereUniqueInput
+  }
+
+  /**
+   * ArticleContent findUniqueOrThrow
+   */
+  export type ArticleContentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleContent to fetch.
+     */
+    where: ArticleContentWhereUniqueInput
+  }
+
+  /**
+   * ArticleContent findFirst
+   */
+  export type ArticleContentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleContent to fetch.
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleContents to fetch.
+     */
+    orderBy?: ArticleContentOrderByWithRelationInput | ArticleContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArticleContents.
+     */
+    cursor?: ArticleContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleContents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleContents.
+     */
+    distinct?: ArticleContentScalarFieldEnum | ArticleContentScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleContent findFirstOrThrow
+   */
+  export type ArticleContentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleContent to fetch.
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleContents to fetch.
+     */
+    orderBy?: ArticleContentOrderByWithRelationInput | ArticleContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArticleContents.
+     */
+    cursor?: ArticleContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleContents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleContents.
+     */
+    distinct?: ArticleContentScalarFieldEnum | ArticleContentScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleContent findMany
+   */
+  export type ArticleContentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleContents to fetch.
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleContents to fetch.
+     */
+    orderBy?: ArticleContentOrderByWithRelationInput | ArticleContentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ArticleContents.
+     */
+    cursor?: ArticleContentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleContents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleContents.
+     */
+    skip?: number
+    distinct?: ArticleContentScalarFieldEnum | ArticleContentScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleContent create
+   */
+  export type ArticleContentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ArticleContent.
+     */
+    data: XOR<ArticleContentCreateInput, ArticleContentUncheckedCreateInput>
+  }
+
+  /**
+   * ArticleContent createMany
+   */
+  export type ArticleContentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ArticleContents.
+     */
+    data: ArticleContentCreateManyInput | ArticleContentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ArticleContent createManyAndReturn
+   */
+  export type ArticleContentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * The data used to create many ArticleContents.
+     */
+    data: ArticleContentCreateManyInput | ArticleContentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ArticleContent update
+   */
+  export type ArticleContentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ArticleContent.
+     */
+    data: XOR<ArticleContentUpdateInput, ArticleContentUncheckedUpdateInput>
+    /**
+     * Choose, which ArticleContent to update.
+     */
+    where: ArticleContentWhereUniqueInput
+  }
+
+  /**
+   * ArticleContent updateMany
+   */
+  export type ArticleContentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ArticleContents.
+     */
+    data: XOR<ArticleContentUpdateManyMutationInput, ArticleContentUncheckedUpdateManyInput>
+    /**
+     * Filter which ArticleContents to update
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * Limit how many ArticleContents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleContent updateManyAndReturn
+   */
+  export type ArticleContentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * The data used to update ArticleContents.
+     */
+    data: XOR<ArticleContentUpdateManyMutationInput, ArticleContentUncheckedUpdateManyInput>
+    /**
+     * Filter which ArticleContents to update
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * Limit how many ArticleContents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleContent upsert
+   */
+  export type ArticleContentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ArticleContent to update in case it exists.
+     */
+    where: ArticleContentWhereUniqueInput
+    /**
+     * In case the ArticleContent found by the `where` argument doesn't exist, create a new ArticleContent with this data.
+     */
+    create: XOR<ArticleContentCreateInput, ArticleContentUncheckedCreateInput>
+    /**
+     * In case the ArticleContent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArticleContentUpdateInput, ArticleContentUncheckedUpdateInput>
+  }
+
+  /**
+   * ArticleContent delete
+   */
+  export type ArticleContentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
+    /**
+     * Filter which ArticleContent to delete.
+     */
+    where: ArticleContentWhereUniqueInput
+  }
+
+  /**
+   * ArticleContent deleteMany
+   */
+  export type ArticleContentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArticleContents to delete
+     */
+    where?: ArticleContentWhereInput
+    /**
+     * Limit how many ArticleContents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleContent.article
+   */
+  export type ArticleContent$articleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicArticle
+     */
+    select?: PublicArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicArticle
+     */
+    omit?: PublicArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicArticleInclude<ExtArgs> | null
+    where?: PublicArticleWhereInput
+  }
+
+  /**
+   * ArticleContent without action
+   */
+  export type ArticleContentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleContent
+     */
+    select?: ArticleContentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleContent
+     */
+    omit?: ArticleContentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleContentInclude<ExtArgs> | null
   }
 
 
@@ -8085,14 +9250,23 @@ export namespace Prisma {
     id: 'id',
     slug: 'slug',
     title: 'title',
-    content: 'content',
     publishedAt: 'publishedAt',
     updatedAt: 'updatedAt',
     author: 'author',
-    coverImage: 'coverImage'
+    coverImage: 'coverImage',
+    contentId: 'contentId'
   };
 
   export type PublicArticleScalarFieldEnum = (typeof PublicArticleScalarFieldEnum)[keyof typeof PublicArticleScalarFieldEnum]
+
+
+  export const ArticleContentScalarFieldEnum: {
+    id: 'id',
+    content: 'content',
+    createdAt: 'createdAt'
+  };
+
+  export type ArticleContentScalarFieldEnum = (typeof ArticleContentScalarFieldEnum)[keyof typeof ArticleContentScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -8358,11 +9532,12 @@ export namespace Prisma {
     id?: StringFilter<"PublicArticle"> | string
     slug?: StringFilter<"PublicArticle"> | string
     title?: StringFilter<"PublicArticle"> | string
-    content?: StringFilter<"PublicArticle"> | string
     publishedAt?: DateTimeFilter<"PublicArticle"> | Date | string
     updatedAt?: DateTimeFilter<"PublicArticle"> | Date | string
     author?: StringNullableFilter<"PublicArticle"> | string | null
     coverImage?: StringNullableFilter<"PublicArticle"> | string | null
+    contentId?: StringNullableFilter<"PublicArticle"> | string | null
+    content?: XOR<ArticleContentNullableScalarRelationFilter, ArticleContentWhereInput> | null
     userArticles?: UserArticleListRelationFilter
   }
 
@@ -8370,38 +9545,40 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
-    content?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
     author?: SortOrderInput | SortOrder
     coverImage?: SortOrderInput | SortOrder
+    contentId?: SortOrderInput | SortOrder
+    content?: ArticleContentOrderByWithRelationInput
     userArticles?: UserArticleOrderByRelationAggregateInput
   }
 
   export type PublicArticleWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     slug?: string
+    contentId?: string
     AND?: PublicArticleWhereInput | PublicArticleWhereInput[]
     OR?: PublicArticleWhereInput[]
     NOT?: PublicArticleWhereInput | PublicArticleWhereInput[]
     title?: StringFilter<"PublicArticle"> | string
-    content?: StringFilter<"PublicArticle"> | string
     publishedAt?: DateTimeFilter<"PublicArticle"> | Date | string
     updatedAt?: DateTimeFilter<"PublicArticle"> | Date | string
     author?: StringNullableFilter<"PublicArticle"> | string | null
     coverImage?: StringNullableFilter<"PublicArticle"> | string | null
+    content?: XOR<ArticleContentNullableScalarRelationFilter, ArticleContentWhereInput> | null
     userArticles?: UserArticleListRelationFilter
-  }, "id" | "slug">
+  }, "id" | "slug" | "contentId">
 
   export type PublicArticleOrderByWithAggregationInput = {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
-    content?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
     author?: SortOrderInput | SortOrder
     coverImage?: SortOrderInput | SortOrder
+    contentId?: SortOrderInput | SortOrder
     _count?: PublicArticleCountOrderByAggregateInput
     _max?: PublicArticleMaxOrderByAggregateInput
     _min?: PublicArticleMinOrderByAggregateInput
@@ -8414,11 +9591,56 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PublicArticle"> | string
     slug?: StringWithAggregatesFilter<"PublicArticle"> | string
     title?: StringWithAggregatesFilter<"PublicArticle"> | string
-    content?: StringWithAggregatesFilter<"PublicArticle"> | string
     publishedAt?: DateTimeWithAggregatesFilter<"PublicArticle"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PublicArticle"> | Date | string
     author?: StringNullableWithAggregatesFilter<"PublicArticle"> | string | null
     coverImage?: StringNullableWithAggregatesFilter<"PublicArticle"> | string | null
+    contentId?: StringNullableWithAggregatesFilter<"PublicArticle"> | string | null
+  }
+
+  export type ArticleContentWhereInput = {
+    AND?: ArticleContentWhereInput | ArticleContentWhereInput[]
+    OR?: ArticleContentWhereInput[]
+    NOT?: ArticleContentWhereInput | ArticleContentWhereInput[]
+    id?: StringFilter<"ArticleContent"> | string
+    content?: StringFilter<"ArticleContent"> | string
+    createdAt?: DateTimeFilter<"ArticleContent"> | Date | string
+    article?: XOR<PublicArticleNullableScalarRelationFilter, PublicArticleWhereInput> | null
+  }
+
+  export type ArticleContentOrderByWithRelationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    article?: PublicArticleOrderByWithRelationInput
+  }
+
+  export type ArticleContentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ArticleContentWhereInput | ArticleContentWhereInput[]
+    OR?: ArticleContentWhereInput[]
+    NOT?: ArticleContentWhereInput | ArticleContentWhereInput[]
+    content?: StringFilter<"ArticleContent"> | string
+    createdAt?: DateTimeFilter<"ArticleContent"> | Date | string
+    article?: XOR<PublicArticleNullableScalarRelationFilter, PublicArticleWhereInput> | null
+  }, "id">
+
+  export type ArticleContentOrderByWithAggregationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    _count?: ArticleContentCountOrderByAggregateInput
+    _max?: ArticleContentMaxOrderByAggregateInput
+    _min?: ArticleContentMinOrderByAggregateInput
+  }
+
+  export type ArticleContentScalarWhereWithAggregatesInput = {
+    AND?: ArticleContentScalarWhereWithAggregatesInput | ArticleContentScalarWhereWithAggregatesInput[]
+    OR?: ArticleContentScalarWhereWithAggregatesInput[]
+    NOT?: ArticleContentScalarWhereWithAggregatesInput | ArticleContentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ArticleContent"> | string
+    content?: StringWithAggregatesFilter<"ArticleContent"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ArticleContent"> | Date | string
   }
 
   export type UserWhereInput = {
@@ -8760,11 +9982,11 @@ export namespace Prisma {
     id: string
     slug: string
     title: string
-    content: string
     publishedAt?: Date | string
     updatedAt?: Date | string
     author?: string | null
     coverImage?: string | null
+    content?: ArticleContentCreateNestedOneWithoutArticleInput
     userArticles?: UserArticleCreateNestedManyWithoutPublicArticleInput
   }
 
@@ -8772,11 +9994,11 @@ export namespace Prisma {
     id: string
     slug: string
     title: string
-    content: string
     publishedAt?: Date | string
     updatedAt?: Date | string
     author?: string | null
     coverImage?: string | null
+    contentId?: string | null
     userArticles?: UserArticleUncheckedCreateNestedManyWithoutPublicArticleInput
   }
 
@@ -8784,11 +10006,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: ArticleContentUpdateOneWithoutArticleNestedInput
     userArticles?: UserArticleUpdateManyWithoutPublicArticleNestedInput
   }
 
@@ -8796,11 +10018,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    contentId?: NullableStringFieldUpdateOperationsInput | string | null
     userArticles?: UserArticleUncheckedUpdateManyWithoutPublicArticleNestedInput
   }
 
@@ -8808,18 +10030,17 @@ export namespace Prisma {
     id: string
     slug: string
     title: string
-    content: string
     publishedAt?: Date | string
     updatedAt?: Date | string
     author?: string | null
     coverImage?: string | null
+    contentId?: string | null
   }
 
   export type PublicArticleUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8830,11 +10051,57 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    contentId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ArticleContentCreateInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    article?: PublicArticleCreateNestedOneWithoutContentInput
+  }
+
+  export type ArticleContentUncheckedCreateInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    article?: PublicArticleUncheckedCreateNestedOneWithoutContentInput
+  }
+
+  export type ArticleContentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: PublicArticleUpdateOneWithoutContentNestedInput
+  }
+
+  export type ArticleContentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: PublicArticleUncheckedUpdateOneWithoutContentNestedInput
+  }
+
+  export type ArticleContentCreateManyInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ArticleContentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArticleContentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateInput = {
@@ -9204,6 +10471,11 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type ArticleContentNullableScalarRelationFilter = {
+    is?: ArticleContentWhereInput | null
+    isNot?: ArticleContentWhereInput | null
+  }
+
   export type UserArticleListRelationFilter = {
     every?: UserArticleWhereInput
     some?: UserArticleWhereInput
@@ -9218,33 +10490,56 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
-    content?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
     author?: SortOrder
     coverImage?: SortOrder
+    contentId?: SortOrder
   }
 
   export type PublicArticleMaxOrderByAggregateInput = {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
-    content?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
     author?: SortOrder
     coverImage?: SortOrder
+    contentId?: SortOrder
   }
 
   export type PublicArticleMinOrderByAggregateInput = {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
-    content?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
     author?: SortOrder
     coverImage?: SortOrder
+    contentId?: SortOrder
+  }
+
+  export type PublicArticleNullableScalarRelationFilter = {
+    is?: PublicArticleWhereInput | null
+    isNot?: PublicArticleWhereInput | null
+  }
+
+  export type ArticleContentCountOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ArticleContentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ArticleContentMinOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -9490,6 +10785,12 @@ export namespace Prisma {
     update?: XOR<XOR<PublicVocabularyUpdateToOneWithWhereWithoutDefinitionsInput, PublicVocabularyUpdateWithoutDefinitionsInput>, PublicVocabularyUncheckedUpdateWithoutDefinitionsInput>
   }
 
+  export type ArticleContentCreateNestedOneWithoutArticleInput = {
+    create?: XOR<ArticleContentCreateWithoutArticleInput, ArticleContentUncheckedCreateWithoutArticleInput>
+    connectOrCreate?: ArticleContentCreateOrConnectWithoutArticleInput
+    connect?: ArticleContentWhereUniqueInput
+  }
+
   export type UserArticleCreateNestedManyWithoutPublicArticleInput = {
     create?: XOR<UserArticleCreateWithoutPublicArticleInput, UserArticleUncheckedCreateWithoutPublicArticleInput> | UserArticleCreateWithoutPublicArticleInput[] | UserArticleUncheckedCreateWithoutPublicArticleInput[]
     connectOrCreate?: UserArticleCreateOrConnectWithoutPublicArticleInput | UserArticleCreateOrConnectWithoutPublicArticleInput[]
@@ -9502,6 +10803,16 @@ export namespace Prisma {
     connectOrCreate?: UserArticleCreateOrConnectWithoutPublicArticleInput | UserArticleCreateOrConnectWithoutPublicArticleInput[]
     createMany?: UserArticleCreateManyPublicArticleInputEnvelope
     connect?: UserArticleWhereUniqueInput | UserArticleWhereUniqueInput[]
+  }
+
+  export type ArticleContentUpdateOneWithoutArticleNestedInput = {
+    create?: XOR<ArticleContentCreateWithoutArticleInput, ArticleContentUncheckedCreateWithoutArticleInput>
+    connectOrCreate?: ArticleContentCreateOrConnectWithoutArticleInput
+    upsert?: ArticleContentUpsertWithoutArticleInput
+    disconnect?: ArticleContentWhereInput | boolean
+    delete?: ArticleContentWhereInput | boolean
+    connect?: ArticleContentWhereUniqueInput
+    update?: XOR<XOR<ArticleContentUpdateToOneWithWhereWithoutArticleInput, ArticleContentUpdateWithoutArticleInput>, ArticleContentUncheckedUpdateWithoutArticleInput>
   }
 
   export type UserArticleUpdateManyWithoutPublicArticleNestedInput = {
@@ -9530,6 +10841,38 @@ export namespace Prisma {
     update?: UserArticleUpdateWithWhereUniqueWithoutPublicArticleInput | UserArticleUpdateWithWhereUniqueWithoutPublicArticleInput[]
     updateMany?: UserArticleUpdateManyWithWhereWithoutPublicArticleInput | UserArticleUpdateManyWithWhereWithoutPublicArticleInput[]
     deleteMany?: UserArticleScalarWhereInput | UserArticleScalarWhereInput[]
+  }
+
+  export type PublicArticleCreateNestedOneWithoutContentInput = {
+    create?: XOR<PublicArticleCreateWithoutContentInput, PublicArticleUncheckedCreateWithoutContentInput>
+    connectOrCreate?: PublicArticleCreateOrConnectWithoutContentInput
+    connect?: PublicArticleWhereUniqueInput
+  }
+
+  export type PublicArticleUncheckedCreateNestedOneWithoutContentInput = {
+    create?: XOR<PublicArticleCreateWithoutContentInput, PublicArticleUncheckedCreateWithoutContentInput>
+    connectOrCreate?: PublicArticleCreateOrConnectWithoutContentInput
+    connect?: PublicArticleWhereUniqueInput
+  }
+
+  export type PublicArticleUpdateOneWithoutContentNestedInput = {
+    create?: XOR<PublicArticleCreateWithoutContentInput, PublicArticleUncheckedCreateWithoutContentInput>
+    connectOrCreate?: PublicArticleCreateOrConnectWithoutContentInput
+    upsert?: PublicArticleUpsertWithoutContentInput
+    disconnect?: PublicArticleWhereInput | boolean
+    delete?: PublicArticleWhereInput | boolean
+    connect?: PublicArticleWhereUniqueInput
+    update?: XOR<XOR<PublicArticleUpdateToOneWithWhereWithoutContentInput, PublicArticleUpdateWithoutContentInput>, PublicArticleUncheckedUpdateWithoutContentInput>
+  }
+
+  export type PublicArticleUncheckedUpdateOneWithoutContentNestedInput = {
+    create?: XOR<PublicArticleCreateWithoutContentInput, PublicArticleUncheckedCreateWithoutContentInput>
+    connectOrCreate?: PublicArticleCreateOrConnectWithoutContentInput
+    upsert?: PublicArticleUpsertWithoutContentInput
+    disconnect?: PublicArticleWhereInput | boolean
+    delete?: PublicArticleWhereInput | boolean
+    connect?: PublicArticleWhereUniqueInput
+    update?: XOR<XOR<PublicArticleUpdateToOneWithWhereWithoutContentInput, PublicArticleUpdateWithoutContentInput>, PublicArticleUncheckedUpdateWithoutContentInput>
   }
 
   export type UserVocabularyCreateNestedManyWithoutUserInput = {
@@ -9990,6 +11333,23 @@ export namespace Prisma {
     userVocabularies?: UserVocabularyUncheckedUpdateManyWithoutPublicVocabularyNestedInput
   }
 
+  export type ArticleContentCreateWithoutArticleInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ArticleContentUncheckedCreateWithoutArticleInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ArticleContentCreateOrConnectWithoutArticleInput = {
+    where: ArticleContentWhereUniqueInput
+    create: XOR<ArticleContentCreateWithoutArticleInput, ArticleContentUncheckedCreateWithoutArticleInput>
+  }
+
   export type UserArticleCreateWithoutPublicArticleInput = {
     id: string
     savedAt?: Date | string
@@ -10010,6 +11370,29 @@ export namespace Prisma {
   export type UserArticleCreateManyPublicArticleInputEnvelope = {
     data: UserArticleCreateManyPublicArticleInput | UserArticleCreateManyPublicArticleInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ArticleContentUpsertWithoutArticleInput = {
+    update: XOR<ArticleContentUpdateWithoutArticleInput, ArticleContentUncheckedUpdateWithoutArticleInput>
+    create: XOR<ArticleContentCreateWithoutArticleInput, ArticleContentUncheckedCreateWithoutArticleInput>
+    where?: ArticleContentWhereInput
+  }
+
+  export type ArticleContentUpdateToOneWithWhereWithoutArticleInput = {
+    where?: ArticleContentWhereInput
+    data: XOR<ArticleContentUpdateWithoutArticleInput, ArticleContentUncheckedUpdateWithoutArticleInput>
+  }
+
+  export type ArticleContentUpdateWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArticleContentUncheckedUpdateWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserArticleUpsertWithWhereUniqueWithoutPublicArticleInput = {
@@ -10036,6 +11419,66 @@ export namespace Prisma {
     userId?: StringFilter<"UserArticle"> | string
     publicArticleId?: StringFilter<"UserArticle"> | string
     savedAt?: DateTimeFilter<"UserArticle"> | Date | string
+  }
+
+  export type PublicArticleCreateWithoutContentInput = {
+    id: string
+    slug: string
+    title: string
+    publishedAt?: Date | string
+    updatedAt?: Date | string
+    author?: string | null
+    coverImage?: string | null
+    userArticles?: UserArticleCreateNestedManyWithoutPublicArticleInput
+  }
+
+  export type PublicArticleUncheckedCreateWithoutContentInput = {
+    id: string
+    slug: string
+    title: string
+    publishedAt?: Date | string
+    updatedAt?: Date | string
+    author?: string | null
+    coverImage?: string | null
+    userArticles?: UserArticleUncheckedCreateNestedManyWithoutPublicArticleInput
+  }
+
+  export type PublicArticleCreateOrConnectWithoutContentInput = {
+    where: PublicArticleWhereUniqueInput
+    create: XOR<PublicArticleCreateWithoutContentInput, PublicArticleUncheckedCreateWithoutContentInput>
+  }
+
+  export type PublicArticleUpsertWithoutContentInput = {
+    update: XOR<PublicArticleUpdateWithoutContentInput, PublicArticleUncheckedUpdateWithoutContentInput>
+    create: XOR<PublicArticleCreateWithoutContentInput, PublicArticleUncheckedCreateWithoutContentInput>
+    where?: PublicArticleWhereInput
+  }
+
+  export type PublicArticleUpdateToOneWithWhereWithoutContentInput = {
+    where?: PublicArticleWhereInput
+    data: XOR<PublicArticleUpdateWithoutContentInput, PublicArticleUncheckedUpdateWithoutContentInput>
+  }
+
+  export type PublicArticleUpdateWithoutContentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    userArticles?: UserArticleUpdateManyWithoutPublicArticleNestedInput
+  }
+
+  export type PublicArticleUncheckedUpdateWithoutContentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    userArticles?: UserArticleUncheckedUpdateManyWithoutPublicArticleNestedInput
   }
 
   export type UserVocabularyCreateWithoutUserInput = {
@@ -10249,22 +11692,22 @@ export namespace Prisma {
     id: string
     slug: string
     title: string
-    content: string
     publishedAt?: Date | string
     updatedAt?: Date | string
     author?: string | null
     coverImage?: string | null
+    content?: ArticleContentCreateNestedOneWithoutArticleInput
   }
 
   export type PublicArticleUncheckedCreateWithoutUserArticlesInput = {
     id: string
     slug: string
     title: string
-    content: string
     publishedAt?: Date | string
     updatedAt?: Date | string
     author?: string | null
     coverImage?: string | null
+    contentId?: string | null
   }
 
   export type PublicArticleCreateOrConnectWithoutUserArticlesInput = {
@@ -10316,22 +11759,22 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: ArticleContentUpdateOneWithoutArticleNestedInput
   }
 
   export type PublicArticleUncheckedUpdateWithoutUserArticlesInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    contentId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VocabularyDefinitionCreateManyVocabularyInput = {

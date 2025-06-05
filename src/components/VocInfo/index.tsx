@@ -90,7 +90,7 @@ export default function VocInfo({ word }: VocInfoProps) {
       )}
 
       <div className="w-full flex justify-end pt-3 border-t border-gray-200">
-        <SaveButton isSaved={data.userVocabularyId !== null} saveId={data.publicVocabularyId} saveType="voc" />
+        <SaveButton isSaved={data.userVocabularyId != null} saveId={data.publicVocabularyId} saveType="voc" />
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import { useVocs } from '@/hooks/useVocs';
 import VocList from '../VocList';
 import WordInfoSuspense from '../VocCard'
 import { FaSpinner } from 'react-icons/fa';
-import { UserVocabulary as VocItemType } from '@/types/';
+import { Vocabulary as VocItemType } from '@/types/';
 import FinishLine from '../FinishLine';
 
 interface VocListContainerProps {

@@ -4,16 +4,16 @@ import MainFunctionBar from "@/components/MainFunctionBar"
 import FinishLine from "@/components/FinishLine"
 import VocCard from "@/components/VocCard"
 import { useState } from "react"
-import { FullArticle } from "@/types"
+import { Article, Content } from "@/types"
 import SaveButton from "@/components/SaveButton"
 
 interface ArticleViewerProps {
-  article: FullArticle, 
-  isSaved: boolean
+  article: Article, 
+  content: Content,
 }
 
 
-export default function ArticleViewer({ article, isSaved }: ArticleViewerProps) {
+export default function ArticleViewer({ article, content }: ArticleViewerProps) {
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
   const handleWordClick = (word : string | null) => {
@@ -33,12 +33,12 @@ export default function ArticleViewer({ article, isSaved }: ArticleViewerProps) 
             <p>{article.author}</p>
             <p>{article.date}</p>
           </div>
-          <SaveButton isSaved={isSaved} saveId={article.id} saveType="article" />
+          <SaveButton isSaved={article.userArticleId != null} saveId={article.publicArticleId} saveType="article" />
         </div>
         <div className="w-full pt-5 px-5 md:px-0 prose prose-lg max-w-none">
           <img className="w-full rounded-xl my-5" src={article.image} alt={article.title} />
         </div>
-        <ArticleArea article={article} onWordClick={handleWordClick} />
+        <ArticleArea content={content} onWordClick={handleWordClick} />
         <FinishLine className="w-full pt-10 pb-32" />
       </div>
       

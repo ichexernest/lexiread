@@ -1,112 +1,99 @@
-import { Vocabulary, VocabularyDefinition, validateVocabulary, GPTVocabularyResponse } from '@/types'
-import { OpenAI } from 'openai'
-import { customAlphabet } from 'nanoid'
+function selectVocabulariesByFamiliarity<T>(
+  vocabularies: T[], 
+  getFamiliarity: (item: T) => number,
+  limit: number = 15
+): T[] {
+  // 如果總數不足 limit，直接返回所有單字
+  if (vocabularies.length <= limit) {
+    return vocabularies;
+  }
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+  // 按照 familiarity 分組
+  const groups = {
+    level0: vocabularies.filter(v => getFamiliarity(v) === 0),    // 最不熟悉
+    level1_2: vocabularies.filter(v => getFamiliarity(v) >= 1 && getFamiliarity(v) <= 2), // 中等不熟悉
+    level3: vocabularies.filter(v => getFamiliarity(v) === 3),    // 中等熟悉
+    level4: vocabularies.filter(v => getFamiliarity(v) === 4),    // 較熟悉
+  };
 
-const utils = {
-  generateSlug: (title: string) => {
-    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)
-  },
+  // 計算各級距的理想數量 (比例: 1-2 > 3 > 0 > 4)
+  // 分配比例：40% (1-2), 30% (3), 20% (0), 10% (4)
+  const idealCounts = {
+    level1_2: Math.ceil(limit * 0.4),  // 6個
+    level3: Math.ceil(limit * 0.3),    // 5個
+    level0: Math.ceil(limit * 0.2),    // 3個
+    level4: Math.ceil(limit * 0.1),    // 1個
+  };
 
-  parseGPTResponseToVocabulary: (jsonText: string): Vocabulary | null => {
-    try {
-      const obj: GPTVocabularyResponse = JSON.parse(jsonText);
-      const nanoid = customAlphabet('1234567890abcdef', 12);
+  const selected: T[] = [];
 
-      // 驗證必要欄位
-      if (!obj.word || !Array.isArray(obj.definitions) || obj.definitions.length === 0) {
-        console.error('Invalid GPT response structure:', obj);
-        return null;
-      }
+  // 從指定組別隨機挑選單字的輔助函數
+  const pickFromGroup = (group: T[], maxCount: number): number => {
+    const shuffled = [...group].sort(() => 0.5 - Math.random());
+    const picked = shuffled.slice(0, Math.min(maxCount, group.length));
+    selected.push(...picked);
+    return picked.length;
+  };
 
-      // 轉換定義格式，添加 id 並處理 undefined 值
-      const definitions: VocabularyDefinition[] = obj.definitions.map((def) => ({
-        id: `def_${nanoid()}`,
-        partOfSpeech: def.partOfSpeech || 'N/A',
-        definition: def.definition || 'N/A',
-        localDefinition: def.localDefinition === 'N/A' ? undefined : def.localDefinition,
-        example: def.example === 'N/A' ? undefined : def.example,
-        exampleTranslation: def.exampleTranslation === 'N/A' ? undefined : def.exampleTranslation,
-        pronunciation: def.pronunciation === 'N/A' ? undefined : def.pronunciation,
-        synonyms: def.synonyms === 'N/A' ? undefined : def.synonyms,
-        antonyms: def.antonyms === 'N/A' ? undefined : def.antonyms,
-      }));
+  // 第一輪：按理想比例挑選
+  pickFromGroup(groups.level1_2, idealCounts.level1_2);
+  pickFromGroup(groups.level3, idealCounts.level3);
+  pickFromGroup(groups.level0, idealCounts.level0);
+  pickFromGroup(groups.level4, idealCounts.level4);
 
-      const vocabulary: Vocabulary = {
-        publicVocabularyId: `pvoc_${nanoid()}`,
-        word: obj.word.toLowerCase(),
-        definitions,
-      };
+  // 計算還需要多少個單字
+  const remaining = limit - selected.length;
 
-      // 使用 Zod 驗證數據格式
-      return validateVocabulary(vocabulary);
-    } catch (err) {
-      console.error('Failed to parse vocabulary JSON:', err);
-      return null;
+  if (remaining > 0) {
+    // 第二輪：從剩餘的單字中補充，維持優先順序
+    const usedItems = new Set(selected);
+    const remainingGroups = {
+      level1_2: groups.level1_2.filter(v => !usedItems.has(v)),
+      level3: groups.level3.filter(v => !usedItems.has(v)),
+      level0: groups.level0.filter(v => !usedItems.has(v)),
+      level4: groups.level4.filter(v => !usedItems.has(v)),
+    };
+
+    // 按優先順序補充
+    let stillNeed = remaining;
+    
+    if (stillNeed > 0 && remainingGroups.level1_2.length > 0) {
+      const picked = pickFromGroup(remainingGroups.level1_2, stillNeed);
+      stillNeed -= picked;
     }
-  },
-
-  fetchVocabularyFromGPT: async (word: string): Promise<Vocabulary | null> => {
-    try {
-      const prompt = `Please provide the vocabulary information for the word "${word}" in the following JSON format only, without any extra explanation or commentary.
-
-Format:
-{
-  "word": "${word}",
-  "definitions": [
-    {
-      "partOfSpeech": "string",
-      "definition": "string",
-      "localDefinition": "string (in Traditional Chinese)",
-      "example": "string",
-      "exampleTranslation": "string (in Traditional Chinese)",
-      "pronunciation": "string",
-      "synonyms": "string (comma-separated)",
-      "antonyms": "string (comma-separated)"
+    
+    if (stillNeed > 0 && remainingGroups.level3.length > 0) {
+      const picked = pickFromGroup(remainingGroups.level3, stillNeed);
+      stillNeed -= picked;
     }
-  ]
-}
-
-Requirements:
-- Provide at least one definition object in the "definitions" array.
-- If a word has multiple parts of speech (e.g., noun, verb, adjective), provide at least one definition object for each of them.
-- Ensure all fields are filled, even optional ones (use "N/A" if nothing fits).
-- Make sure that:
-  - "localDefinition" and "exampleTranslation" are written only in Traditional Chinese, not Simplified Chinese.
-  - The entire response is valid JSON.
-  - All values are strings, even if they're empty or not applicable.
-- Return only the JSON, no markdown formatting, no commentary.`;
-
-      const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a professional English teacher. Please respond with properly formatted JSON only.'
-          },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.3, // 降低溫度以獲得更一致的回應
-        max_tokens: 1000,
-      });
-
-      const result = response.choices[0].message.content;
-
-      if (!result) {
-        console.error('Empty GPT response');
-        return null;
-      }
-
-      console.log('GPT response:', result);
-      return utils.parseGPTResponseToVocabulary(result);
-    } catch (error) {
-      console.error('Error fetching from GPT:', error);
-      return null;
+    
+    if (stillNeed > 0 && remainingGroups.level0.length > 0) {
+      const picked = pickFromGroup(remainingGroups.level0, stillNeed);
+      stillNeed -= picked;
+    }
+    
+    if (stillNeed > 0 && remainingGroups.level4.length > 0) {
+      pickFromGroup(remainingGroups.level4, stillNeed);
     }
   }
+
+  // 最終隨機打亂順序，避免同級距的單字聚集在一起
+  return selected.sort(() => 0.5 - Math.random()).slice(0, limit);
+}
+
+function generateSlug (title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // 移除特殊字符
+    .replace(/\s+/g, '-') // 空格替換為連字符
+    .replace(/-+/g, '-') // 多個連字符合併為一個
+    .trim()
+    .substring(0, 100); // 限制長度
+}
+
+const utils = {
+  selectVocabulariesByFamiliarity: selectVocabulariesByFamiliarity,
+  generateSlug: generateSlug
 }
 
 export default utils;

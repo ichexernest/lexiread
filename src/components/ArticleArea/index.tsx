@@ -1,18 +1,18 @@
 'use client'
 
 import React from 'react'
-import { FullArticle } from '@/types/article'
+import { Content } from '@/types/article'
 import ArticleContent from '../ArticleContent'
 
 interface ArticleAreaProps {
-  article: FullArticle;
+  content: Content;
   onWordClick: (word: string) => void;
 }
 
-export default function ArticleArea({ article, onWordClick }: ArticleAreaProps) {
+export default function ArticleArea({ content, onWordClick }: ArticleAreaProps) {
   return (
     <div className="w-full pt-5 px-5 md:px-0 prose prose-lg max-w-none">
-      <ArticleContent content={article.content} onWordClick={onWordClick} />
+      <ArticleContent content={content} onWordClick={onWordClick} />
     </div>
   )
 }

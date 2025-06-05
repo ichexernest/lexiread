@@ -13,10 +13,10 @@ datasource db {
 
 // 公用單字記錄格式
 model PublicVocabulary {
-  id        String                 @id
-  word      String                @unique
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
+  id        String   @id
+  word      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   definitions VocabularyDefinition[]
 
@@ -24,8 +24,8 @@ model PublicVocabulary {
 }
 
 model VocabularyDefinition {
-  id          String   @id @default(cuid())
-  vocabulary  PublicVocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  id           String           @id @default(cuid())
+  vocabulary   PublicVocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
   vocabularyId String
 
   partOfSpeech       String
@@ -39,70 +39,78 @@ model VocabularyDefinition {
 
   @@index([vocabularyId])
 }
+
 // 公用文章記錄格式
 model PublicArticle {
-  id              String              @id 
-  slug            String           @unique
-  title           String
-  content         String          
-  publishedAt     DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  
-  // 文章資訊
-  author          String?
-  coverImage      String?          // 圖片URL
+  id          String   @id
+  slug        String   @unique
+  title       String
+  publishedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  author      String?
+  coverImage  String?
 
-  userArticles UserArticle[] 
-  
+  contentId String?         @unique
+  content   ArticleContent? @relation("ArticleContentRelation", fields: [contentId], references: [id])
+
+  userArticles UserArticle[]
+}
+
+model ArticleContent {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  article PublicArticle? @relation("ArticleContentRelation")
 }
 
 // 用戶資訊格式
 model User {
-  id                  String              @id 
-  email               String           @unique       
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-  
+  id        String   @id
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // 用戶資訊
-  nativeLanguage      String?          
-  
+  nativeLanguage String?
+
   // 關聯
-  userVocabularies    UserVocabulary[] // 單字記錄
-  userArticles        UserArticle[]    // 收藏文章
+  userVocabularies UserVocabulary[] // 單字記錄
+  userArticles     UserArticle[] // 收藏文章
 }
 
 // 私人單字記錄格式
 model UserVocabulary {
-  id                String              @id
-  userId            String
+  id                 String   @id
+  userId             String
   publicVocabularyId String
-  addedAt           DateTime         @default(now())
-  
+  addedAt            DateTime @default(now())
+
   // 個人學習狀態
-  familiarity       Int              @default(0)  // 熟悉度 (0-5)
-  
+  familiarity Int @default(0) // 熟悉度 (0-5)
+
   // 個人客製化內容
-  personalNote      String?          
-  customDefinition  String?          // 定義
-  customExample     String?          // 例句
-  
+  personalNote     String?
+  customDefinition String? // 定義
+  customExample    String? // 例句
+
   // 關聯
-  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  publicVocabulary  PublicVocabulary @relation(fields: [publicVocabularyId], references: [id], onDelete: Cascade)
-  
-  @@unique([userId, publicVocabularyId]) 
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicVocabulary PublicVocabulary @relation(fields: [publicVocabularyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, publicVocabularyId])
 }
 
 // 用戶收藏的文章
 model UserArticle {
-  id              String              @id
+  id              String   @id
   userId          String
   publicArticleId String
-  savedAt         DateTime         @default(now())
-  
+  savedAt         DateTime @default(now())
+
   // 關聯
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  publicArticle   PublicArticle    @relation(fields: [publicArticleId], references: [id], onDelete: Cascade)
-  
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicArticle PublicArticle @relation(fields: [publicArticleId], references: [id], onDelete: Cascade)
+
   @@unique([userId, publicArticleId])
 }

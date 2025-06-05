@@ -1,78 +1,15 @@
 import { customAlphabet } from 'nanoid'
 import { PrismaClient } from '@/generated/prisma' 
-import { Vocabulary } from './types';
+import { Vocabulary, Article, Content } from './types';
+import utils from './utils/utils';
 import { 
   transformUserVocabularyToVocabulary,
   transformPublicVocabularyToVocabulary,
   transformExamVocabularyToVocabulary,
+  transformFullArticleToArticle,
+  transformContentToArticleContent
 } from '@/utils/tr';
 const prisma = new PrismaClient()
-
-async function seedAll() {
-    const nanoid = customAlphabet('1234567890abcdef', 12)
-
-    const vocabularyData = [
-    {
-      word: 'apple',
-      definitions: [
-        {
-          partOfSpeech: 'noun',
-          definition: 'A fruit that is red or green.',
-          localDefinition: '一種紅色或綠色的水果。',
-          example: 'I like to eat an apple every day.',
-          exampleTranslation: '我每天都喜歡吃一個蘋果。',
-          synonyms: 'fruit,red,green'
-        }
-      ]
-    },
-    {
-      word: 'banana',
-      definitions: [
-        {
-          partOfSpeech: 'noun',
-          definition: 'A long yellow fruit.',
-          localDefinition: '一種長形的黃色水果。',
-          example: 'Bananas are rich in potassium.',
-          exampleTranslation: '香蕉富含鉀。',
-          synonyms: 'fruit,yellow'
-        }
-      ]
-    }
-  ]
-
-  for (const data of vocabularyData) {
-    await prisma.publicVocabulary.upsert({
-      where: { word: data.word },
-      update: {},
-      create: {
-        id: `pvoc_${nanoid()}`,
-        word: data.word,
-        definitions: {
-          create: data.definitions
-        }
-      }
-    });
-  }
-    await prisma.publicArticle.upsert({
-      where: { slug: 'test-article' },
-      update: {},
-      create: {
-        id: `particle_${nanoid()}`,
-        slug: 'test-article',
-        title: 'This is a test article',
-        content: 'This is the article content containing apple and banana.',
-        author: 'BBC',
-        coverImage: 'https://example.com/image.jpg',
-      },
-    });
-  
-    console.log('✅ All data seeded!');
-  }
-  
-  
-  seedAll()
-    .catch(console.error)
-    .finally(() => prisma.$disconnect());
   
 
 // 取得用戶儲存的完整單字清單
@@ -94,7 +31,6 @@ export async function getUserFullVocabularyList(userId: string): Promise<Vocabul
 
   return result.map(transformUserVocabularyToVocabulary);
 }
-
 // 查詢公用和私人單字
 export async function findVocabularyWithUserProgress(
   word: string, 
@@ -145,7 +81,6 @@ export async function findVocabularyWithUserProgress(
 
   return vocabulary;
 }
-
 // 存入單字到PublicVocabulary
 export async function addVocabularyToPublic(vocabularyData: Vocabulary): Promise<boolean> {
   try {
@@ -177,7 +112,6 @@ export async function addVocabularyToPublic(vocabularyData: Vocabulary): Promise
   }
 }
 // 存入單字到UserVocabulary
-// 這個函式會先檢查PublicVocabulary中是否已存在該單字
 export async function addVocabularyByUser(
   userId: string,
   publicVocabularyId: string,
@@ -227,7 +161,6 @@ export async function addVocabularyByUser(
     return false;
   }
 }
-
 // 從UserVocabulary中移除單字
 export async function removeVocabularyByUser(userId: string, publicVocabularyId: string): Promise<boolean> {
   try {
@@ -246,7 +179,6 @@ export async function removeVocabularyByUser(userId: string, publicVocabularyId:
     return false;
   }
 }
-
 //更新UserVocabulary中該單字的內容
 export async function updateVocabulary(
   userId: string,
@@ -302,7 +234,7 @@ export async function searchPublicVocabulary(searchTerm: string, limit: number =
 
   return results.map(transformPublicVocabularyToVocabulary);
 }
-
+// 搜尋公用單字
 export async function findExactPublicVocabulary(searchTerm: string): Promise<Vocabulary | null> {
   const result = await prisma.publicVocabulary.findFirst({
     where: {
@@ -322,8 +254,6 @@ export async function findExactPublicVocabulary(searchTerm: string): Promise<Voc
 
   return transformPublicVocabularyToVocabulary(result);
 }
-
-
 export async function getPublicVocabularyById(id: string): Promise<Vocabulary | null> {
   const result = await prisma.publicVocabulary.findUnique({
     where: { id },
@@ -338,14 +268,12 @@ export async function getPublicVocabularyById(id: string): Promise<Vocabulary | 
 
   return transformPublicVocabularyToVocabulary(result);
 }
-
-
 // 從UserVocabulary隨機抓出15個familiarity < 5的單字
 export async function pickExamVocabulary(userId: string, limit: number = 15): Promise<Vocabulary[]> {
-  const vocabularies = await prisma.userVocabulary.findMany({
+ // 取得所有用戶的單字，包含完整的關聯資料
+  const allUserVocabularies = await prisma.userVocabulary.findMany({
     where: {
       userId,
-      familiarity: { lt: 5 },
     },
     include: {
       publicVocabulary: {
@@ -356,17 +284,60 @@ export async function pickExamVocabulary(userId: string, limit: number = 15): Pr
     },
   });
 
-  const shuffled = vocabularies.sort(() => 0.5 - Math.random());
-  const selected = shuffled.slice(0, limit);
+  // 使用選題邏輯函數挑選單字
+  const selectedVocabularies = utils.selectVocabulariesByFamiliarity(
+    allUserVocabularies,
+    (vocab) => vocab.familiarity, // 熟悉度取得函數
+    limit
+  );
 
-  return selected.map(transformExamVocabularyToVocabulary);
+  return selectedVocabularies.map(transformExamVocabularyToVocabulary);
 }
 
+export async function updateUserVocabularyFamiliarity(
+  updates: Array<{ userVocabularyId: string; familiarityChange: number }>
+): Promise<{ count: number }> {
+  // 使用 Prisma 的 transaction 來批量更新
+  return await prisma.$transaction(async (tx) => {
+    // 先取得所有相關的 UserVocabulary 記錄
+    const userVocabularyIds = updates.map(u => u.userVocabularyId);
+    const currentVocabs = await tx.userVocabulary.findMany({
+      where: { id: { in: userVocabularyIds } },
+      select: { id: true, familiarity: true }
+    });
+
+    // 建立 id 到 familiarity 的對應
+    const familiarityMap = new Map(
+      currentVocabs.map(v => [v.id, v.familiarity])
+    );
+
+    // 批量更新操作
+    const updatePromises = updates.map(({ userVocabularyId, familiarityChange }) => {
+      const currentFamiliarity = familiarityMap.get(userVocabularyId);
+      
+      if (currentFamiliarity === undefined) {
+        throw new Error(`UserVocabulary with id ${userVocabularyId} not found`);
+      }
+
+      // 計算新的熟悉度，確保在 0-5 範圍內
+      const newFamiliarity = Math.max(0, Math.min(5, currentFamiliarity + familiarityChange));
+
+      return tx.userVocabulary.update({
+        where: { id: userVocabularyId },
+        data: { familiarity: newFamiliarity },
+      });
+    });
+
+    await Promise.all(updatePromises);
+    
+    return { count: updates.length };
+  });
+}
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 
 // 取得用戶儲存的完整文章清單
-export async function getUserFullArticleList(userId: string) {
+export async function getUserArticleList(userId: string): Promise<Article[]> {
   const result = await prisma.userArticle.findMany({
     where: { userId },
     orderBy: { savedAt: 'desc' },
@@ -375,38 +346,95 @@ export async function getUserFullArticleList(userId: string) {
     },
   });
   
-  return result.map((article) => ({
-    id: article.publicArticle.id,
-    slug: article.publicArticle.slug,
-    title: article.publicArticle.title,
-    content: article.publicArticle.content,
-    author: article.publicArticle.author ?? undefined,
-    coverImage: article.publicArticle.coverImage ?? undefined,
-    publishedAt: article.publicArticle.publishedAt.toISOString(),
-    savedAt: article.savedAt.toISOString(),
-    userId: article.userId,
-  }));
+  return result.map(transformFullArticleToArticle);
+}
+// 檢查文章是否已存在（根據title和日期）
+export async function checkArticleExists (title: string, publishedAt: Date): Promise<boolean> {
+  try {
+    // 檢查相同標題且在同一天發布的文章
+    const startOfDay = new Date(publishedAt);
+    startOfDay.setHours(0, 0, 0, 0);
+    
+    const endOfDay = new Date(publishedAt);
+    endOfDay.setHours(23, 59, 59, 999);
+    
+    const existingArticle = await prisma.publicArticle.findFirst({
+      where: {
+        title: title,
+        publishedAt: {
+          gte: startOfDay,
+          lte: endOfDay
+        }
+      }
+    });
+    
+    return !!existingArticle;
+  } catch (error) {
+    console.error('檢查文章是否存在時發生錯誤:', error);
+    return false;
+  }
 }
 // 存入文章到PublicArticle
-export async function addArticleToPublic(articleData: {
-  slug: string;
-  title: string;
-  content: string;
-  author?: string;
-  coverImage?: string;
-}) {
+export async function addArticleToPublic(articles: Article[], contents: string[]): Promise<boolean> {
   const nanoid = customAlphabet('1234567890abcdef', 12);
-  
-  return await prisma.publicArticle.create({
-    data: {
-      id: `particle_${nanoid()}`,
-      ...articleData,
-    },
-  });
-}
 
-// 存入文章到UserArticle
-// 這個函式會先檢查PublicArticle中是否已存在該文章
+  try {
+    if (articles.length !== contents.length) {
+      throw new Error(`文章數量（${articles.length}）與內容數量（${contents.length}）不一致`);
+    }
+
+    for (let i = 0; i < articles.length; i++) {
+      const article = articles[i];
+      const content = contents[i];
+      const publishedAt = new Date(article.date);
+
+      // 檢查是否已存在相同文章
+      const exists = await checkArticleExists(article.title, publishedAt);
+      if (exists) {
+        console.log(`文章已存在，跳過: ${article.title}`);
+        continue;
+      }
+
+      // 檢查唯一 slug
+      let slug = article.slug;
+      let counter = 1;
+
+      while (await prisma.publicArticle.findUnique({ where: { slug } })) {
+        slug = `${article.slug}-${counter}`;
+        counter++;
+      }
+
+      // 建立 content
+      const contentRecord = await prisma.articleContent.create({
+        data: {
+          content: content,
+        },
+      });
+
+      // 建立主文章（含關聯 contentId）
+      await prisma.publicArticle.create({
+        data: {
+          id: `p_article_${nanoid()}`,
+          slug: slug,
+          title: article.title,
+          publishedAt: publishedAt,
+          author: article.author,
+          coverImage: article.image || null,
+          contentId: contentRecord.id,
+        },
+      });
+
+      console.log(`文章已存入資料庫: ${article.title}`);
+    }
+
+    console.log(`成功處理 ${articles.length} 篇文章`);
+    return true;
+  } catch (error) {
+    console.error('存入BBC文章到資料庫時發生錯誤:', error);
+    return false;
+  }
+}
+// 存入文章到UserArticle，這個函式會先檢查PublicArticle中是否已存在該文章
 export async function addArticleByUser(
   userId: string,
   publicArticleId: string,
@@ -438,7 +466,7 @@ export async function addArticleByUser(
   // 創建用戶文章記錄
   return await prisma.userArticle.create({
     data: {
-      id: `uarticle_${nanoid()}`,
+      id: `u_article_${nanoid()}`,
       userId,
       publicArticleId: publicArticle.id,
     },
@@ -447,10 +475,64 @@ export async function addArticleByUser(
     },
   });
 }
+// 從資料庫獲取今日文章，查詢今日文章及用戶是否收藏
+export async function getTodayArticlesWithUserProgress  (
+  userId?: string
+): Promise<Article[]> {
+  try {
+    const today = new Date();
+    const startOfDay = new Date(today);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
 
+    const articles = await prisma.publicArticle.findMany({
+      where: {
+        publishedAt: {
+          gte: startOfDay,
+          lte: endOfDay
+        },
+      },
+      include: {
+        userArticles: userId
+          ? {
+              where: { userId },
+              take: 1
+            }
+          : false
+      },
+      orderBy: {
+        publishedAt: 'desc'
+      },
+      take: 5
+    });
+
+    const fullArticles: Article[] = articles.map(article => {
+      const userArticle = article.userArticles?.[0];
+
+      return {
+        publicArticleId: article.id,
+        userArticleId: userArticle?.id,
+        title: article.title,
+        date: article.publishedAt.toISOString(),
+        author: article.author || 'BBC News',
+        image: article.coverImage || '',
+        slug: article.slug,
+        savedAt: userArticle?.savedAt.toISOString(),
+        userId: userArticle?.userId
+      };
+    });
+
+    return fullArticles;
+  } catch (error) {
+    console.error('獲取今日 BBC 文章失敗:', error);
+    throw error;
+  }
+};
 // 從UserArticle中移除文章
-export async function removeArticleByUser(userId: string, publicArticleId: string) {
-  return await prisma.userArticle.delete({
+export async function removeArticleByUser(userId: string, publicArticleId: string): Promise<boolean> {
+    try {
+    await prisma.userArticle.delete({
     where: {
       userId_publicArticleId: {
         userId,
@@ -458,21 +540,70 @@ export async function removeArticleByUser(userId: string, publicArticleId: strin
       },
     },
   });
+    return true;
+  } catch (error) {
+    console.error('Failed to remove article by user:', error);
+    return false;
+  }
 }
+//
+export async function getContentById(publicArticleId: string): Promise<Content | null> {
+  try {
+    // 先查 PublicArticle，拿 contentId
+    const article = await prisma.publicArticle.findUnique({
+      where: { id: publicArticleId },
+      include: { content: true }, // 👈 直接把 content 一起撈出來
+    });
 
-// 搜尋公用文章
-export async function searchPublicArticles(searchTerm: string, limit: number = 20) {
-  return await prisma.publicArticle.findMany({
-    where: {
-      OR: [
-        { title: { contains: searchTerm } },
-        { content: { contains: searchTerm } },
-        { author: { contains: searchTerm } },
-      ],
-    },
-    take: limit,
-    orderBy: { publishedAt: 'desc' },
-  });
+    if (!article || !article.content) {
+      console.warn(`找不到文章或內容: ${publicArticleId}`);
+      return null;
+    }
+
+    return transformContentToArticleContent(article.content);
+  } catch (error) {
+    console.error(`查詢 PublicArticle(${publicArticleId}) 對應內容時發生錯誤:`, error);
+    return null;
+  }
+}
+export async function getArticleWithUserProgressById(
+  articleId: string,
+  userId?: string
+): Promise<Article | null> {
+  try {
+    const article = await prisma.publicArticle.findUnique({
+      where: { id: articleId },
+      include: {
+        userArticles: userId
+          ? {
+              where: { userId },
+              take: 1,
+            }
+          : false,
+      },
+    });
+
+    if (!article) return null;
+
+    const userArticle = article.userArticles?.[0];
+
+    const result: Article = {
+      publicArticleId: article.id,
+      userArticleId: userArticle?.id,
+      title: article.title,
+      date: article.publishedAt.toISOString(),
+      author: article.author || 'BBC News',
+      image: article.coverImage || '',
+      slug: article.slug,
+      savedAt: userArticle?.savedAt.toISOString(),
+      userId: userArticle?.userId,
+    };
+
+    return result;
+  } catch (error) {
+    console.error(`查詢單篇文章(${articleId})時發生錯誤:`, error);
+    throw error;
+  }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------

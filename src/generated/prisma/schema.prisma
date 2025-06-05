@@ -45,15 +45,23 @@ model PublicArticle {
   id          String   @id
   slug        String   @unique
   title       String
-  content     String
   publishedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  author      String?
+  coverImage  String?
 
-  // 文章資訊
-  author     String?
-  coverImage String? // 圖片URL
+  contentId String?         @unique
+  content   ArticleContent? @relation("ArticleContentRelation", fields: [contentId], references: [id])
 
   userArticles UserArticle[]
+}
+
+model ArticleContent {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  article PublicArticle? @relation("ArticleContentRelation")
 }
 
 // 用戶資訊格式

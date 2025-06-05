@@ -2,10 +2,11 @@
 
 import React from 'react'
 import ClickableWord from '@/components/ClickableWord'
+import { Content } from '@/types'
 
 interface ArticleContentProps {
-  content: string;
-  onWordClick: (word: string) => void;
+  content: Content
+  onWordClick: (word: string) => void
 }
 
 export default function ArticleContent({ content, onWordClick }: ArticleContentProps) {
@@ -13,25 +14,20 @@ export default function ArticleContent({ content, onWordClick }: ArticleContentP
     const paragraphs = text.split('\n\n').map(p => p.trim())
 
     return paragraphs.map((paragraph, pIndex) => {
-      const parts = paragraph.split(/(\s+|[.,\"'\(\):;])/)
+      const words = paragraph.split(/\s+/)
+
       return (
-        <p key={pIndex} className="mb-4 leading-relaxed text-gray-800">
-          {parts.map((part, partIndex) => {
-            const isWhitespaceOrPunctuation = /^\s+$|^[.,\"'\(\):;]$/.test(part)
-            return isWhitespaceOrPunctuation ? (
-              <React.Fragment key={`${pIndex}-${partIndex}`}>{part}</React.Fragment>
-            ) : (
-              <ClickableWord
-                key={`${pIndex}-${partIndex}`}
-                word={part}
-                onClick={onWordClick}
-              />
-            )
-          })}
+        <p key={pIndex} className="mb-5 leading-8 text-neutral-800 text-justify">
+          {words.map((word, wordIndex) => (
+            <React.Fragment key={`${pIndex}-${wordIndex}`}>
+              <ClickableWord word={word} onClick={onWordClick} />
+              {' '}
+            </React.Fragment>
+          ))}
         </p>
       )
     })
   }
 
-  return <article className="text-lg">{renderClickableContent(content)}</article>
+  return <article className="text-lg px-4">{renderClickableContent(content.content)}</article>
 }

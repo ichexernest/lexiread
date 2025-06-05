@@ -1,7 +1,7 @@
-import { UserVocabulary } from "@/types";
+import { Vocabulary } from "@/types";
 import FamiliaritySign from "../FamiliaritySign";
 
-interface VocItemProps {item: UserVocabulary, handleClick: () => void}
+interface VocItemProps {item: Vocabulary, handleClick: () => void}
 
 export default function VocItem({item, handleClick}: VocItemProps) {
   return (
@@ -10,9 +10,8 @@ export default function VocItem({item, handleClick}: VocItemProps) {
     <div className="flex items-center justify-start py-5gap-2">
 
     <p className="font-bold"><span className="text-xl font-bold">{item.word}</span></p>
-    <p className="font-bold"><span className="text-sm">{item.localDefinition}</span></p>
       </div>
-      <FamiliaritySign familiarity={item.familiarity} />
+      <FamiliaritySign familiarity={item.familiarity!} />
       </div>
   );
 }

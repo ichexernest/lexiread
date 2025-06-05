@@ -1,21 +1,17 @@
 import fetchService from "@/utils/fetch";
 import ArticleViewer from "@/components/ArticleViewer"
 import { notFound } from "next/navigation"
-
-async function checkSaved(saveType: string, saveId: string): Promise<boolean> {
-  console.log("checkSaved", saveId, saveType);
-  await new Promise(res => setTimeout(res, 2000));
-  return Math.random() > 0.5;
-}
-
+import { currentUser } from '@clerk/nextjs/server';
 
 export default async function ArticleContentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const article = await fetchService.getArticleBySlug(id)
-  const isSaved = await checkSaved("article", id);
+      const clerkUser = await currentUser();
+  const userId = clerkUser?.id
+  console.log(`ArticleContentPage`,userId, id)
+  const article = await fetchService.getArticlesById(id, userId)
+  const content = await fetchService.getContent(id)
+  if (!article || !content) return notFound()
 
-  if (!article) return notFound()
-
-  return <ArticleViewer article={article} isSaved={isSaved} />
+  return <ArticleViewer article={article} content={content} />
 }
 

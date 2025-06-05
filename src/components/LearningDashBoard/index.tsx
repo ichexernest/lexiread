@@ -1,15 +1,15 @@
 import {FaPlay } from "react-icons/fa";
 import MainButton from "../MainButton";
 import ProgressCircle from "../ProgressCircle";
-import { UserVocabulary as VocItemType } from '@/types/';
+import { Vocabulary} from '@/types/';
 interface LearningDashBoardProps {
-  initialVocs: VocItemType[];
+  initialVocs: Vocabulary[];
 }
 
 
 export default function LearningDashBoard({ initialVocs }: LearningDashBoardProps) {
   const totalVocs = initialVocs.length;
-  const masteredVocs = initialVocs.filter(voc => voc.familiarity >= 4).length;
+  const masteredVocs = initialVocs.filter(voc => voc.familiarity! >= 4).length;
   const progress = totalVocs > 0 ? (masteredVocs / totalVocs) * 100 : 0;
   return (
     <div className=" py-5 px-4 w-[720px] mx-auto flex justify-between items-center">

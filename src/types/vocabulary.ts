@@ -26,63 +26,19 @@ export const VocabularySchema = z.object({
   userId: z.string().optional(),
 });
 
+export const QuizResultSchema = z.object({
+  userVocabularyId: z.string(),
+  word: z.string(),
+  result: z.enum(['remembered', 'notSure', 'forgotten'])
+});
+
+
 // TypeScript types inferred from Zod schemas
 export type VocabularyDefinition = z.infer<typeof VocabularyDefinitionSchema>;
 export type Vocabulary = z.infer<typeof VocabularySchema>;
-
-// Additional utility types for API responses
-export interface VocabularyListResponse {
-  vocabularies: Vocabulary[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
-export interface VocabularySearchResponse {
-  vocabularies: Vocabulary[];
-  searchTerm: string;
-  total: number;
-}
-
-export interface GPTVocabularyResponse {
-  word: string;
-  definitions: Array<{
-    partOfSpeech: string;
-    definition: string;
-    localDefinition: string;
-    example: string;
-    exampleTranslation: string;
-    pronunciation: string;
-    synonyms: string;
-    antonyms: string;
-  }>;
-}
+export type QuizResult = z.infer<typeof QuizResultSchema>;
 
 
-// Types for vocabulary operations
-export interface AddVocabularyRequest {
-  word: string;
-  definitions: Omit<VocabularyDefinition, 'id'>[];
-}
-
-export interface UpdateVocabularyRequest {
-  familiarity?: number;
-  personalNote?: string;
-  customDefinition?: string;
-  customExample?: string;
-}
-
-// Exam-related types
-export interface ExamVocabulary extends Vocabulary {
-  familiarity: number; // Required for exam vocabularies
-}
-
-export interface ExamSession {
-  vocabularies: ExamVocabulary[];
-  startTime: string;
-  endTime?: string;
-  completed: boolean;
-}
 
 // Validation helpers
 export function validateVocabulary(data: unknown): Vocabulary {

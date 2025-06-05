@@ -141,11 +141,17 @@ exports.Prisma.PublicArticleScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
-  content: 'content',
   publishedAt: 'publishedAt',
   updatedAt: 'updatedAt',
   author: 'author',
-  coverImage: 'coverImage'
+  coverImage: 'coverImage',
+  contentId: 'contentId'
+};
+
+exports.Prisma.ArticleContentScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -194,6 +200,7 @@ exports.Prisma.ModelName = {
   PublicVocabulary: 'PublicVocabulary',
   VocabularyDefinition: 'VocabularyDefinition',
   PublicArticle: 'PublicArticle',
+  ArticleContent: 'ArticleContent',
   User: 'User',
   UserVocabulary: 'UserVocabulary',
   UserArticle: 'UserArticle'

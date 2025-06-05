@@ -1,10 +1,12 @@
-import { UserVocabulary } from '@/types';
-import { getUserFullVocabularyList } from '@/prisma-db';
+import { Vocabulary } from '@/types';
+import fetchService from '@/utils/fetch';
 import QuizBoard from '@/components/QuizBoard';
+import { currentUser } from '@clerk/nextjs/server';
 
 export default async function QuizPage() {
-
-  const initialQuiz: UserVocabulary[] = await getUserFullVocabularyList(`user_111111111111`); // 假設的用戶ID，實際應根據當前用戶獲取
+  const clerkUser = await currentUser();
+  const initialQuiz: Vocabulary[] = await fetchService.getQuizVocabularyList(clerkUser!.id); 
+  console.log('initialQuiz', initialQuiz)
 
   return (
     <div className="flex flex-col items-center min-h-screen w-full max-w-[720px] mx-auto">
