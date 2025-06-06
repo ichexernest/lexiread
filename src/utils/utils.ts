@@ -90,10 +90,29 @@ function generateSlug (title: string) {
     .trim()
     .substring(0, 100); // 限制長度
 }
+function formatDateToLocalString(
+  isoString: string,
+  locale = 'zh-TW',
+  options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Taipei',
+  }
+): string {
+  const date = new Date(isoString)
+  return new Intl.DateTimeFormat(locale, options).format(date)
+}
+
 
 const utils = {
   selectVocabulariesByFamiliarity: selectVocabulariesByFamiliarity,
-  generateSlug: generateSlug
+  generateSlug: generateSlug,
+  formatDateToLocalString: formatDateToLocalString
 }
 
 export default utils;

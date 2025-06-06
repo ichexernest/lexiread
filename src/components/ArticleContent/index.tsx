@@ -17,7 +17,7 @@ export default function ArticleContent({ content, onWordClick }: ArticleContentP
       const words = paragraph.split(/\s+/)
 
       return (
-        <p key={pIndex} className="mb-5 leading-8 text-neutral-800 text-justify">
+        <p key={pIndex} className="mb-5 leading-8 text-neutral-800 text-pretty">
           {words.map((word, wordIndex) => (
             <React.Fragment key={`${pIndex}-${wordIndex}`}>
               <ClickableWord word={word} onClick={onWordClick} />

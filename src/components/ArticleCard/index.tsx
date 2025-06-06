@@ -1,6 +1,7 @@
 import { Article } from "@/types";
 import Link from "next/link";
 import SaveButton from "../SaveButton";
+import utils from "@/utils/utils";
 
 interface ArticleCardProps {
   item: Article;
@@ -20,7 +21,7 @@ export default async function ArticleCard({ item }: ArticleCardProps) {
         <div className="flex justify-between items-center w-full">
           <div className="flex gap-2">
             <p>{item.author}</p>
-            <p>{item.date}</p>
+            <p>{utils.formatDateToLocalString(item.date)}</p>
           </div>
         </div>
       </Link>

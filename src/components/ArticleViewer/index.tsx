@@ -6,6 +6,7 @@ import VocCard from "@/components/VocCard"
 import { useState } from "react"
 import { Article, Content } from "@/types"
 import SaveButton from "@/components/SaveButton"
+import utils from "@/utils/utils"
 
 interface ArticleViewerProps {
   article: Article, 
@@ -31,7 +32,7 @@ export default function ArticleViewer({ article, content }: ArticleViewerProps) 
         <div className="flex justify-between items-center w-full px-5 md:px-0">
           <div className="flex gap-2">
             <p>{article.author}</p>
-            <p>{article.date}</p>
+            <p>{utils.formatDateToLocalString(article.date)}</p>
           </div>
           <SaveButton isSaved={article.userArticleId != null} saveId={article.publicArticleId} saveType="article" />
         </div>
