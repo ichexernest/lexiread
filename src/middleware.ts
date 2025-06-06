@@ -7,6 +7,10 @@ const isAdminRoute = createRouteMatcher(['/Admin(.*)'])
 export default clerkMiddleware(async(auth, req)=>{
   const {userId} = await auth()
 
+    if (req.nextUrl.pathname === '/api/schedule') {
+    return NextResponse.next()
+  }
+
   // if(!isProtectedRoute(req)) await auth.protect()
   if(!userId && !isPublicRoute(req)) {
     //return redirectToSignIn()
