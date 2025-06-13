@@ -39,7 +39,7 @@ Lexiread is an interactive language learning platform that helps users improve t
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14, React, TailwindCSS
+- **Frontend**: Next.js 15, React, TailwindCSS
 - **Backend**: Next.js API Routes
 - **Database**: Prisma with PostgreSQL
 - **Authentication**: Clerk

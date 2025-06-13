@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect,  useState } from 'react'
 
 interface ProgressCircleProps {
   percent: number
@@ -15,7 +15,6 @@ export default function ProgressCircle({ percent = 90 }: ProgressCircleProps) {
 
   // 🔄 動畫控制：從 0 到指定 percent
   useEffect(() => {
-    let start = 0
     const duration = 1000 // 動畫總長 1 秒
     const startTime = performance.now()
 
