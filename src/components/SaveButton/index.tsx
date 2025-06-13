@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FaBookmark } from "react-icons/fa";
-import MainButton from "../MainButton"; // Adjust the path based on your project structure
+import MainButton from "../MainButton";
 import { toggleSaveItem } from "@/actions/saveItems"
 interface SaveButtonProps {
     isSaved: boolean,
