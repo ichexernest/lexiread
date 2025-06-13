@@ -13,7 +13,7 @@ export default function LearningDashBoard({ initialVocs }: LearningDashBoardProp
   const progress = totalVocs > 0 ? (masteredVocs / totalVocs) * 100 : 0;
   return (
     <div className=" py-5 px-4 w-full mx-auto flex justify-between items-center">
-     <div className="flex justfy-center items-center">
+     <div className="flex justify-center items-center">
      <ProgressCircle percent={progress} />
      <p className="text-xs md:text-md">{masteredVocs} mastered vocabularies.</p>
      </div>
