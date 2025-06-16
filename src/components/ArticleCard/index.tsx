@@ -8,9 +8,7 @@ interface ArticleCardProps {
 }
 
 
-export default async function ArticleCard({ item }: ArticleCardProps) {
-
-
+export default function ArticleCard({ item }: ArticleCardProps) {
   return (
     <div className="flex flex-col items-stretch justify-stretch pb-8 py-5 min-w-full px-4 border-b hover:bg-primary-hover">
       <Link href={`/Article/${item.publicArticleId}`}>
