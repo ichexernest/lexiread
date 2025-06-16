@@ -1,12 +1,12 @@
 'use client'
-import ArticleArea from "@/components/ArticleArea"
 import MainFunctionBar from "@/components/MainFunctionBar"
 import FinishLine from "@/components/FinishLine"
 import VocCard from "@/components/VocCard"
-import { useState } from "react"
+import { useState,useMemo } from "react"
 import { Article, Content } from "@/types"
 import SaveButton from "@/components/SaveButton"
 import utils from "@/utils/utils"
+import ArticleContent from "../ArticleContent"
 
 interface ArticleViewerProps {
   article: Article, 
@@ -17,10 +17,15 @@ interface ArticleViewerProps {
 export default function ArticleViewer({ article, content }: ArticleViewerProps) {
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
-  const handleWordClick = (word : string | null) => {
-    setSelectedWord(word);
-    console.log(`Word clicked: ${word}`);
-  };
+
+  const handleWordClick = useMemo(
+  () =>
+    utils.debounce<(word: string | null) => void>((word) => {
+      const cleanedWord = utils.cleanWord(word!)
+      setSelectedWord(cleanedWord);
+    }, 1000),
+  []
+);
 
   return (
     <div className="relative flex justify-center items-start w-screen h-screen overflow-y-auto">
@@ -39,7 +44,7 @@ export default function ArticleViewer({ article, content }: ArticleViewerProps) 
         <div className="w-full pt-5 px-5 md:px-0 prose prose-lg max-w-none">
           <img className="w-full rounded-xl my-5" src={article.image} alt={article.title} />
         </div>
-        <ArticleArea content={content} onWordClick={handleWordClick} />
+        <ArticleContent content={content} onWordClick={handleWordClick} />
         <FinishLine className="w-full pt-10 pb-32" />
       </div>
       

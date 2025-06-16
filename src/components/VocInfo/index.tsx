@@ -12,26 +12,109 @@ interface VocInfoProps {
 export default function VocInfo({ word }: VocInfoProps) {
   const [data, setData] = useState<Vocabulary | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isGenerating, setIsGenerating] = useState(false)
+
 
   useEffect(() => {
+    // 重置所有狀態
+    setData(null)
+    setLoading(true)
+    setIsGenerating(false)
+
+
+    const controller = new AbortController()
+    let isRequestCompleted = false
+
+    const timeoutId = setTimeout(() => {
+      if (!isRequestCompleted) {
+
+        setLoading(false)
+        setIsGenerating(true)
+      }
+    }, 3000)
+
     const fetchWordInfo = async () => {
       try {
-        const response = await fetch(`/api/voc/${word}`)
+        const response = await fetch(`/api/voc/${word}`, {
+          signal: controller.signal
+        })
+
         if (!response.ok) throw new Error('Failed to fetch data')
         const json = await response.json()
+
+        // 請求完成，更新狀態
+        isRequestCompleted = true
+        clearTimeout(timeoutId)
         setData(json)
-      } catch (error) {
-        console.error('Error fetching word info:', error)
-      } finally {
         setLoading(false)
+        setIsGenerating(false)
+
+
+      } catch (error) {
+        if (error instanceof Error && error.name !== 'AbortError') {
+          console.error('Error fetching word info:', error)
+          isRequestCompleted = true
+          clearTimeout(timeoutId)
+          setLoading(false)
+          setIsGenerating(false)
+        }
       }
     }
 
     fetchWordInfo()
+
+    return () => {
+      controller.abort()
+      clearTimeout(timeoutId)
+    }
   }, [word])
 
-  if (loading) return <p className="text-gray-500">Loading...</p>
-  if (!data) return <p className="text-red-500">找不到「{word}」的資料。</p>
+  useEffect(() => {
+    if (!isGenerating) return
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch(`/api/voc/${word}`)
+        if (response.ok) {
+          const json = await response.json()
+          setData(json)
+          setIsGenerating(false)
+          clearInterval(pollInterval)
+        }
+      } catch (error) {
+        console.error('Error polling for generated data:', error)
+      }
+    }, 2000)
+
+    return () => clearInterval(pollInterval)
+  }, [isGenerating, word])
+
+  if (loading) {
+    return (
+      <div className="text-gray-500">
+        <p>Searching for 「{word}」...</p>
+
+      </div>
+    )
+  }
+
+  if (isGenerating) {
+    return (
+      <div className="text-gray-500">
+        <p>Cannot find definition for「{word}」, AI is generating, it will take 5-10 seconds...</p>
+
+      </div>
+    )
+  }
+
+  if (!data) {
+    return (
+      <div className="text-gray-500">
+        <p>Cannot find definition for「{word}」</p>
+
+      </div>
+    )
+  }
 
   const def = data.definitions?.[0] ?? null
 
@@ -40,7 +123,9 @@ export default function VocInfo({ word }: VocInfoProps) {
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold">{data.word}</h1>
-          <p className="text-sm text-gray-500">{data.publicVocabularyId}</p>
+          {def?.pronunciation && <p>[{def.pronunciation}]</p>}
+
+          {/* <p className="text-sm text-gray-500">{data.publicVocabularyId}</p> */}
         </div>
         {data.familiarity !== undefined && <FamiliaritySign familiarity={data.familiarity} />}
       </div>
@@ -50,31 +135,27 @@ export default function VocInfo({ word }: VocInfoProps) {
             <div key={index} className="space-y-1">
               <div className='flex justify-start items-center gap-2'>
                 {d.partOfSpeech && (
-                  <p className="text-sm text-gray-500">{d.partOfSpeech}</p>
+                  <p className="text-sm font-semibold text-secondary">{d.partOfSpeech}</p>
                 )}
-                {d.localDefinition && (
-                  <p className="text-sm text-gray-600">{d.localDefinition}</p>
-                )}
+                <p className="text-sm">{d.definition}</p>
               </div>
 
-              <p className="text-sm">
-                <span className="font-semibold">Definition:</span> {d.definition}
-              </p>
+              {d.localDefinition && (
+                <p className="text-sm text-gray-600">{d.localDefinition}</p>
+              )}
             </div>
           ))}
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-2 text-sm">
-        {def?.pronunciation && <p><span className="font-semibold">Pronunciation：</span>[{def.pronunciation}]</p>}
         {def?.synonyms && <p><span className="font-semibold">Synonyms：</span>{def.synonyms}</p>}
         {def?.antonyms && <p><span className="font-semibold">Antonyms：</span>{def.antonyms}</p>}
       </div>
 
       {(def?.example || def?.exampleTranslation || data.customExample) && (
         <div className="space-y-1">
-          <h2 className="text-sm font-semibold text-gray-700">Example</h2>
-          {def.example && <p className="text-sm">「{def.example}」</p>}
+          {def.example && <p className="text-sm">&ldquo;{def.example}&rdquo;</p>}
           {def.exampleTranslation && <p className="text-sm text-gray-500">{def.exampleTranslation}</p>}
         </div>
       )}

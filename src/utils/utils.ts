@@ -107,12 +107,50 @@ function formatDateToLocalString(
   const date = new Date(isoString)
   return new Intl.DateTimeFormat(locale, options).format(date)
 }
+function debounce<T extends (...args: never[]) => void>(
+  func: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeout: ReturnType<typeof setTimeout>;
 
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}
+
+function cleanWord  (word: string) { 
+  // 檢查輸入是否有效
+  if (!word || typeof word !== 'string') {
+    return null
+  }
+  
+  let cleaned = word.trim()
+  if (!cleaned) {
+    return null
+  }
+
+  cleaned = cleaned.replace(/^[^\w\s-]+/, '')
+  cleaned = cleaned.replace(/[^\w\s-]+$/, '')
+
+  if (!cleaned.trim()) {
+    return null
+  }
+  
+  cleaned = cleaned.toLowerCase()
+  cleaned = cleaned.replace(/\s+/g, ' ')
+  
+  return cleaned
+}
 
 const utils = {
   selectVocabulariesByFamiliarity: selectVocabulariesByFamiliarity,
   generateSlug: generateSlug,
-  formatDateToLocalString: formatDateToLocalString
+  formatDateToLocalString: formatDateToLocalString,
+  debounce: debounce,
+  cleanWord:cleanWord
 }
 
 export default utils;

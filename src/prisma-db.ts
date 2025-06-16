@@ -14,9 +14,6 @@ const prisma = new PrismaClient()
 
 // 取得用戶儲存的完整單字清單
 export async function getUserFullVocabularyList(userId: string): Promise<Vocabulary[]> {
-  const fakedelay = Math.random() * 5000;
-  await new Promise((resolve) => setTimeout(resolve, fakedelay));
-
   const result = await prisma.userVocabulary.findMany({
     where: { userId },
     orderBy: { addedAt: 'desc' },
@@ -31,6 +28,26 @@ export async function getUserFullVocabularyList(userId: string): Promise<Vocabul
 
   return result.map(transformUserVocabularyToVocabulary);
 }
+
+// 取得用戶儲存的部分單字清單
+export async function getUserVocabularyWithPage(userId: string, page: number): Promise<Vocabulary[]> {
+  const result = await prisma.userVocabulary.findMany({
+    where: { userId },
+    orderBy: { addedAt: 'desc' },
+    skip: (page - 1) * 20,  
+    take: 20,              
+    include: {
+      publicVocabulary: {
+        include: {
+          definitions: true,
+        },
+      },
+    },
+  });
+
+  return result.map(transformUserVocabularyToVocabulary);
+}
+
 // 查詢公用和私人單字
 export async function findVocabularyWithUserProgress(
   word: string, 
@@ -319,8 +336,8 @@ export async function updateUserVocabularyFamiliarity(
         throw new Error(`UserVocabulary with id ${userVocabularyId} not found`);
       }
 
-      // 計算新的熟悉度，確保在 0-5 範圍內
-      const newFamiliarity = Math.max(0, Math.min(5, currentFamiliarity + familiarityChange));
+      // 計算新的熟悉度，確保在 0-4 範圍內
+      const newFamiliarity = Math.max(0, Math.min(4, currentFamiliarity + familiarityChange));
 
       return tx.userVocabulary.update({
         where: { id: userVocabularyId },

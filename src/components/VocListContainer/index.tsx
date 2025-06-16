@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useVocs } from '@/hooks/useVocs';
+import { useState } from 'react';
 import VocList from '../VocList';
-import WordInfoSuspense from '../VocCard'
-import { FaSpinner } from 'react-icons/fa';
+import WordInfoSuspense from '../VocCard';
+import LoadingAnimation from '../LoadingAnimation';
 import { Vocabulary as VocItemType } from '@/types/';
 import FinishLine from '../FinishLine';
+import { useLazyLoad } from '@/hooks/useLazyLoad'; 
 
 interface VocListContainerProps {
   initialVocs: VocItemType[];
@@ -14,69 +14,51 @@ interface VocListContainerProps {
 
 export default function VocListContainer({ initialVocs }: VocListContainerProps) {
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
-  const { 
-    data: vocs, 
-    loading, 
-    loadMore, 
-    hasMore, 
-    setInitialData 
-  } = useVocs();
-  const observerRef = useRef<HTMLDivElement>(null);
+  
+  const {
+    data: vocs,
+    loading,
+    error,
+    hasMore,
+    observerRef,
+    refresh
+  } = useLazyLoad<VocItemType>('/api/voc', {
+    initialData: initialVocs,
+    pageSize: 20,
+    rootMargin: "200px",
+    threshold: 0.1
+  });
 
-  // 設置初始數據
-  useEffect(() => {
-    setInitialData(initialVocs);
-  }, [initialVocs, setInitialData]);
+  const handleWordClick = (word: string) => setSelectedWord(word);
 
-  // IntersectionObserver → 當元素出現在畫面中就觸發 loadMore()
-  useEffect(() => {
-    if (!hasMore) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
-        }
-      },
-      {
-        rootMargin: "200px", // 提前觸發
-      }
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-8">
+        <p className="text-red-500 mb-4">There were some errors, please try again</p>
+        <button 
+          onClick={refresh}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          retry
+        </button>
+      </div>
     );
-
-    if (observerRef.current) observer.observe(observerRef.current);
-
-    return () => {
-      if (observerRef.current) observer.unobserve(observerRef.current);
-    };
-  }, [observerRef.current, hasMore, loadMore]);
-
-  const handleWordClick = (word: string) => {
-    setSelectedWord(word);
-  };
+  }
 
   return (
     <>
-      <VocList 
-        vocs={vocs || []} 
-        onItemClick={handleWordClick} 
-      />
-      
+      <VocList vocs={vocs} onItemClick={handleWordClick} />
       {loading && (
-        <div>
-          <FaSpinner className="animate-spin text-4xl my-5 text-gray-500" />
+        <div className="flex justify-center items-center py-8 mt-10">
+          <LoadingAnimation />
         </div>
       )}
-      
       {selectedWord && (
         <WordInfoSuspense word={selectedWord} onClose={() => setSelectedWord(null)} />
+      )}
+      {hasMore && <div ref={observerRef} className="h-12" />}
 
-      )}
-      
-      <div ref={observerRef} className="h-12" />
-      
-      {!hasMore && (
-       <FinishLine className="w-full pt-10 pb-32" />
-      )}
+      {!hasMore && <FinishLine className="w-full pt-10 pb-32" />}
     </>
   );
 }

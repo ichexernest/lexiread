@@ -1,14 +1,13 @@
 import VocListContainer from '@/components/VocListContainer';
 import LearningDashBoard from '@/components/LearningDashBoard';
 import { Vocabulary } from '@/types';
-import { getUserFullVocabularyList } from '@/prisma-db';
+import  fetchService  from '@/utils/fetch';
 import { currentUser } from '@clerk/nextjs/server';
 import Title from '@/components/Title';
-//import { getVocsInitialData } from '@/services/vocService'; // 假設的服務端資料獲取方法
 
 export default async function VocabularyPage() {
     const clerkUser = await currentUser();
-  const initialVocs: Vocabulary[] = await getUserFullVocabularyList(clerkUser!.id); 
+  const initialVocs: Vocabulary[] = await fetchService.getUserVocabularyPage(clerkUser!.id,1); 
   return (
     <div className="flex flex-col items-center min-h-screen w-full max-w-[720px] mx-auto">
       <Title className="p-10">Saved Vocabularies</Title>

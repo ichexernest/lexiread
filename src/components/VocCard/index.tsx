@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense } from 'react'
+import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 import VocInfo from "@/components/VocInfo"
 
@@ -21,10 +21,7 @@ export default function VocCard({ word, onClose }: VocCardProps) {
         >
           <FaTimes />
         </button>
-        <Suspense fallback={<p className="text-gray-500">~~查詢「{word}」中...</p>}>
           <VocInfo word={word} />
-        </Suspense>
-
       </div>
     </div>
   );

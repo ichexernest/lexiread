@@ -6,10 +6,11 @@ import { Content } from '@/types'
 
 interface ArticleContentProps {
   content: Content
-  onWordClick: (word: string) => void
+  onWordClick: (word: string) => void,
+  className?: string
 }
 
-export default function ArticleContent({ content, onWordClick }: ArticleContentProps) {
+export default function ArticleContent({ content, onWordClick,  }: ArticleContentProps) {
   const renderClickableContent = (text: string) => {
     const paragraphs = text.split('\n\n').map(p => p.trim())
 
@@ -29,5 +30,5 @@ export default function ArticleContent({ content, onWordClick }: ArticleContentP
     })
   }
 
-  return <article className="text-lg px-4">{renderClickableContent(content.content)}</article>
+  return <article className="text-lg w-full pt-5 px-5 md:px-0 prose prose-lg max-w-none">{renderClickableContent(content.content)}</article>
 }

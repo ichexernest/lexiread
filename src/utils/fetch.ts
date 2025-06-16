@@ -3,7 +3,7 @@ import { parseGPTResponseToVocabulary } from "@/utils/tr"
 import { OpenAI } from 'openai'
 import * as cheerio from 'cheerio';
 import { XMLParser } from 'fast-xml-parser';
-import { addArticleToPublic, getContentById, getTodayArticlesWithUserProgress, updateUserVocabularyFamiliarity, getArticleWithUserProgressById, pickExamVocabulary, getUserArticleList } from "@/prisma-db"
+import { addArticleToPublic, getContentById, getTodayArticlesWithUserProgress, updateUserVocabularyFamiliarity, getArticleWithUserProgressById, pickExamVocabulary, getUserArticleList,getUserVocabularyWithPage } from "@/prisma-db"
 import utils from "./utils";
 
 const openai = new OpenAI({
@@ -266,6 +266,16 @@ Requirements:
     }
 }
 
+const getUserVocabularyPage = async (userId: string, page: number): Promise<Vocabulary[]> => {
+    try {
+        const vocabularyList = await getUserVocabularyWithPage(userId, page);
+        return vocabularyList;
+    } catch (error) {
+        console.error('getUserVocabularyPage Error:', error);
+        throw error;
+    }
+}
+
 const getQuizVocabularyList = async (userId: string): Promise<Vocabulary[]> => {
     try {
         const vocabularyList = await pickExamVocabulary(userId);
@@ -336,6 +346,7 @@ const fetchService = {
     getTodayArticles: getTodayArticles,
     getUsersArticles: getUsersArticles,
     getArticlesById: getArticlesById,
+    getUserVocabularyPage: getUserVocabularyPage,
     getVocabularyFromGPT: getVocabularyFromGPT,
     getQuizVocabularyList: getQuizVocabularyList,
     getContent: getContent,
