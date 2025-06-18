@@ -20,10 +20,10 @@ export default function ArticleViewer({ article, content }: ArticleViewerProps) 
 
   const handleWordClick = useMemo(
   () =>
-    utils.debounce<(word: string | null) => void>((word) => {
+    utils.throttle<(word: string | null) => void>((word) => {
       const cleanedWord = utils.cleanWord(word!)
       setSelectedWord(cleanedWord);
-    }, 1000),
+    }, 2000),
   []
 );
 

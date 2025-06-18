@@ -1,41 +1,25 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import useSWRInfinite from 'swr/infinite';
+import { useApi } from '@/hooks/useApi'; // 調整路徑
 
 interface UseLazyLoadOptions {
   initialData?: unknown[];
   pageSize?: number;
   rootMargin?: string;
   threshold?: number;
+  requireAuth?: boolean;
+  autoLoad?: boolean; // 是否自動開始加載
 }
 
 interface UseLazyLoadReturn<T> {
   data: T[];
   loading: boolean;
-  error: unknown;
+  error: string | null;
   hasMore: boolean;
   observerRef: React.RefObject<HTMLDivElement | null>;
-  mutate: () => void;
+  loadMore: () => void;
   refresh: () => void;
+  reset: () => void;
 }
-
-// SWR fetcher function
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`HTTP error! status: ${res.status}`);
-  }
-  return res.json();
-};
-
-// Generate key for SWR infinite
-const getKey = (apiEndpoint: string, pageSize: number) => 
-  (pageIndex: number, previousPageData: unknown[]) => {
-    // If we've reached the end, return null to stop fetching
-    if (previousPageData && previousPageData.length < pageSize) return null;
-    
-    // Return the URL for the current page
-    return `${apiEndpoint}?page=${pageIndex + 1}`;
-  };
 
 export function useLazyLoad<T = unknown>(
   apiEndpoint: string,
@@ -45,51 +29,70 @@ export function useLazyLoad<T = unknown>(
     initialData = [],
     pageSize = 20,
     rootMargin = "200px",
-    threshold = 0.1
+    threshold = 0.1,
+    requireAuth = true,
+    autoLoad = true
   } = options;
 
-  const observerRef = useRef<HTMLDivElement>(null);
+  const [data, setData] = useState<T[]>(initialData as T[]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [hasTriggeredInitialLoad, setHasTriggeredInitialLoad] = useState(false);
-
-  // Use SWR infinite for pagination
-  const {
-    data: pages,
-    error,
-    mutate,
-    size,
-    setSize,
-    isLoading,
-    isValidating
-  } = useSWRInfinite(
-    getKey(apiEndpoint, pageSize),
-    fetcher,
-    {
-      revalidateFirstPage: false,
-      revalidateOnFocus: false,
-      fallbackData: initialData.length > 0 ? [initialData] : undefined,
-    }
-  );
-
-  // Flatten the pages data
-  const data = pages ? pages.flat() : initialData;
   
-  // Determine if there's more data to load
-  const hasMore = pages ? pages[pages.length - 1]?.length === pageSize : true;
-  
-  // Loading state
-  const loading = isLoading || isValidating;
+  const observerRef = useRef<HTMLDivElement>(null);
+  const { loading, error, execute, reset: resetApi } = useApi<T[]>();
 
   // Load more function
-  const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
-      setSize(size + 1);
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    try {
+      const response = await execute({
+        url: `${apiEndpoint}?page=${currentPage}&limit=${pageSize}`,
+        requireAuth,
+        method: 'GET'
+      });
+
+      if (response.ok && response.data) {
+        const newData = response.data;
+        
+        if (newData.length < pageSize) {
+          setHasMore(false);
+        }
+
+        setData(prevData => {
+          // 防止重複數據（可選，根據你的需求）
+          const existingIds = new Set(
+            prevData.map((item: any) => item.id || item._id || JSON.stringify(item))
+          );
+          const filteredNewData = newData.filter((item: any) => 
+            !existingIds.has(item.id || item._id || JSON.stringify(item))
+          );
+          
+          return [...prevData, ...filteredNewData];
+        });
+        
+        setCurrentPage(prev => prev + 1);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.error('Error loading more data:', err);
+      setHasMore(false);
     }
-  }, [loading, hasMore, size, setSize]);
+  }, [loading, hasMore, currentPage, pageSize, apiEndpoint, requireAuth, execute]);
+
+  // Initial load
+  useEffect(() => {
+    if (autoLoad && currentPage === 1 && data.length === 0) {
+      loadMore();
+    }
+  }, [autoLoad, currentPage, data.length, loadMore]);
 
   // Intersection Observer for lazy loading
   useEffect(() => {
     const currentRef = observerRef.current;
-    if (!currentRef || !hasMore) return;
+    if (!currentRef || !hasMore || !autoLoad) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -113,13 +116,25 @@ export function useLazyLoad<T = unknown>(
     return () => {
       observer.disconnect();
     };
-  }, [loadMore, hasMore, loading, hasTriggeredInitialLoad, initialData.length, rootMargin, threshold]);
+  }, [loadMore, hasMore, loading, hasTriggeredInitialLoad, initialData.length, rootMargin, threshold, autoLoad]);
 
-  // Refresh function to reset all data
+  // Refresh function to reset all data and reload from page 1
   const refresh = useCallback(() => {
-    setSize(1);
-    mutate();
-  }, [setSize, mutate]);
+    setData([]);
+    setCurrentPage(1);
+    setHasMore(true);
+    setHasTriggeredInitialLoad(false);
+    resetApi();
+  }, [resetApi]);
+
+  // Reset function to clear all data
+  const reset = useCallback(() => {
+    setData(initialData as T[]);
+    setCurrentPage(1);
+    setHasMore(true);
+    setHasTriggeredInitialLoad(false);
+    resetApi();
+  }, [initialData, resetApi]);
 
   return {
     data,
@@ -127,7 +142,8 @@ export function useLazyLoad<T = unknown>(
     error,
     hasMore,
     observerRef,
-    mutate,
-    refresh
+    loadMore,
+    refresh,
+    reset
   };
 }

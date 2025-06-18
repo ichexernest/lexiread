@@ -7,10 +7,9 @@ import { Content } from '@/types'
 interface ArticleContentProps {
   content: Content
   onWordClick: (word: string) => void,
-  className?: string
 }
 
-export default function ArticleContent({ content, onWordClick,  }: ArticleContentProps) {
+export default function ArticleContent({ content, onWordClick }: ArticleContentProps) {
   const renderClickableContent = (text: string) => {
     const paragraphs = text.split('\n\n').map(p => p.trim())
 

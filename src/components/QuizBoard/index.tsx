@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Vocabulary } from '@/types'
 import { useRouter } from 'next/navigation'
 import PrimaryButton from '../PrimaryButton'
+import { useApi } from '@/hooks/useApi'
 
 interface QuizBoardProps {
   items: Vocabulary[]
@@ -15,6 +16,7 @@ type QuizResult = {
 }
 
 export default function QuizBoard({ items }: QuizBoardProps) {
+    const quizApi = useApi()
   const router = useRouter()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false)
@@ -45,48 +47,44 @@ export default function QuizBoard({ items }: QuizBoardProps) {
   const handleReveal = () => setIsAnswerRevealed(true)
 
   const handleAnswer = async (userVocabularyId: string, word: string, result: 'remembered' | 'notSure' | 'forgotten') => {
-    if (isSubmitting) return
+  
+  if (quizApi.loading) return
 
-    const resultItem = { userVocabularyId, word, result }
-    setResults((prev) => [...prev, resultItem])
-    setIsAnswerRevealed(false)
+  const resultItem = { userVocabularyId, word, result }
+  setResults((prev) => [...prev, resultItem])
+  setIsAnswerRevealed(false)
 
-    if (currentIndex < items.length - 1) {
-      setCurrentIndex((prev) => prev + 1)
-    } else {
-      // 最後一題，標記為完成並提交結果
-      setIsCompleted(true)
-      setIsSubmitting(true)
-      
-      try {
-        const finalResult = [...results, resultItem]
+  if (currentIndex < items.length - 1) {
+    setCurrentIndex((prev) => prev + 1)
+  } else {
+    setIsCompleted(true)
+    
+    try {
+      const finalResult = [...results, resultItem]
 
-        const response = await fetch('/api/quiz', { 
-          method: 'POST', 
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(finalResult) 
-        })
+      const response = await quizApi.execute({
+        url: '/api/quiz',
+        method: 'POST',
+        body: JSON.stringify(finalResult),
+      })
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const learnedWords = finalResult
-          .filter(item => item.result === 'remembered')
-          .map(item => item.word)
-
-        const query = new URLSearchParams()
-        query.set('words', learnedWords.join(','))
-        router.push(`/Quiz/Result?${query.toString()}`)
-      } catch (error) {
-        console.error('Failed to submit quiz results:', error)
-        setIsSubmitting(false)
-        setIsCompleted(false) // 發生錯誤時重置狀態
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
+
+      const learnedWords = finalResult
+        .filter(item => item.result === 'remembered')
+        .map(item => item.word)
+
+      const query = new URLSearchParams()
+      query.set('words', learnedWords.join(','))
+      router.push(`/Quiz/Result?${query.toString()}`)
+    } catch (error) {
+      console.error('Failed to submit quiz results:', error)
+      setIsCompleted(false)
     }
   }
+}
 
   // 檢查是否有有效的 items
   if (!items || items.length === 0) {

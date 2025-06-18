@@ -121,6 +121,20 @@ function debounce<T extends (...args: never[]) => void>(
   };
 }
 
+function throttle<T extends (...args: never[]) => void>(
+  func: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let lastCall = 0;
+  return (...args: Parameters<T>) => {
+    const now = Date.now();
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      func(...args);
+    }
+  };
+}
+
 function cleanWord  (word: string) { 
   // 檢查輸入是否有效
   if (!word || typeof word !== 'string') {
@@ -150,6 +164,7 @@ const utils = {
   generateSlug: generateSlug,
   formatDateToLocalString: formatDateToLocalString,
   debounce: debounce,
+  throttle:throttle,
   cleanWord:cleanWord
 }
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Vocabulary } from '@/types'
+import { useApi } from '@/hooks/useApi' 
 import SaveButton from '../SaveButton'
 import FamiliaritySign from '../FamiliaritySign'
 
@@ -10,76 +11,84 @@ interface VocInfoProps {
 }
 
 export default function VocInfo({ word }: VocInfoProps) {
-  const [data, setData] = useState<Vocabulary | null>(null)
-  const [loading, setLoading] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
-
+  const { data, loading, error, execute, reset } = useApi<Vocabulary>()
 
   useEffect(() => {
-    // 重置所有狀態
-    setData(null)
-    setLoading(true)
+    reset()
     setIsGenerating(false)
 
-
-    const controller = new AbortController()
+    let timeoutId: NodeJS.Timeout
+    let pollInterval: NodeJS.Timeout
     let isRequestCompleted = false
 
-    const timeoutId = setTimeout(() => {
-      if (!isRequestCompleted) {
-
-        setLoading(false)
-        setIsGenerating(true)
-      }
-    }, 3000)
-
     const fetchWordInfo = async () => {
+      timeoutId = setTimeout(() => {
+        if (!isRequestCompleted) {
+          setIsGenerating(true)
+        }
+      }, 3000)
+
       try {
-        const response = await fetch(`/api/voc/${word}`, {
-          signal: controller.signal
+        const response = await execute({
+          url: `/api/voc/${word}`,
+          requireAuth: false
         })
 
-        if (!response.ok) throw new Error('Failed to fetch data')
-        const json = await response.json()
-
-        // 請求完成，更新狀態
         isRequestCompleted = true
         clearTimeout(timeoutId)
-        setData(json)
-        setLoading(false)
-        setIsGenerating(false)
 
-
-      } catch (error) {
-        if (error instanceof Error && error.name !== 'AbortError') {
-          console.error('Error fetching word info:', error)
-          isRequestCompleted = true
-          clearTimeout(timeoutId)
-          setLoading(false)
+        if (!response.ok) {
+          setIsGenerating(true)
+          startPolling()
+        } else {
           setIsGenerating(false)
         }
+      } catch (err) {
+        isRequestCompleted = true
+        clearTimeout(timeoutId)
+        console.error('Error fetching word info:', err)
       }
+    }
+
+    const startPolling = () => {
+      pollInterval = setInterval(async () => {
+        try {
+          const response = await execute({
+            url: `/api/voc/${word}`,
+            requireAuth: false
+          })
+
+          if (response.ok) {
+            setIsGenerating(false)
+            clearInterval(pollInterval)
+          }
+        } catch (error) {
+          console.error('Error polling for generated data:', error)
+        }
+      }, 2000)
     }
 
     fetchWordInfo()
 
     return () => {
-      controller.abort()
       clearTimeout(timeoutId)
+      clearInterval(pollInterval)
     }
-  }, [word])
+  }, [word]) 
 
   useEffect(() => {
     if (!isGenerating) return
 
     const pollInterval = setInterval(async () => {
       try {
-        const response = await fetch(`/api/voc/${word}`)
+        const response = await execute({
+          url: `/api/voc/${word}`,
+          requireAuth: false
+        })
+
         if (response.ok) {
-          const json = await response.json()
-          setData(json)
           setIsGenerating(false)
-          clearInterval(pollInterval)
         }
       } catch (error) {
         console.error('Error polling for generated data:', error)
@@ -89,11 +98,10 @@ export default function VocInfo({ word }: VocInfoProps) {
     return () => clearInterval(pollInterval)
   }, [isGenerating, word])
 
-  if (loading) {
+  if (loading && !isGenerating) {
     return (
       <div className="text-gray-500">
         <p>Searching for 「{word}」...</p>
-
       </div>
     )
   }
@@ -102,16 +110,14 @@ export default function VocInfo({ word }: VocInfoProps) {
     return (
       <div className="text-gray-500">
         <p>Cannot find definition for「{word}」, AI is generating, it will take 5-10 seconds...</p>
-
       </div>
     )
   }
 
-  if (!data) {
+  if (error || !data) {
     return (
       <div className="text-gray-500">
         <p>Cannot find definition for「{word}」</p>
-
       </div>
     )
   }
@@ -124,11 +130,10 @@ export default function VocInfo({ word }: VocInfoProps) {
         <div>
           <h1 className="text-2xl font-bold">{data.word}</h1>
           {def?.pronunciation && <p>[{def.pronunciation}]</p>}
-
-          {/* <p className="text-sm text-gray-500">{data.publicVocabularyId}</p> */}
         </div>
         {data.familiarity !== undefined && <FamiliaritySign familiarity={data.familiarity} />}
       </div>
+      
       {data.definitions?.length > 0 && (
         <div className="space-y-4">
           {data.definitions.map((d, index) => (
