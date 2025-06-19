@@ -351,6 +351,30 @@ export async function updateUserVocabularyFamiliarity(
   });
 }
 
+export async function getUserVocTotalAndCount(userId: string,) {
+  try {
+    const total = await prisma.userVocabulary.count({
+      where: {
+        userId: userId
+      }
+    })
+    const count = await prisma.userVocabulary.count({
+      where: {
+        userId: userId,
+        familiarity: 4
+      }
+    })
+
+    return {
+      total,
+      count
+    }
+  } catch (error) {
+    console.error('獲取單字統計失敗:', error)
+    throw new Error('無法獲取單字統計資料')
+  }
+}
+
 //-------------------------------------------------------------------------------------------------------------------------------------
 
 // 取得用戶儲存的完整文章清單

@@ -87,7 +87,7 @@ model UserVocabulary {
   addedAt            DateTime @default(now())
 
   // 個人學習狀態
-  familiarity Int @default(0) // 熟悉度 (0-5)
+  familiarity Int @default(0) // 熟悉度 (0-4)
 
   // 個人客製化內容
   personalNote     String?

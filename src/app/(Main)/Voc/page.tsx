@@ -15,7 +15,7 @@ export default async function VocabularyPage() {
         <p className="text-center text-gray-500">No vocabulary saved yet. Start adding some!</p>
       ) : (
         <>
-          <LearningDashBoard initialVocs={initialVocs}  />
+          <LearningDashBoard />
           <VocListContainer initialVocs={initialVocs} />
         </>
       )}

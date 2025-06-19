@@ -2,10 +2,13 @@
 import { useEffect,  useState } from 'react'
 
 interface ProgressCircleProps {
-  percent: number
+  total: number,
+  count: number
 }
 
-export default function ProgressCircle({ percent = 90 }: ProgressCircleProps) {
+export default function ProgressCircle({ total, count }: ProgressCircleProps) {
+  const percent = total > 0 ? (count / total) * 100 : 0;
+
   const radius = 54
   const stroke = 8
   const normalizedRadius = radius - stroke / 2

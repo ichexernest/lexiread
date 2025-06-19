@@ -26,154 +26,195 @@ jest.mock('../ClickableWord', () => {
 
 describe('ArticleContent', () => {
   const mockContent: Content = {
-    contentId:'mock-001',
-    content: `The leaders of G7 nations have called for a "de-escalation of hostilities in the Middle East, including a ceasefire in Gaza".
+    contentId: 'climate-article-001',
+    content: `Scientists have reported alarming new findings about the accelerating pace of climate change and its impact on global ecosystems.
 
-In a joint statement, they also reiterated their "commitment to peace and stability" in the region, adding that within this context "Israel has a right to defend itself".
+According to the latest research published in Nature Climate Change, average global temperatures have risen by 1.2 degrees Celsius since pre-industrial times, with the Arctic warming at twice the global average.
 
-US President Donald Trump left the summit in Canada early telling reporters: "I have to be back early for obvious reasons."
+Dr. Sarah Thompson, a climatologist at Stanford University, explains that "we're witnessing unprecedented changes in weather patterns, with more frequent extreme events such as hurricanes, droughts, and heatwaves."
 
-His exit came as Israel and Iran attacked each other for a fifth consecutive day.
+The study analyzed data from over 200 weather stations worldwide and found that sea levels have risen by 8.2 inches since 1880, primarily due to thermal expansion of seawater and melting ice sheets.
 
-Reports circulated that Trump had instructed the White House National Security Council to meet upon his return.
+Renewable energy adoption has accelerated significantly, with solar and wind power now accounting for 12% of global electricity generation, up from just 2% in 2010.
 
-US Defence Secretary Pete Hegseth announced the "deployment of additional capabilities" to the Middle East to enhance the Pentagon's "defensive posture". But American officials rejected suggestions the US was about to join the Israeli offensive on Iran.`,
-    createdAt: '2024-01-01',
+However, experts warn that current efforts may not be sufficient to limit warming to 1.5 degrees Celsius, the target set by the Paris Agreement in 2015.`,
+    createdAt: '2024-03-15',
   };
 
   beforeEach(() => {
     mockOnWordClick.mockClear();
   });
 
-  it('should render article content correctly', () => {
+  it('renders the article container with correct styling classes', () => {
     render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
     const article = screen.getByRole('article');
+    
     expect(article).toBeInTheDocument();
     expect(article).toHaveClass('text-lg', 'w-full', 'pt-5', 'px-5', 'md:px-0', 'prose', 'prose-lg', 'max-w-none');
   });
 
-  it('should display all text content', () => {
+  it('displays climate-related scientific terminology correctly', () => {
     render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
     
-    // 檢查關鍵詞是否存在
-    expect(screen.getByText('G7')).toBeInTheDocument();
-    expect(screen.getByText('nations')).toBeInTheDocument();
-    expect(screen.getByText('Donald')).toBeInTheDocument();
-    expect(screen.getAllByText('Trump')[0]).toBeInTheDocument();
-    expect(screen.getByText('Israel')).toBeInTheDocument();
-    expect(screen.getByText('Iran')).toBeInTheDocument();
+    // 檢查科學術語
+    expect(screen.getByText('climatologist')).toBeInTheDocument();
+    expect(screen.getByText('ecosystems')).toBeInTheDocument();
+    expect(screen.getByText('unprecedented')).toBeInTheDocument();
+    expect(screen.getByText('thermal')).toBeInTheDocument();
+    expect(screen.getByText('expansion')).toBeInTheDocument();
     
+    // 檢查專有名詞
+    expect(screen.getByText('Arctic')).toBeInTheDocument();
+    expect(screen.getByText('Stanford')).toBeInTheDocument();
+    expect(screen.getByText('Paris')).toBeInTheDocument();
+    expect(screen.getByText('Agreement')).toBeInTheDocument();
   });
 
-  it('should split content into correct number of paragraphs', () => {
+  it('correctly parses content into expected number of paragraphs', () => {
     const { container } = render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
     
-    // 計算 mockContent 中的段落數量（以 \n\n 分割）
-    const expectedParagraphs = mockContent.content.split('\n\n').length;
-    expect(expectedParagraphs).toBe(6); // 驗證我們的預期是正確的
+    const expectedParagraphCount = mockContent.content.split('\n\n').length;
+    expect(expectedParagraphCount).toBe(6);
     
-    // 檢查實際渲染的段落數量
-    const paragraphs = container.querySelectorAll('p');
-    expect(paragraphs).toHaveLength(6);
+    const renderedParagraphs = container.querySelectorAll('p');
+    expect(renderedParagraphs).toHaveLength(6);
     
-    // 檢查每個段落都有正確的 className
-    paragraphs.forEach(p => {
-      expect(p).toHaveClass('mb-5', 'leading-8', 'text-neutral-800', 'text-pretty');
+    // 驗證每個段落的樣式類別
+    renderedParagraphs.forEach(paragraph => {
+      expect(paragraph).toHaveClass('mb-5', 'leading-8', 'text-neutral-800', 'text-pretty');
     });
   });
 
-  it('should call onWordClick when a word is clicked', async () => {
+  it('triggers word click handler when scientific terms are clicked', async () => {
     const user = userEvent.setup();
     render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
     
-    // 點擊特定的詞（使用 getAllByText 處理重複的詞）
-    const trumpWords = screen.getAllByText('Trump');
-    await user.click(trumpWords[0]); // 點擊第一個 Trump
+    const climateWord = screen.getByText('climate');
+    const scientistsWord = screen.getByText('Scientists');
     
-    // 驗證 mockOnWordClick 被呼叫
-    expect(mockOnWordClick).toHaveBeenCalledTimes(1);
-    expect(mockOnWordClick).toHaveBeenCalledWith('Trump');
-  });
-
-  it('should handle multiple word clicks correctly', async () => {
-    const user = userEvent.setup();
-    render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
-    
-    // 點擊多個不同的詞
-    const trumpWords = screen.getAllByText('Trump');
-    const israelWords = screen.getAllByText('Israel');
-    const g7Word = screen.getByText('G7');
-    
-    await user.click(trumpWords[0]); // 點擊第一個 Trump
-    await user.click(israelWords[0]); // 點擊第一個 "Israel"
-    await user.click(g7Word);
-    
-    // 檢查呼叫次數和參數
-    expect(mockOnWordClick).toHaveBeenCalledTimes(3);
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(1, 'Trump');
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'Israel');
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(3, 'G7');
-  });
-
-  it('should handle punctuation in words correctly', async () => {
-    const user = userEvent.setup();
-    render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
-    
-    // 點擊帶標點符號的詞
-    const quotedWord = screen.getByText('"de-escalation'); // 開頭有引號
-    const periodWord = screen.getByText('Gaza".'); // 結尾有引號和句號
-    
-    await user.click(quotedWord);
-    await user.click(periodWord);
+    await user.click(climateWord);
+    await user.click(scientistsWord);
     
     expect(mockOnWordClick).toHaveBeenCalledTimes(2);
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(1, '"de-escalation');
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'Gaza".');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(1, 'climate');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'Scientists');
   });
 
-  it('should render words with proper spacing', () => {
+  it('handles sequential clicks on different vocabulary words', async () => {
+    const user = userEvent.setup();
+    render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
+    
+    const targetWords = [
+      screen.getByText('accelerating'),
+      screen.getByText('temperature'),
+      screen.getByText('renewable'),
+      screen.getByText('sufficient')
+    ];
+    
+    for (const word of targetWords) {
+      await user.click(word);
+    }
+    
+    expect(mockOnWordClick).toHaveBeenCalledTimes(4);
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(1, 'accelerating');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'temperature');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(3, 'renewable');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(4, 'sufficient');
+  });
+
+  it('preserves punctuation and formatting in clickable words', async () => {
+    const user = userEvent.setup();
+    render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
+    
+    // 測試帶引號的詞
+    const quotedPhrase = screen.getByText('"we\'re');
+    const endQuote = screen.getByText('heatwaves."');
+    
+    await user.click(quotedPhrase);
+    await user.click(endQuote);
+    
+    expect(mockOnWordClick).toHaveBeenCalledTimes(2);
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(1, '"we\'re');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'heatwaves."');
+  });
+
+  it('maintains proper text flow and spacing between words', () => {
     const { container } = render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
     
-    // 檢查第一段的結構
     const firstParagraph = container.querySelector('p');
     expect(firstParagraph).toBeInTheDocument();
     
-    // 檢查段落內容包含預期的文字（帶空格）
-    expect(firstParagraph?.textContent).toContain('The leaders of G7 nations');
+    // 檢查文字內容保持完整性
+    expect(firstParagraph?.textContent).toContain('Scientists have reported alarming new findings');
+    expect(firstParagraph?.textContent).toContain('accelerating pace of climate change');
   });
 
-  it('should handle empty content gracefully', () => {
+  it('gracefully handles content with no paragraphs', () => {
     const emptyContent: Content = {
-      contentId: 'empty-001',
+      contentId: 'empty-climate-001',
       content: '',
-      createdAt: '2024-01-01',
+      createdAt: '2024-03-15',
     };
     
     const { container } = render(<ArticleContent content={emptyContent} onWordClick={mockOnWordClick} />);
     const article = screen.getByRole('article');
     
     expect(article).toBeInTheDocument();
-    // 空內容會產生一個空的段落（因為 split 會產生一個空字串）
+    
     const paragraphs = container.querySelectorAll('p');
     expect(paragraphs).toHaveLength(1);
     
-    // 檢查這個段落是否只包含一個空的 span
     const spans = paragraphs[0].querySelectorAll('span');
     expect(spans).toHaveLength(1);
     expect(spans[0]).toHaveTextContent('');
   });
 
-  it('should handle single paragraph content', () => {
-    const singleParagraphContent: Content = {
-      contentId: 'single-001',
-      content: 'This is a single paragraph without line breaks.',
-      createdAt: '2024-01-01',
+  it('processes single-line content without paragraph breaks', () => {
+    const shortContent: Content = {
+      contentId: 'short-climate-001',
+      content: 'Climate change requires immediate global action and sustainable solutions.',
+      createdAt: '2024-03-15',
     };
     
-    const { container } = render(<ArticleContent content={singleParagraphContent} onWordClick={mockOnWordClick} />);
+    const { container } = render(<ArticleContent content={shortContent} onWordClick={mockOnWordClick} />);
     
     const paragraphs = container.querySelectorAll('p');
     expect(paragraphs).toHaveLength(1);
-    expect(paragraphs[0]).toHaveTextContent('This is a single paragraph without line breaks.');
+    expect(paragraphs[0]).toHaveTextContent('Climate change requires immediate global action and sustainable solutions.');
+  });
+
+  it('handles numeric data and measurements correctly', async () => {
+    const user = userEvent.setup();
+    render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
+    
+    // 測試包含數字的詞
+    const degreesMeasurement = screen.getByText('1.2');
+    const percentageData = screen.getByText('12%');
+    const yearReference = screen.getByText('2015.');
+    
+    await user.click(degreesMeasurement);
+    await user.click(percentageData);
+    await user.click(yearReference);
+    
+    expect(mockOnWordClick).toHaveBeenCalledTimes(3);
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(1, '1.2');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, '12%');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(3, '2015.');
+  });
+
+  it('validates content structure matches expected format', () => {
+    const { container } = render(<ArticleContent content={mockContent} onWordClick={mockOnWordClick} />);
+    
+    const paragraphs = container.querySelectorAll('p');
+    
+    // 檢查第一段包含開場內容
+    expect(paragraphs[0]).toHaveTextContent(/Scientists have reported/);
+    
+    // 檢查中間段落包含研究數據
+    expect(paragraphs[1]).toHaveTextContent(/Nature Climate Change/);
+    expect(paragraphs[3]).toHaveTextContent(/200 weather stations/);
+    
+    // 檢查最後一段包含結論
+    expect(paragraphs[5]).toHaveTextContent(/Paris Agreement/);
   });
 });

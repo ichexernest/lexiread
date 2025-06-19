@@ -1,18 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { Vocabulary } from '@/types'
+import { Vocabulary ,QuizResult} from '@/types'
 import { useRouter } from 'next/navigation'
 import PrimaryButton from '../PrimaryButton'
 import { useApi } from '@/hooks/useApi'
 
 interface QuizBoardProps {
   items: Vocabulary[]
-}
-
-type QuizResult = {
-  userVocabularyId: string,
-  word: string,
-  result: 'remembered' | 'notSure' | 'forgotten'
 }
 
 export default function QuizBoard({ items }: QuizBoardProps) {
@@ -46,11 +40,10 @@ export default function QuizBoard({ items }: QuizBoardProps) {
 
   const handleReveal = () => setIsAnswerRevealed(true)
 
-  const handleAnswer = async (userVocabularyId: string, word: string, result: 'remembered' | 'notSure' | 'forgotten') => {
+  const handleAnswer = async (resultItem:QuizResult) => {
   
   if (quizApi.loading) return
 
-  const resultItem = { userVocabularyId, word, result }
   setResults((prev) => [...prev, resultItem])
   setIsAnswerRevealed(false)
 
@@ -140,17 +133,17 @@ export default function QuizBoard({ items }: QuizBoardProps) {
         ) : (
           <div className="flex gap-4">
             <PrimaryButton 
-              onClick={() => handleAnswer(currentItem.userVocabularyId!, currentItem.word, 'remembered')}
+              onClick={() => handleAnswer({userVocabularyId:currentItem.userVocabularyId!, word:currentItem.word, result:'remembered'})}
             >
               ✅ I remember
             </PrimaryButton>
             <PrimaryButton 
-              onClick={() => handleAnswer(currentItem.userVocabularyId!, currentItem.word, 'notSure')}
+              onClick={() => handleAnswer({userVocabularyId:currentItem.userVocabularyId!, word:currentItem.word, result:'notSure'})}
             >
               ❓ I&apos;m not sure
             </PrimaryButton>
             <PrimaryButton 
-              onClick={() => handleAnswer(currentItem.userVocabularyId!, currentItem.word, 'forgotten')}
+              onClick={() => handleAnswer({userVocabularyId:currentItem.userVocabularyId!, word:currentItem.word, result:'forgotten'})}
             >
               ❌ I forgot
             </PrimaryButton>
