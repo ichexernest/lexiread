@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from "react-icons/fa";
-import MainButton from '../MainButton';
+import MainButton from '@/components/MainButton';
 
 export default function BackButton() {
   const router = useRouter();

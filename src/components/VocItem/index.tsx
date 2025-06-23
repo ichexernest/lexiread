@@ -1,5 +1,5 @@
 import { Vocabulary } from "@/types";
-import FamiliaritySign from "../FamiliaritySign";
+import FamiliaritySign from "@/components/FamiliaritySign";
 
 interface VocItemProps {item: Vocabulary, handleClick: () => void}
 

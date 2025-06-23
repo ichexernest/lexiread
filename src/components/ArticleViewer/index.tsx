@@ -6,7 +6,7 @@ import { useState,useMemo } from "react"
 import { Article, Content } from "@/types"
 import SaveButton from "@/components/SaveButton"
 import utils from "@/utils/utils"
-import ArticleContent from "../ArticleContent"
+import ArticleContent from "@/components/ArticleContent"
 
 interface ArticleViewerProps {
   article: Article, 

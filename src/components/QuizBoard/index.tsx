@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { Vocabulary ,QuizResult} from '@/types'
 import { useRouter } from 'next/navigation'
-import PrimaryButton from '../PrimaryButton'
+import PrimaryButton from '@/components/PrimaryButton'
 import { useApi } from '@/hooks/useApi'
 
 interface QuizBoardProps {
@@ -107,7 +107,7 @@ export default function QuizBoard({ items }: QuizBoardProps) {
   return (
     <div className="flex flex-col w-full max-w-[720px] mx-auto">
       {/* 進度顯示 */}
-      <div className="mb-4 text-center text-sm text-gray-600">
+      <div data-testid="quiz-progress"  className="mb-4 text-center text-sm text-gray-600">
         {currentIndex + 1} / {items.length}
       </div>
 

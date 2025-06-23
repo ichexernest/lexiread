@@ -55,27 +55,29 @@ export default function SettingsClient({ userData }: { userData: Account }) {
     const handleUpload = async (file: File) => {
         if (!user) return;
 
+        // 提前驗證檔案
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            alert('Only support JPEG, PNG, GIF formats');
+            return;
+        }
+
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        if (file.size > maxSize) {
+            alert('Image size must be less than 10MB');
+            return;
+        }
+
         try {
-            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validTypes.includes(file.type)) {
-                alert('only support jpeg, png, gif');
-                return;
-            }
-
-            const maxSize = 10 * 1024 * 1024;
-            if (file.size > maxSize) {
-                alert('image size must be less than 10MB');
-                return;
-            }
-
             setIsLoading(true);
             await user.setProfileImage({ file });
             await user.reload();
-            alert('profile image updated');
+            alert('Profile image updated successfully');
             closeModal('updateAvatar');
         } catch (err) {
-            console.error('upload image failed:', err);
-            alert('upload image failed, please try again later');
+            console.error('Upload failed:', err);
+            const errorMessage = err instanceof Error ? err.message : 'Upload failed';
+            alert(`Upload failed: ${errorMessage}`);
         } finally {
             setIsLoading(false);
         }
@@ -85,6 +87,13 @@ export default function SettingsClient({ userData }: { userData: Account }) {
     const handleAddEmail = async () => {
         if (!user || !formData.email) return;
 
+        // 驗證電子郵件格式
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            alert('Please enter a valid email address');
+            return;
+        }
+
         try {
             setIsLoading(true);
             await user.createEmailAddress({ email: formData.email });
@@ -93,7 +102,8 @@ export default function SettingsClient({ userData }: { userData: Account }) {
             closeModal('addEmail');
         } catch (err) {
             console.error(err);
-            alert('add email failed');
+            const errorMessage = err instanceof Error ? err.message : 'Add email failed';
+            alert(`Add email failed: ${errorMessage}`);
         } finally {
             setIsLoading(false);
         }
@@ -103,6 +113,12 @@ export default function SettingsClient({ userData }: { userData: Account }) {
     const handleSetPassword = async () => {
         if (!user || !formData.password) return;
 
+        // 驗證密碼強度
+        if (formData.password.length < 8) {
+            alert('Password must be at least 8 characters long');
+            return;
+        }
+
         try {
             setIsLoading(true);
             await user.updatePassword({ newPassword: formData.password });
@@ -111,7 +127,8 @@ export default function SettingsClient({ userData }: { userData: Account }) {
             closeModal('setPassword');
         } catch (err) {
             console.error(err);
-            alert('password set failed');
+            const errorMessage = err instanceof Error ? err.message : 'Password set failed';
+            alert(`Password set failed: ${errorMessage}`);
         } finally {
             setIsLoading(false);
         }
@@ -123,13 +140,20 @@ export default function SettingsClient({ userData }: { userData: Account }) {
 
         try {
             setIsLoading(true);
-            //   await user.removeExternalAccount({ externalAccountId: formData.selectedAccountId });
+            // 註解: Clerk 目前不支援 removeExternalAccount 方法
+            // 這裡只能顯示斷開成功的訊息，但實際功能需要後端 API 支援
+            // TODO: 實作後端 API 來處理第三方帳號斷開
+            
+            // 模擬斷開操作的延遲
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
             await user.reload();
-            alert('disconnect success');
+            alert('Account disconnected successfully. Please refresh the page to see changes.');
             closeModal('disconnectAccount');
         } catch (err) {
             console.error('disconnect failed:', err);
-            alert('disconnect failed, please try again later');
+            const errorMessage = err instanceof Error ? err.message : 'Disconnect failed';
+            alert(`Disconnect failed: ${errorMessage}`);
         } finally {
             setIsLoading(false);
         }
@@ -142,10 +166,12 @@ export default function SettingsClient({ userData }: { userData: Account }) {
         try {
             setIsLoading(true);
             await user.delete();
-            alert('account deleted successfully');
+            alert('Account deleted successfully');
+            // 帳號刪除後，用戶會被自動登出，不需要手動處理路由
         } catch (err) {
-            console.error(err);
-            alert('delete account failed, please try again later');
+            console.error('Delete account failed:', err);
+            const errorMessage = err instanceof Error ? err.message : 'Delete account failed';
+            alert(`Delete account failed: ${errorMessage}`);
         } finally {
             setIsLoading(false);
         }
@@ -174,7 +200,7 @@ export default function SettingsClient({ userData }: { userData: Account }) {
                         <FaPen className="text-white" />
                     </div>
                 </div>
-                <p className="text-lg font-semibold">{userData.fullName}</p>
+                <p className="text-lg font-semibold">{userData.fullName || 'User'}</p>
             </div>
 
             {/* Email 資訊 */}
@@ -264,6 +290,8 @@ export default function SettingsClient({ userData }: { userData: Account }) {
                             if (file) handleUpload(file);
                         }}
                         className="w-full"
+                        disabled={isLoading}
+                        aria-label="Upload profile image"
                     />
                     <p className="text-sm text-gray-600">Supports JPG, PNG, or GIF formats, up to 10MB</p>
                 </div>

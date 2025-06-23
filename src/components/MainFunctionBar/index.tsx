@@ -7,7 +7,7 @@ import {
   FaNewspaper
 } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
-import MainButton from "../MainButton";
+import MainButton from "@/components/MainButton";
 
 const links = [
   { href: "/Home", icon: <AiFillHome />, hint: "Home" },

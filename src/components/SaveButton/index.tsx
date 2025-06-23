@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FaBookmark } from "react-icons/fa";
-import MainButton from "../MainButton";
+import MainButton from "@/components/MainButton";
 import { toggleSaveItem } from "@/actions/saveItems"
 interface SaveButtonProps {
     isSaved: boolean,
@@ -22,12 +22,17 @@ export default function SaveButton({
 const handleClick = async () => {
     if (loading) return
     setLoading(true)
-    console.log('handleClick', saveType, saveId, saved)
-    const result = await toggleSaveItem(saveType, saveId, saved ? 'unsave' : 'save')
-    if (result.success) {
-      setSaved(!saved)
-    } else {
-      alert(result.message || '操作失敗')
+    
+    try {
+      const result = await toggleSaveItem(saveType, saveId, saved ? 'unsave' : 'save')
+      if (result.success) {
+        setSaved(!saved)
+      } else {
+        alert(result.message || '操作失敗')
+      }
+    } catch (error) {
+      console.error('Failed to toggle save item:', error)
+      alert('操作失敗，請稍後再試')
     }
 
     setLoading(false)

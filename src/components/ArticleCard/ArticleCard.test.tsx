@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ArticleCard from '../ArticleCard';
+import ArticleCard from '@/components/ArticleCard';
 import { Article } from '@/types';
 
 
@@ -9,7 +9,7 @@ jest.mock('next/link', () => {
   };
 });
 
-jest.mock('../SaveButton', () => {
+jest.mock('@/components/SaveButton', () => {
   return function MockSaveButton({ 
     isSaved, 
     saveId, 

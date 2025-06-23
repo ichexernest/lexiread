@@ -1,6 +1,6 @@
 import { Article } from "@/types";
 import Link from "next/link";
-import SaveButton from "../SaveButton";
+import SaveButton from "@/components/SaveButton";
 import utils from "@/utils/utils";
 
 interface ArticleCardProps {

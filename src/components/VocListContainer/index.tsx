@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import VocList from '../VocList';
-import WordInfoSuspense from '../VocCard';
-import LoadingAnimation from '../LoadingAnimation';
+import VocList from '@/components/VocList';
+import WordInfoSuspense from '@/components/VocCard';
+import LoadingAnimation from '@/components/LoadingAnimation';
 import { Vocabulary as VocItemType } from '@/types/';
-import FinishLine from '../FinishLine';
+import FinishLine from '@/components/FinishLine';
 import { useLazyLoad } from '@/hooks/useLazyLoad'; 
 
 interface VocListContainerProps {

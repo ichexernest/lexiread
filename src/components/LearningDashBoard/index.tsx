@@ -1,6 +1,6 @@
 import {FaPlay } from "react-icons/fa";
-import MainButton from "../MainButton";
-import ProgressCircle from "../ProgressCircle";
+import MainButton from "@/components/MainButton";
+import ProgressCircle from "@/components/ProgressCircle";
 import fetchService from "@/utils/fetch";
 import { currentUser } from "@clerk/nextjs/server";
 import { Vocabulary} from '@/types/';

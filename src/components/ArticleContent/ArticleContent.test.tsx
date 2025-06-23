@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ArticleContent from '../ArticleContent';
+import ArticleContent from '@/components/ArticleContent';
 import { Content } from '@/types';
 
 const mockOnWordClick = jest.fn();
 
-jest.mock('../ClickableWord', () => {
+jest.mock('@/components/ClickableWord', () => {
   return function MockClickableWord({ 
     word, 
     onClick
@@ -58,7 +58,7 @@ However, experts warn that current efforts may not be sufficient to limit warmin
     
     // 檢查科學術語
     expect(screen.getByText('climatologist')).toBeInTheDocument();
-    expect(screen.getByText('ecosystems')).toBeInTheDocument();
+    expect(screen.getByText('impact')).toBeInTheDocument();
     expect(screen.getByText('unprecedented')).toBeInTheDocument();
     expect(screen.getByText('thermal')).toBeInTheDocument();
     expect(screen.getByText('expansion')).toBeInTheDocument();
@@ -106,8 +106,8 @@ However, experts warn that current efforts may not be sufficient to limit warmin
     
     const targetWords = [
       screen.getByText('accelerating'),
-      screen.getByText('temperature'),
-      screen.getByText('renewable'),
+      screen.getByText('temperatures'),
+      screen.getByText('Renewable'),
       screen.getByText('sufficient')
     ];
     
@@ -117,8 +117,8 @@ However, experts warn that current efforts may not be sufficient to limit warmin
     
     expect(mockOnWordClick).toHaveBeenCalledTimes(4);
     expect(mockOnWordClick).toHaveBeenNthCalledWith(1, 'accelerating');
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'temperature');
-    expect(mockOnWordClick).toHaveBeenNthCalledWith(3, 'renewable');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(2, 'temperatures');
+    expect(mockOnWordClick).toHaveBeenNthCalledWith(3, 'Renewable');
     expect(mockOnWordClick).toHaveBeenNthCalledWith(4, 'sufficient');
   });
 

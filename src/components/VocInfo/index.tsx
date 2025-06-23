@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { Vocabulary } from '@/types'
 import { useApi } from '@/hooks/useApi' 
-import SaveButton from '../SaveButton'
-import FamiliaritySign from '../FamiliaritySign'
+import SaveButton from '@/components/SaveButton'
+import FamiliaritySign from '@/components/FamiliaritySign'
 
 interface VocInfoProps {
   word: string;
